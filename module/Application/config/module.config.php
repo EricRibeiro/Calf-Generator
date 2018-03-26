@@ -19,18 +19,47 @@ return [
                 'options' => [
                     'route'    => '/',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\DashboardController::class,
                         'action'     => 'index',
                     ],
                 ],
             ],
-            'application' => [
-                'type'    => Segment::class,
+            'app' => [
+                'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route'    => '/app',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'controller'    => Controller\DashboardController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'dashboard' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route'    => '/dashboard[/:action[/:id]]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]*'
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\DashboardController::class,
+                            ],
+                        ],
+                    ],
+                    'perfil' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route'    => '/perfil[/:action[/:id]]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]*'
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\PerfilController::class,
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -39,6 +68,8 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
+            Controller\DashboardController::class => InvokableFactory::class,
+            Controller\PerfilController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6cc47821631746ca80f0afaa7329f516",
+    "content-hash": "ce3d0d15964e3db316dc2c384665f4d0",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -486,24 +486,24 @@
         },
         {
             "name": "doctrine/doctrine-orm-module",
-            "version": "1.1.5",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineORMModule.git",
-                "reference": "8cb46190022ac71ef644416bd422ce2fb54d4823"
+                "reference": "c8a865aff5c68c439a834a6f8b88f03433ab5657"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineORMModule/zipball/8cb46190022ac71ef644416bd422ce2fb54d4823",
-                "reference": "8cb46190022ac71ef644416bd422ce2fb54d4823",
+                "url": "https://api.github.com/repos/doctrine/DoctrineORMModule/zipball/c8a865aff5c68c439a834a6f8b88f03433ab5657",
+                "reference": "c8a865aff5c68c439a834a6f8b88f03433ab5657",
                 "shasum": ""
             },
             "require": {
-                "doctrine/dbal": ">=2.4,<2.7",
+                "doctrine/dbal": "^2.6.0",
                 "doctrine/doctrine-module": "^1.2",
-                "doctrine/orm": ">=2.5,<2.7",
-                "php": "^5.6 || ^7.0",
-                "symfony/console": "^2.3 || ^3.0",
+                "doctrine/orm": "^2.6.0",
+                "php": "^7.1",
+                "symfony/console": "^2.3 || ^3.0 || ^4.0",
                 "zendframework/zend-hydrator": "^1.1 || ^2.2.1",
                 "zendframework/zend-mvc": "^2.7.10 || ^3.0.1",
                 "zendframework/zend-servicemanager": "^2.7.6 || ^3.1",
@@ -512,7 +512,7 @@
             "require-dev": {
                 "doctrine/data-fixtures": "^1.2.1",
                 "doctrine/migrations": "^1.4.1",
-                "phpunit/phpunit": "^5.7.17 || ^6.2.1",
+                "phpunit/phpunit": "^6.5",
                 "squizlabs/php_codesniffer": "^2.7",
                 "zendframework/zend-console": "^2.6",
                 "zendframework/zend-developer-tools": "^1.1",
@@ -570,7 +570,7 @@
                 "orm",
                 "zf"
             ],
-            "time": "2017-09-20T01:06:34+00:00"
+            "time": "2018-03-26T19:47:07+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -2404,7 +2404,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "zendframework/zend-component-installer": 20
+        "zendframework/zend-component-installer": 20,
+        "doctrine/doctrine-orm-module": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

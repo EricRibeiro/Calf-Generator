@@ -15,6 +15,8 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
                 </div>
                 <div class="content">
                     <form method="post" action="<?= $url; ?>">
+                      <input type="hidden" value="<?= $animal->getId(); ?>" name="id">
+                      <input type="hidden" value="<?= $animal->getClassificacao(); ?>" name="classificacao">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -25,15 +27,16 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
                                            pattern="\d*"
                                            required
                                            oninvalid="this.setCustomValidity('Insira um número válido!')"
-                                           oninput="setCustomValidity('')"/>
-
+                                           oninput="setCustomValidity('')"
+                                           value="<?= $animal->getNumero(); ?>"
+                                           />
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="sel1">Classificação</label>
-                                    <select class="form-control border-input" id="sel1" name="classificacao">
+                                    <select class="form-control border-input" id="sel1" name="classificacao" value="<?= $animal->getClassificacao(); ?>">
                                         <option>Novilha</option>
                                         <option>Primípara</option>
                                         <option>Multípara</option>
@@ -52,7 +55,9 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
                                            oninput="setCustomValidity('')"
                                            disabled
-                                           required/>
+                                           required
+                                           value="<?= $animal->dataUltimoPartoToString(); ?>"
+                                           />
                                 </div>
                             </div>
                         </div>
@@ -73,9 +78,9 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
     jQuery(function ($) {
         $("[name='classificacao']").change(function () {
             if ($(this).val() != "Novilha")
-                $("[name='dataUltimoParto']").removeAttr('disabled');
+                $('<option></option>').val('Novilha').attr('selected', true);
             else
-                $("[name='dataUltimoParto']").attr('disabled', true);
+                $('<option></option>').val('Primípara').attr('selected', true);
         });
     });
 </script>

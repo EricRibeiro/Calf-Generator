@@ -75,6 +75,7 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'cadastra
                 $("[name='dataUltimoParto']").removeAttr('disabled');
             else
                 $("[name='dataUltimoParto']").attr('disabled', true);
+                 $("[name='dataUltimoParto']").val('');
         });
     });
 </script>

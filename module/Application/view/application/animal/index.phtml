@@ -4,8 +4,8 @@ echo $this->render("cadastrar.phtml");
 echo $this->headLink()->prependStylesheet($this->basePath() . '/css/data-table/dataTables.bootstrap.min.css');
 echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-table/jquery.dataTables.min.js');
 echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-table/dataTables.bootstrap.min.js');
-?>
 
+?>
 
 <div class="container-fluid">
     <div class="row">
@@ -27,48 +27,35 @@ echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-table/data
                         </thead>
                         <tbody>
 
-                        <tr>
-                            <td>1</td>
-                            <td>535</td>
-                            <td>Primípara</td>
-                            <td>25/03/2018</td>
-                            <td>
-                                <a type="button" href="<?= $this->url('app/animal', array('controller' => 'index', 'action' => 'editar')); ?>" class="btn btn-info btn-fill">
+                            <?php 
+                                foreach ($animais as $animal) {
+                            ?>
+
+                            <tr>
+                                <td><?= $animal->getId(); ?></td>
+                                <td><?= $animal->getNumero(); ?></td>
+                                <td><?= $animal->getClassificacao(); ?></td>
+                                <td><?= $animal->dataUltimoPartoToString(); ?></td>
+
+                                <td>
+                                <a type="button" href="<?= $this->url('app/animal', ['action'=>'editar','id'=>$animal->getId()]) ?>"class="btn btn-info btn-fill">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </a>
-
-                                <button type="submit" class="btn btn-danger btn-fill">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
+                                    
+                                    <a href="<?= $this->url('app/animal', ['action'=>'remover','id'=>$animal->getId()]) ?>" class="btn btn-danger btn-fill">
+                                      <i class="fa fa-trash" aria-hidden="true" type="hidden" ></i>
+                                 </a>                                
                             </td>
-                        </tr>
 
-                        <tr>
-                            <td>2</td>
-                            <td>892</td>
-                            <td>Novilha</td>
-                            <td>-</td>
-                            <td>
-                                <a type="button" href="<?= $this->url('app/animal', array('controller' => 'index', 'action' => 'editar')); ?>" class="btn btn-info btn-fill">
-                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                                </a>
 
-                                <button type="submit" class="btn btn-danger btn-fill">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
-                            </td>
-                        </tr>
+                            </tr>
+
+                            <?php
+                                }
+                            ?>
+
 
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>#</th>
-                            <th>Número</th>
-                            <th>Classificação</th>
-                            <th>Data do Último Parto</th>
-                            <th>Opções</th>
-                        </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>

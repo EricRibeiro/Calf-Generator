@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\DateTimeType;
 
 /**
  * @ORM\Entity
-  *@ORM\Table(name="animal",uniqueConstraints={@UniqueConstraint(name="numero_uniq", columns={"numero"})})
+  *@ORM\Table(name="Animal",uniqueConstraints={@UniqueConstraint(name="numero_uniq", columns={"numero"})})
 
  */
 class Animal

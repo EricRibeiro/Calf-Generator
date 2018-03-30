@@ -40,5 +40,8 @@
         ],
         "serve": "php -S 0.0.0.0:8080 -t public public/index.php",
         "test": "phpunit"
+    },
+    "require-dev": {
+        "eternicode/bootstrap-datepicker": "^1.7"
     }
 }

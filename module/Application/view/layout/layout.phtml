@@ -58,17 +58,17 @@
                     </a>
                 </li>
 
-                 <li class="animal aba">
-                    <a href="<?= $this->url('app/animal', array('controller' => 'animal', 'action' => 'cadastro')); ?>">
+                <li class="animal aba">
+                    <a href="<?= $this->url('app/animal', array('controller' => 'animal', 'action' => 'index')); ?>">
                         <i class="ti-user"></i>
-                        <p>Cadastrar Animal</p>
+                        <p>Gerenciar Animais</p>
                     </a>
                 </li>
 
-                 <li class="estacao aba">
-                    <a href="<?= $this->url('app/estacao', array('controller' => 'estacao', 'action' => 'cadastro')); ?>">
+                <li class="estacao aba">
+                    <a href="<?= $this->url('app/estacao', array('controller' => 'estacao', 'action' => 'cadastrar')); ?>">
                         <i class="ti-user"></i>
-                        <p>Cadastrar Estação</p>
+                        <p>Gerenciar Estações</p>
                     </a>
                 </li>
 
@@ -164,6 +164,8 @@
 <!-- More Scripts -->
 <?php echo $this->inlineScript()
     ->prependFile($this->basePath() . '/js/main.js')
+    ->prependFile($this->basePath() . '/js/moment.min.js')
+    ->prependFile($this->basePath() . '/js/jquery.mask.js')
     ->prependFile($this->basePath() . '/js/paper-dashboard/demo.js')
     ->prependFile($this->basePath() . '/js/paper-dashboard/paper-dashboard.js')
     ->prependFile($this->basePath() . '/js/paper-dashboard/bootstrap-notify.js')

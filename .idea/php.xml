@@ -42,6 +42,12 @@
       <path value="$PROJECT_DIR$/vendor/zendframework/zend-mvc" />
       <path value="$PROJECT_DIR$/vendor/zendframework/zend-view" />
       <path value="$PROJECT_DIR$/vendor/zendframework/zend-servicemanager" />
+      <path value="$PROJECT_DIR$/vendor/kriswallsmith/assetic" />
+      <path value="$PROJECT_DIR$/vendor/eternicode/bootstrap-datepicker" />
+      <path value="$PROJECT_DIR$/vendor/components/jquery" />
+      <path value="$PROJECT_DIR$/vendor/components/bootstrap" />
+      <path value="$PROJECT_DIR$/vendor/robloach/component-installer" />
+      <path value="$PROJECT_DIR$/vendor/symfony/process" />
     </include_path>
   </component>
 </project>

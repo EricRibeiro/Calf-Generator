@@ -10,6 +10,9 @@ namespace Application;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
+use Application\Controller\AnimalController;
+use Application\Controller\EstacaoController;
+
 
 return [
     'router' => [
@@ -45,6 +48,7 @@ return [
                             ],
                             'defaults' => [
                                 'controller' => Controller\DashboardController::class,
+                                
                             ],
                         ],
                     ],
@@ -61,6 +65,36 @@ return [
                             ],
                         ],
                     ],
+                     'animal' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route'    => '/animal[/:action[/:id]]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]*'
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\AnimalController::class
+                            ],
+                        ],
+                    ],
+
+                    'estacao' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route'    => '/estacao[/:action[/:id]]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]*'
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\EstacaoController::class
+                            ],
+                        ],
+                    ],
+
+
+
                 ],
             ],
         ],
@@ -70,6 +104,13 @@ return [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\DashboardController::class => InvokableFactory::class,
             Controller\PerfilController::class => InvokableFactory::class,
+            Controller\AnimalController::class => function($sm){
+                return new AnimalController($sm);
+            }, 
+
+            Controller\EstacaoController::class => function($sm){
+                return new EstacaoController($sm);
+            }, 
         ],
     ],
     'view_manager' => [
@@ -83,9 +124,34 @@ return [
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
+
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
     ],
+
+   'doctrine' => [
+        'driver' => [
+            // defines an annotation driver with two paths, and names it `my_annotation_driver`
+            'my_annotation_driver' => [
+                'class' => \Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
+                'cache' => 'array',
+                'paths' => [__DIR__ . '/../src/Entity/'],
+            ],
+
+            // default metadata driver, aggregates all other drivers into a single one.
+            // Override `orm_default` only if you know what you're doing
+            'orm_default' => [
+                'drivers' => [
+                    // register `my_annotation_driver` for any entity under namespace `My\Namespace`
+                    'Application\Entity' => 'my_annotation_driver',
+                ],
+            ],
+        ],
+    ],
+    
+
+
+
 ];

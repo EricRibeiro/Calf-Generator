@@ -1,0 +1,88 @@
+<?php
+
+echo $this->render("cadastrar.phtml");
+echo $this->headLink()->prependStylesheet($this->basePath() . '/css/data-table/dataTables.bootstrap.min.css');
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-table/jquery.dataTables.min.js');
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-table/dataTables.bootstrap.min.js');
+?>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Todos os Animais</h4>
+                </div>
+                <div class="content">
+                    <table id="animais" class="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Número</th>
+                                <th>Classificação</th>
+                                <th>Data do Último Parto</th>
+                                <th>Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr>
+                            <td>1</td>
+                            <td>535</td>
+                            <td>Primípara</td>
+                            <td>25/03/2018</td>
+                            <td>
+                                <a type="button" href="<?= $this->url('app/animal', array('controller' => 'index', 'action' => 'editar')); ?>" class="btn btn-info btn-fill">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </a>
+
+                                <button type="submit" class="btn btn-danger btn-fill">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>892</td>
+                            <td>Novilha</td>
+                            <td>-</td>
+                            <td>
+                                <a type="button" href="<?= $this->url('app/animal', array('controller' => 'index', 'action' => 'editar')); ?>" class="btn btn-info btn-fill">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </a>
+
+                                <button type="submit" class="btn btn-danger btn-fill">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Número</th>
+                            <th>Classificação</th>
+                            <th>Data do Último Parto</th>
+                            <th>Opções</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(function ($) {
+        $('#animais').DataTable({
+            paging: false,
+            scrollY: 400
+        });
+
+        $('#animais_filter label input').addClass('form-control border-input');
+    });
+</script>

@@ -32,9 +32,9 @@ class AnimalController extends AbstractActionController
     {
         if ($this->request->isPost()) {
             $numero = $this->request->getPost('numero');
-            $dataUltimoParto = $this->request->getPost('dataUltimoParto');
             $Classificacao = $this->request->getPost('classificacao');
-            $animal = new Animal($numero, $dataUltimoParto, $Classificacao);
+            $dataUltimoParto = $this->request->getPost('dataUltimoParto');
+            $animal = new Animal($numero,$dataUltimoParto,$Classificacao);
 
             $documentManager = $this->sm->get('Doctrine\ORM\EntityManager');
             $documentManager->persist($animal);
@@ -59,14 +59,11 @@ class AnimalController extends AbstractActionController
         $repositorio = $entityManager->getRepository("Application\Entity\Animal");
         $animal = $repositorio->find($id);
 
-
         if ($this->request->isPost()) {
 
             $animal->setNumero($this->request->getPost('numero'));
             $animal->setDataUltimoParto($this->request->getPost('dataUltimoParto'));
             $animal->setClassificacao($this->request->getPost('classificacao'));
-
-
             $entityManager->persist($animal);
             $entityManager->flush();
             return $this->redirect()->toRoute('app/animal', array(

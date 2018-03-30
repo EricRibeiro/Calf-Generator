@@ -26,7 +26,7 @@ class Animal
 	private $numero;
 
 	/**
-	*@ORM\Column(type="datetime", nullable=true)
+	*@ORM\Column(type="date", nullable=true)
 	*/
 	private $dataUltimoParto;
 
@@ -42,7 +42,9 @@ class Animal
 		private $estacao;
 
 
-		public function __construct($numero, $dataParto, $classificacao)
+
+
+		public function __construct($numero, $dataParto,$classificacao)
 		{
 			$this->setDataUltimoParto($dataParto);
 			$this->numero=$numero;
@@ -77,12 +79,15 @@ class Animal
 			return $this->dataUltimoParto;
 
 		}
-	//se a variável $data não vier vazia, grava
+
 		public function setDataUltimoParto($data){
 			if (isset($data)){
-				return $this->dataUltimoParto = new \DateTime($data);
+				return $this->dataUltimoParto = new \DateTime($this->formatarData($data));
+			} else {
+				$this->dataUltimoParto=NULL;
 			}
-		}
+
+		}	
 
 		public function getClassificacao(){
 			return $this->classificacao;
@@ -93,7 +98,17 @@ class Animal
 			$this->classificacao=$classificacao;
 		}
 
+		private function formatarData($data)
+		{
+			$formato = "d/m/Y";
+			$dataObj = date_create_from_format($formato, $data);
+			return date_format($dataObj, 'Y-m-d');
+		}
+
 	}
+
+
+	
 
 
 	?>

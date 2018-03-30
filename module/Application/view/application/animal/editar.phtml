@@ -58,7 +58,8 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-info btn-fill btn-wd">Cadastrar</button>
+                            <a type="button" href="<?= $this->url('app/animal', array('controller' => 'index', 'action' => 'index')); ?>" class="btn btn-info btn-fill btn-wd" style="margin: 3%">Cancelar</a>
+                            <button type="submit" class="btn btn-info btn-fill btn-wd" style="margin: 3%">Confirmar</button>
                         </div>
                         <div class="clearfix"></div>
                     </form>

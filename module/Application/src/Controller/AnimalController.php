@@ -20,7 +20,6 @@ class AnimalController extends AbstractActionController
 
     public function indexAction()
     {
-
         return new ViewModel();
     }
 
@@ -52,14 +51,8 @@ class AnimalController extends AbstractActionController
     public function editarAction()
     {
         if ($this->request->isPost()) {
-            $numero = $this->request->getPost('numero');
-            $dataUltimoParto = $this->request->getPost('dataUltimoParto');
-            $Classificacao = $this->request->getPost('classificacao');
-            $animal = new Animal($numero, $this->getDataFormatada($dataUltimoParto), $Classificacao);
 
-            $documentManager = $this->sm->get('Doctrine\ORM\EntityManager');
-            $documentManager->persist($animal);
-            $documentManager->flush();
+            //SEU CODIGO AQUI
 
             return $this->redirect()->toRoute('app/animal', array(
                 'controller' => 'index',
@@ -67,6 +60,7 @@ class AnimalController extends AbstractActionController
             ));
 
         }
+
         return new ViewModel();
 
     }

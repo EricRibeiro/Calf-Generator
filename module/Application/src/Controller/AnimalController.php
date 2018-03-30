@@ -1,6 +1,7 @@
 <?php
 
 namespace Application\Controller;
+
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Entity\Animal;
@@ -17,14 +18,11 @@ class AnimalController extends AbstractActionController
 
     public function indexAction()
     {
-
         $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-
-
-        $repositorio=$entityManager->getRepository('Application\Entity\Animal');
-        $animais=$repositorio->findAll();
-        $view_params=array(
-            'animais'=>$animais,
+        $repositorio = $entityManager->getRepository('Application\Entity\Animal');
+        $animais = $repositorio->findAll();
+        $view_params = array(
+            'animais' => $animais,
         );
 
         return new ViewModel($view_params);
@@ -41,12 +39,6 @@ class AnimalController extends AbstractActionController
             $documentManager = $this->sm->get('Doctrine\ORM\EntityManager');
             $documentManager->persist($animal);
             $documentManager->flush();
-
-            return $this->redirect()->toRoute('app/animal', array(
-                'controller' => 'index',
-                'action' => 'index',
-            ));
-
         }
 
         return $this->redirect()->toRoute('app/animal', array(
@@ -57,15 +49,15 @@ class AnimalController extends AbstractActionController
 
     public function editarAction()
     {
-        $id=$this->params()->fromRoute('id');
+        $id = $this->params()->fromRoute('id');
 
-        if(is_null($id)){
-            $id=$this->request->getPost('id');
+        if (is_null($id)) {
+            $id = $this->request->getPost('id');
         }
 
         $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorio= $entityManager->getRepository("Application\Entity\Animal");
-        $animal=$repositorio->find($id);
+        $repositorio = $entityManager->getRepository("Application\Entity\Animal");
+        $animal = $repositorio->find($id);
 
 
         if ($this->request->isPost()) {
@@ -78,38 +70,33 @@ class AnimalController extends AbstractActionController
             $entityManager->persist($animal);
             $entityManager->flush();
             return $this->redirect()->toRoute('app/animal', array(
-             'controller' => 'index',
-             'action' => 'index',
-         ));
-
-        }
-
-        return new ViewModel(['animal'=>$animal]);
-    }
-
-    public function removerAction(){
-
-        $id=$this->params()->fromRoute('id');
-        if (!is_null($id)){
-            $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-            $repositorio= $entityManager->getRepository("Application\Entity\Animal");
-
-            $animal=$repositorio->find($id);
-            $entityManager->remove($animal);
-            $entityManager->flush();
-            return $this->redirect()->toRoute('app/animal', array(
                 'controller' => 'index',
                 'action' => 'index',
             ));
-        }else {
-           return $this->redirect()->toRoute('app/animal', array(
+
+        }
+
+        return new ViewModel(['animal' => $animal]);
+    }
+
+    public function removerAction()
+    {
+        $id = $this->params()->fromRoute('id');
+
+        if (!is_null($id)) {
+            $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
+            $repositorio = $entityManager->getRepository("Application\Entity\Animal");
+
+            $animal = $repositorio->find($id);
+            $entityManager->remove($animal);
+            $entityManager->flush();
+        }
+
+        return $this->redirect()->toRoute('app/animal', array(
             'controller' => 'index',
             'action' => 'index',
         ));
-
-       }
-
-   }
+    }
 
 }
 

@@ -15,7 +15,7 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
                 </div>
                 <div class="content">
                     <form method="post" action="<?= $url; ?>">
-                      <input type="hidden" value="<?= $animal->getId(); ?>" name="id">
+                        <input type="hidden" value="<?= $animal->getId(); ?>" name="id">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -28,17 +28,19 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
                                            oninvalid="this.setCustomValidity('Insira um número válido!')"
                                            oninput="setCustomValidity('')"
                                            value="<?= $animal->getNumero(); ?>"
-                                           />
+                                    />
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="sel1">Classificação</label>
-                                    <select class="form-control border-input" id="sel1" name="classificacao" value="<?= $animal->getClassificacao(); ?>">
-                                        <option>Novilha</option>
-                                        <option>Primípara</option>
-                                        <option>Multípara</option>
+                                    <select class="form-control border-input" id="sel1" name="classificacao"
+                                            value="<?= $animal->getClassificacao(); ?>">
+                                        <option><?= $animal->getClassificacao(); ?></option>
+                                        <option style="display: none">Novilha</option>
+                                        <option style="display: none">Primípara</option>
+                                        <option style="display: none">Multípara</option>
                                     </select>
                                 </div>
                             </div>
@@ -56,14 +58,17 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
                                            disabled
                                            required
                                            value="<?= $animal->dataUltimoPartoToString(); ?>"
-                                           />
+                                    />
                                 </div>
                             </div>
                         </div>
 
                         <div class="text-center">
-                            <a type="button" href="<?= $this->url('app/animal', array('controller' => 'index', 'action' => 'index')); ?>" class="btn btn-info btn-fill btn-wd" style="margin: 3%">Cancelar</a>
-                            <button type="submit" class="btn btn-info btn-fill btn-wd" style="margin: 3%">Confirmar</button>
+                            <a type="button"
+                               href="<?= $this->url('app/animal', array('controller' => 'index', 'action' => 'index')); ?>"
+                               class="btn btn-info btn-fill btn-wd" style="margin: 3%">Cancelar</a>
+                            <button type="submit" class="btn btn-info btn-fill btn-wd" style="margin: 3%">Confirmar
+                            </button>
                         </div>
                         <div class="clearfix"></div>
                     </form>
@@ -77,10 +82,31 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
     jQuery(function ($) {
         $("[name='classificacao']").change(function () {
             if ($(this).val() != "Novilha")
-                $('<option></option>').val('Novilha').attr('selected', true);
-            else
-                $('<option></option>').val('Primípara').attr('selected', true);
+                $("[name='dataUltimoParto']").removeAttr('disabled');
+            else {
+                $("[name='dataUltimoParto']").attr('disabled', true);
+                $("[name='dataUltimoParto']").val('');
+            }
+
         });
+
+        var $select = $("#sel1");
+        var classificao = $("option:selected", $select).text();
+
+        switch (classificao) {
+            case 'Novilha':
+                $select.find('option:contains("Primípara")').show();
+                $select.find('option:contains("Multípara")').show();
+                break;
+            case 'Primípara':
+                $select.find('option:contains("Novilha")').show();
+                $select.find('option:contains("Multípara")').show();
+                break;
+            case 'Multípara':
+                $select.find('option:contains("Novilha")').show();
+                $select.find('option:contains("Primípara")').show();
+                break;
+        }
     });
 </script>
 

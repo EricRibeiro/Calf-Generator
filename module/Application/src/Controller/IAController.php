@@ -5,12 +5,9 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Application\Entity\Estacao;
 
-class EstacaoController extends AbstractActionController
+class IAController extends AbstractActionController
 {
-
-
     private $sm;
 
     public function __construct($sm)
@@ -27,14 +24,7 @@ class EstacaoController extends AbstractActionController
     {
 
         if ($this->request->isPost()) {
-            $dataInicio = $this->request->getPost('dataInicio');
-            $dataFim = $this->request->getPost('dataFinal');
-
-            $estacao = new Estacao($dataInicio, $dataFim);
-
-            $documentManager = $this->sm->get('Doctrine\ORM\EntityManager');
-            $documentManager->persist($estacao);
-            $documentManager->flush();
+            //CODIGO
         }
 
         return $this->redirect()->toRoute('app/estacao', array(

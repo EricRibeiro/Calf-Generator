@@ -12,6 +12,7 @@ use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Application\Controller\AnimalController;
 use Application\Controller\EstacaoController;
+use Application\Controller\IAController;
 
 
 return [
@@ -20,20 +21,20 @@ return [
             'home' => [
                 'type' => Literal::class,
                 'options' => [
-                    'route'    => '/',
+                    'route' => '/',
                     'defaults' => [
                         'controller' => Controller\DashboardController::class,
-                        'action'     => 'index',
+                        'action' => 'index',
                     ],
                 ],
             ],
             'app' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/app',
+                    'route' => '/app',
                     'defaults' => [
-                        'controller'    => Controller\DashboardController::class,
-                        'action'        => 'index',
+                        'controller' => Controller\DashboardController::class,
+                        'action' => 'index',
                     ],
                 ],
                 'may_terminate' => true,
@@ -41,60 +42,73 @@ return [
                     'dashboard' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route'    => '/dashboard[/:action[/:id]]',
+                            'route' => '/dashboard[/:action[/:id]]',
                             'constraints' => [
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'id' => '[0-9]*'
                             ],
                             'defaults' => [
                                 'controller' => Controller\DashboardController::class,
-                                
+                                'action' => 'index',
                             ],
                         ],
                     ],
                     'perfil' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route'    => '/perfil[/:action[/:id]]',
+                            'route' => '/perfil[/:action[/:id]]',
                             'constraints' => [
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'id' => '[0-9]*'
                             ],
                             'defaults' => [
                                 'controller' => Controller\PerfilController::class,
+                                'action' => 'index',
                             ],
                         ],
                     ],
-                     'animal' => [
+                    'animal' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route'    => '/animal[/:action[/:id]]',
+                            'route' => '/animal[/:action[/:id]]',
                             'constraints' => [
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'id' => '[0-9]*'
                             ],
                             'defaults' => [
-                                'controller' => Controller\AnimalController::class
+                                'controller' => Controller\AnimalController::class,
+                                'action' => 'index',
                             ],
                         ],
                     ],
-
                     'estacao' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route'    => '/estacao[/:action[/:id]]',
+                            'route' => '/estacao[/:action[/:id]]',
                             'constraints' => [
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'id' => '[0-9]*'
                             ],
                             'defaults' => [
-                                'controller' => Controller\EstacaoController::class
+                                'controller' => Controller\EstacaoController::class,
+                                'action' => 'index',
                             ],
                         ],
                     ],
-
-
-
+                    'ia' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/ia[/:action[/:id]]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]*'
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\IAController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],
@@ -104,26 +118,31 @@ return [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\DashboardController::class => InvokableFactory::class,
             Controller\PerfilController::class => InvokableFactory::class,
-            Controller\AnimalController::class => function($sm){
-                return new AnimalController($sm);
-            }, 
 
-            Controller\EstacaoController::class => function($sm){
+            Controller\AnimalController::class => function ($sm) {
+                return new AnimalController($sm);
+            },
+
+            Controller\EstacaoController::class => function ($sm) {
                 return new EstacaoController($sm);
-            }, 
+            },
+
+            Controller\IAController::class => function ($sm) {
+                return new IAController($sm);
+            },
         ],
     ],
     'view_manager' => [
         'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
+        'display_exceptions' => true,
+        'doctype' => 'HTML5',
+        'not_found_template' => 'error/404',
+        'exception_template' => 'error/index',
         'template_map' => [
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'error/404' => __DIR__ . '/../view/error/404.phtml',
+            'error/index' => __DIR__ . '/../view/error/index.phtml',
 
         ],
         'template_path_stack' => [
@@ -131,7 +150,7 @@ return [
         ],
     ],
 
-   'doctrine' => [
+    'doctrine' => [
         'driver' => [
             // defines an annotation driver with two paths, and names it `my_annotation_driver`
             'my_annotation_driver' => [
@@ -150,8 +169,6 @@ return [
             ],
         ],
     ],
-    
-
 
 
 ];

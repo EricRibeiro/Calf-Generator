@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\DBAL\Types\DateTimeType;
 
-
 /**
  * @ORM\Entity
   *@ORM\Table(name="Animal",uniqueConstraints={@UniqueConstraint(name="numero_uniq", columns={"numero"})})
@@ -27,7 +26,7 @@ class Animal
 	private $numero;
 
 	/**
-	*@ORM\Column(type="date")
+	*@ORM\Column(type="datetime", nullable=true)
 	*/
 	private $dataUltimoParto;
 
@@ -40,40 +39,61 @@ class Animal
 		@ORM\ManyToMany(targetEntity="Application\Entity\Estacao", mappedBy="animal")
 	*/
 
-	private $estacao;
+		private $estacao;
 
 
-	public function __construct($numero, $dataParto, $classificacao)
-	{
-		$this->setDataUltimoParto($dataParto);
-		$this->numero=$numero;
-		$this->classificacao=$classificacao;
+		public function __construct($numero, $dataParto, $classificacao)
+		{
+			$this->setDataUltimoParto($dataParto);
+			$this->numero=$numero;
+			$this->classificacao=$classificacao;
+		}
+
+		public function getId(){
+			return $this->id;
+		} 
+
+		public function getNumero(){
+			return $this->numero;
+		}
+
+		public function setNumero($numero){
+			$this->numero=$numero;
+		}
+
+
+		public function dataUltimoPartoToString()
+		{
+			if(!is_null($this->dataUltimoParto)){
+				$data = $this->dataUltimoParto;
+				return $data->format('d/m/Y');
+			} else {
+				return '-';
+			}
+
+		}
+
+		public function getDataUltimoParto(){
+			return $this->dataUltimoParto;
+
+		}
+	//se a variável $data não vier vazia, grava
+		public function setDataUltimoParto($data){
+			if (isset($data)){
+				return $this->dataUltimoParto = new \DateTime($data);
+			}
+		}
+
+		public function getClassificacao(){
+			return $this->classificacao;
+
+		}
+
+		public function setClassificacao($classificacao){
+			$this->classificacao=$classificacao;
+		}
+
 	}
 
-	public function getId(){
-		return $this->id;
-	} 
 
-	public function getNumero(){
-		return $this->numero;
-	}
-
-	public function setNumero($numero){
-		$this->numero=$numero;
-	}
-
-	
-	public function getDataUltimoParto(){
-		return $this->dataUltimoParto;
-	}
-
-	public function setDataUltimoParto($data){
-		 return $this->dataUltimoParto = new \DateTime($data);
-
-	}
-	
-
-}
-
-
-?>
+	?>

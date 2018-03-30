@@ -29,7 +29,7 @@ class EstacaoController extends AbstractActionController
 
         if ($this->request->isPost()) {
             $dataInicio = $this->request->getPost('dataInicio');
-            $dataFim = $this->request->getPost('dataFim');
+            $dataFim = $this->request->getPost('dataFinal');
 
             $estacao = new Estacao($dataInicio, $dataFim);
 
@@ -38,7 +38,10 @@ class EstacaoController extends AbstractActionController
             $documentManager->flush();
 
 
-            //return $this->redirect()->toUrl('/');
+            return $this->redirect()->toRoute('app/animal', array(
+                'controller' => 'index',
+                'action' => 'index',
+            ));
 
         }
         return new ViewModel();

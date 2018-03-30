@@ -78,9 +78,9 @@ class AnimalController extends AbstractActionController
             $entityManager->persist($animal);
             $entityManager->flush();
             return $this->redirect()->toRoute('app/animal', array(
-               'controller' => 'index',
-               'action' => 'index',
-           ));
+             'controller' => 'index',
+             'action' => 'index',
+         ));
 
         }
 
@@ -90,18 +90,26 @@ class AnimalController extends AbstractActionController
     public function removerAction(){
 
         $id=$this->params()->fromRoute('id');
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorio= $entityManager->getRepository("Application\Entity\Animal");
+        if (!is_null($id)){
+            $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
+            $repositorio= $entityManager->getRepository("Application\Entity\Animal");
 
-        $animal=$repositorio->find($id);
-        $entityManager->remove($animal);
-        $entityManager->flush();
-        return $this->redirect()->toRoute('app/animal', array(
+            $animal=$repositorio->find($id);
+            $entityManager->remove($animal);
+            $entityManager->flush();
+            return $this->redirect()->toRoute('app/animal', array(
+                'controller' => 'index',
+                'action' => 'index',
+            ));
+        }else {
+           return $this->redirect()->toRoute('app/animal', array(
             'controller' => 'index',
             'action' => 'index',
         ));
-        exit();
-    }
+
+       }
+
+   }
 
 }
 

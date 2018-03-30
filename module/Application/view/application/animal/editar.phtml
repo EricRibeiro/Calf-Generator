@@ -16,7 +16,6 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
                 <div class="content">
                     <form method="post" action="<?= $url; ?>">
                       <input type="hidden" value="<?= $animal->getId(); ?>" name="id">
-                      <input type="hidden" value="<?= $animal->getClassificacao(); ?>" name="classificacao">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">

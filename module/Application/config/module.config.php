@@ -53,27 +53,13 @@ return [
                             ],
                         ],
                     ],
-                    'perfil' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/perfil[/:action[/:id]]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id' => '[0-9]*'
-                            ],
-                            'defaults' => [
-                                'controller' => Controller\PerfilController::class,
-                                'action' => 'index',
-                            ],
-                        ],
-                    ],
                     'animal' => [
                         'type' => Segment::class,
                         'options' => [
                             'route' => '/animal[/:action[/:id]]',
                             'constraints' => [
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id' => '[0-9]*'
+                                'id' => '[0-9]*',
                             ],
                             'defaults' => [
                                 'controller' => Controller\AnimalController::class,
@@ -118,7 +104,6 @@ return [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\DashboardController::class => InvokableFactory::class,
-            Controller\PerfilController::class => InvokableFactory::class,
 
             Controller\AnimalController::class => function ($sm) {
                 return new AnimalController($sm);

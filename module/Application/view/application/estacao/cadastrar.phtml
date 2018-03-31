@@ -1,11 +1,4 @@
-<?php
-
-echo $this->headLink()->prependStylesheet($this->basePath() . '/css/data-tables/dataTables.bootstrap.min.css');
-echo $this->headLink()->prependStylesheet($this->basePath() . '/css/data-tables/datatables.min.css');
-
-$url = $this->url('app/estacao', ['controller' => 'estacao', 'action' => 'cadastrar']);
-
-?>
+<?php $url = $this->url('app/estacao', ['controller' => 'estacao', 'action' => 'cadastrar']); ?>
 
 <div class="container-fluid">
     <div class="row">
@@ -49,6 +42,7 @@ $url = $this->url('app/estacao', ['controller' => 'estacao', 'action' => 'cadast
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
+                                    <label style="font-size: 16px;">Animais da Estação</label>
                                     <table id="animais" class="table table-hover display" style="width:100%">
                                         <thead>
                                         <tr>
@@ -57,6 +51,7 @@ $url = $this->url('app/estacao', ['controller' => 'estacao', 'action' => 'cadast
                                             <th>Número</th>
                                             <th>Classificação</th>
                                             <th>Data do Último Parto</th>
+                                            <th hidden>Data do Último Parto - Sort</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -74,6 +69,14 @@ $url = $this->url('app/estacao', ['controller' => 'estacao', 'action' => 'cadast
                                                 <td><?= $animal->getNumero(); ?></td>
                                                 <td><?= $animal->getClassificacao(); ?></td>
                                                 <td><?= $animal->dataUltimoPartoToString(); ?></td>
+                                                <td hidden>
+                                                    <?php
+                                                    if ($animal->dataUltimoPartoToString() == "-")
+                                                        echo "00/00/0000";
+                                                    else
+                                                        echo $animal->dataUltimoPartoToString();
+                                                    ?>
+                                                </td>
 
                                             </tr>
 
@@ -107,8 +110,6 @@ $url = $this->url('app/estacao', ['controller' => 'estacao', 'action' => 'cadast
 <?php
 echo $this->inlineScript()->prependFile($this->basePath() . '/js/estacao/estacao.js');
 echo $this->inlineScript()->prependFile($this->basePath() . '/js/datehelper.js');
-echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/jquery.dataTables.min.js');
-echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/dataTables.bootstrap.min.js');
 ?>
 
 <script>
@@ -117,7 +118,16 @@ echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/dat
         $('#animais').DataTable({
             columnDefs: [
                 { "orderable": false, "targets": 0 },
-                {targets: '_all', className: 'dt-center'}
+                {targets: '_all', className: 'dt-center'},
+                { "orderData":[ 5 ],   "targets": [ 4 ] }
+            ],
+            aoColumns: [
+                null,
+                null,
+                null,
+                null,
+                {"sType": "date-uk"},
+                {"sType": "date-uk"},
             ],
             order: [[4, 'desc']],
             paging: false,

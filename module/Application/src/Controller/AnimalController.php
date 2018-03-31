@@ -59,14 +59,11 @@ class AnimalController extends AbstractActionController
         $repositorio = $entityManager->getRepository("Application\Entity\Animal");
         $animal = $repositorio->find($id);
 
-
         if ($this->request->isPost()) {
 
             $animal->setNumero($this->request->getPost('numero'));
             $animal->setDataUltimoParto($this->request->getPost('dataUltimoParto'));
             $animal->setClassificacao($this->request->getPost('classificacao'));
-
-
             $entityManager->persist($animal);
             $entityManager->flush();
             return $this->redirect()->toRoute('app/animal', array(

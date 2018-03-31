@@ -12,7 +12,6 @@ use Doctrine\DBAL\Types\DateTimeType;
  */
 class Animal
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -125,6 +124,4 @@ class Animal
     }
 
 }
-
-
 ?>

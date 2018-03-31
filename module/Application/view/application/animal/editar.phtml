@@ -1,10 +1,4 @@
-<?php
-
-echo $this->inlineScript()
-    ->prependFile($this->basePath() . '/js/datehelper.js');
-
-$url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']);
-?>
+<?php $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']); ?>
 
 <div class="container-fluid">
     <div class="row">
@@ -55,7 +49,6 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
                                            data-mask="00/00/0000"
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
                                            oninput="setCustomValidity('')"
-                                           disabled
                                            required
                                            value="<?= $animal->dataUltimoPartoToString(); ?>"
                                     />
@@ -64,8 +57,7 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
                         </div>
 
                         <div class="text-center">
-                            <a type="button"
-                               href="<?= $this->url('app/animal', array('controller' => 'index', 'action' => 'index')); ?>"
+                            <a type="button" onclick="window.history.back()"
                                class="btn btn-info btn-fill btn-wd" style="margin: 3%">Cancelar</a>
                             <button type="submit" class="btn btn-info btn-fill btn-wd" style="margin: 3%">Confirmar
                             </button>
@@ -78,35 +70,8 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar']
     </div>
 </div>
 
-<script>
-    jQuery(function ($) {
-        $("[name='classificacao']").change(function () {
-            if ($(this).val() != "Novilha")
-                $("[name='dataUltimoParto']").removeAttr('disabled');
-            else {
-                $("[name='dataUltimoParto']").attr('disabled', true);
-                $("[name='dataUltimoParto']").val('');
-            }
-
-        });
-
-        var $select = $("#sel1");
-        var classificao = $("option:selected", $select).text();
-
-        switch (classificao) {
-            case 'Novilha':
-                $select.find('option:contains("Primípara")').show();
-                $select.find('option:contains("Multípara")').show();
-                break;
-            case 'Primípara':
-                $select.find('option:contains("Novilha")').show();
-                $select.find('option:contains("Multípara")').show();
-                break;
-            case 'Multípara':
-                $select.find('option:contains("Novilha")').show();
-                $select.find('option:contains("Primípara")').show();
-                break;
-        }
-    });
-</script>
-
+<?php
+echo $this->inlineScript()
+    ->prependFile($this->basePath() . '/js/datehelper.js')
+    ->prependFile($this->basePath() . '/js/animal/animal.js');
+?>

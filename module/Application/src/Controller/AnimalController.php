@@ -66,11 +66,11 @@ class AnimalController extends AbstractActionController
             $animal->setClassificacao($this->request->getPost('classificacao'));
             $entityManager->persist($animal);
             $entityManager->flush();
+
             return $this->redirect()->toRoute('app/animal', array(
                 'controller' => 'index',
                 'action' => 'index',
             ));
-
         }
 
         return new ViewModel(['animal' => $animal]);

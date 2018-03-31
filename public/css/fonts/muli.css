@@ -3,7 +3,7 @@
     src: local('Muli SemiBold Italic'),
     local('Muli-SemiBoldItalic'),
     url('../fonts/muli-semibolditalic-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-semibolditalic-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-semibolditalic-webfont.woff') format('woff');
     font-weight: 600;
     font-style: italic;
 
@@ -13,8 +13,8 @@
     font-family: 'Muli';
     src: local('Muli SemiBold'),
     local('Muli-SemiBold'),
-    url('../fonts/muli/muli-semibold-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-semibold-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-semibold-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-semibold-webfont.woff') format('woff');
     font-weight: 600;
     font-style: normal;
 
@@ -24,8 +24,8 @@
     font-family: 'Muli';
     src: local('Muli Regular'),
     local('Muli-Regular'),
-    url('../fonts/muli/muli-regular-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-regular-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-regular-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-regular-webfont.woff') format('woff');
     font-weight: 400;
     font-style: normal;
 
@@ -35,8 +35,8 @@
     font-family: 'Muli';
     src: local('Muli Light Italic'),
     local('Muli-LightItalic'),
-    url('../fonts/muli/muli-lightitalic-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-lightitalic-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-lightitalic-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-lightitalic-webfont.woff') format('woff');
     font-weight: 300;
     font-style: italic;
 
@@ -46,8 +46,8 @@
     font-family: 'Muli';
     src: local('Muli Light'),
     local('Muli-Light'),
-    url('../fonts/muli/muli-light-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-light-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-light-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-light-webfont.woff') format('woff');
     font-weight: 300;
     font-style: normal;
 
@@ -57,8 +57,8 @@
     font-family: 'Muli';
     src: local('Muli Italic'),
     local('Muli-Italic'),
-    url('../fonts/muli/muli-italic-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-italic-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-italic-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-italic-webfont.woff') format('woff');
     font-weight: 400;
     font-style: italic;
 
@@ -68,8 +68,8 @@
     font-family: 'Muli';
     src: local('Muli ExtraLight Italic'),
     local('Muli-ExtraLightItalic'),
-    url('../fonts/muli/muli-extralightitalic-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-extralightitalic-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-extralightitalic-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-extralightitalic-webfont.woff') format('woff');
     font-weight: 200;
     font-style: italic;
 
@@ -79,8 +79,8 @@
     font-family: 'Muli';
     src: local('Muli ExtraLight'),
     local('Muli-ExtraLight'),
-    url('../fonts/muli/muli-extralight-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-extralight-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-extralight-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-extralight-webfont.woff') format('woff');
     font-weight: 200;
     font-style: normal;
 
@@ -90,8 +90,8 @@
     font-family: 'Muli';
     src: local('Muli ExtraBold Italic'),
     local('Muli-ExtraBoldItalic'),
-    url('../fonts/muli/muli-extrabolditalic-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-extrabolditalic-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-extrabolditalic-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-extrabolditalic-webfont.woff') format('woff');
     font-weight: 800;
     font-style: italic;
 
@@ -101,8 +101,8 @@
     font-family: 'Muli';
     src: local('Muli ExtraBold'),
     local('Muli-ExtraBold'),
-    url('../fonts/muli/muli-extrabold-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-extrabold-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-extrabold-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-extrabold-webfont.woff') format('woff');
     font-weight: 800;
     font-style: normal;
 
@@ -112,8 +112,8 @@
     font-family: 'Muli';
     src: local('Muli Bold Italic'),
     local('Muli-BoldItalic'),
-    url('../fonts/muli/muli-bolditalic-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-bolditalic-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-bolditalic-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-bolditalic-webfont.woff') format('woff');
     font-weight: 700;
     font-style: italic;
 
@@ -123,8 +123,8 @@
     font-family: 'Muli';
     src: local('Muli Bold'),
     local('Muli-Bold'),
-    url('../fonts/muli/muli-bold-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-bold-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-bold-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-bold-webfont.woff') format('woff');
     font-weight: 700;
     font-style: normal;
 
@@ -134,8 +134,8 @@
     font-family: 'Muli';
     src: local('Muli Black Italic'),
     local('Muli-BlackItalic'),
-    url('../fonts/muli/muli-blackitalic-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-blackitalic-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-blackitalic-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-blackitalic-webfont.woff') format('woff');
     font-weight: 900;
     font-style: italic;
 
@@ -145,8 +145,8 @@
     font-family: 'Muli';
     src: local('Muli Black'),
     local('Muli-Black'),
-    url('../fonts/muli/muli-black-webfont.woff2') format('woff2'),
-    url('../fonts/muli/muli-black-webfont.woff') format('woff');
+    url('../../fonts/muli/muli-black-webfont.woff2') format('woff2'),
+    url('../../fonts/muli/muli-black-webfont.woff') format('woff');
     font-weight: 900;
     font-style: normal;
 

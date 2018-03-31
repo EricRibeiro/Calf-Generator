@@ -1,12 +1,4 @@
-<?php
-
-echo $this->render("cadastrar.phtml");
-echo $this->headLink()->prependStylesheet($this->basePath() . '/css/data-tables/dataTables.bootstrap.min.css');
-echo $this->headLink()->prependStylesheet($this->basePath() . '/css/data-tables/datatables.min.css');
-echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/jquery.dataTables.min.js');
-echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/dataTables.bootstrap.min.js');
-
-?>
+<?php echo $this->render("cadastrar.phtml"); ?>
 
 <div class="container-fluid">
     <div class="row">
@@ -19,25 +11,30 @@ echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/dat
                     <table id="animais" class="table table-hover display" style="width:100%">
                         <thead>
                         <tr>
-                            <th style="display: none">#</th>
+                            <th hidden>#</th>
                             <th>Número</th>
                             <th>Classificação</th>
                             <th>Data do Último Parto</th>
+                            <th hidden>Data do Último Parto - Sort</th>
                             <th>Opções</th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        <?php
-                        foreach ($animais as $animal) {
-                            ?>
-
+                        <?php foreach ($animais as $animal) { ?>
                             <tr>
-                                <td style="display: none"><?= $animal->getId(); ?></td>
+                                <td hidden><?= $animal->getId(); ?></td>
                                 <td><?= $animal->getNumero(); ?></td>
                                 <td><?= $animal->getClassificacao(); ?></td>
                                 <td><?= $animal->dataUltimoPartoToString(); ?></td>
-
+                                <td hidden>
+                                    <?php
+                                    if ($animal->dataUltimoPartoToString() == "-")
+                                        echo "00/00/0000";
+                                    else
+                                        echo $animal->dataUltimoPartoToString();
+                                    ?>
+                                </td>
                                 <td>
                                     <a type="button"
                                        href="<?= $this->url('app/animal', ['action' => 'editar', 'id' => $animal->getId()]) ?>"
@@ -50,13 +47,9 @@ echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/dat
                                         <i class="fa fa-trash" aria-hidden="true" type="hidden"></i>
                                     </a>
                                 </td>
-
-
                             </tr>
 
-                            <?php
-                        }
-                        ?>
+                        <?php } ?>
 
 
                         </tbody>
@@ -71,7 +64,17 @@ echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/dat
     jQuery(function ($) {
         $('#animais').DataTable({
             columnDefs: [
-                { targets: '_all', className: 'dt-center' }
+                { "orderable": false, "targets": 5 },
+                {targets: '_all', className: 'dt-center'},
+                { "orderData":[ 4 ],   "targets": [ 3 ] },
+            ],
+            aoColumns: [
+                null,
+                null,
+                null,
+                {"sType": "date-uk"},
+                {"sType": "date-uk"},
+                null,
             ],
             order: [[3, 'desc']],
             paging: false

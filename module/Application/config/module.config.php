@@ -84,14 +84,15 @@ return [
                     'estacao' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/estacao[/:action[/:id]]',
+                            'route' => '/estacao[/:action[/:id[/:eid]]]',
                             'constraints' => [
+                                'id' => '[0-9]*',
+                                'eid' => '[0-9]*',
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id' => '[0-9]*'
                             ],
                             'defaults' => [
                                 'controller' => Controller\EstacaoController::class,
-                                'action' => 'index',
+                                'action' => 'index'
                             ],
                         ],
                     ],

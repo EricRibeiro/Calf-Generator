@@ -1,6 +1,5 @@
 <?php
 
-echo $this->render("cadastrar.phtml");
 echo $this->headLink()->prependStylesheet($this->basePath() . '/css/data-tables/dataTables.bootstrap.min.css');
 echo $this->headLink()->prependStylesheet($this->basePath() . '/css/data-tables/datatables.min.css');
 echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/jquery.dataTables.min.js');
@@ -13,7 +12,7 @@ echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/dat
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="header">
-                    <h4 class="title">Todos os Animais</h4>
+                    <h4 class="title">Animais da Estação</h4>
                 </div>
                 <div class="content">
                     <table id="animais" class="table table-hover display" style="width:100%">
@@ -29,8 +28,7 @@ echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/dat
                         <tbody>
 
                         <?php
-                        foreach ($animais as $animal) {
-                            ?>
+                        foreach ($animais as $animal) { ?>
 
                             <tr>
                                 <td style="display: none"><?= $animal->getId(); ?></td>
@@ -39,14 +37,19 @@ echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/dat
                                 <td><?= $animal->dataUltimoPartoToString(); ?></td>
 
                                 <td>
-                                    <a type="button"
-                                       href="<?= $this->url('app/animal', ['action' => 'editar', 'id' => $animal->getId()]) ?>"
-                                       class="btn btn-info btn-fill">
+                                    <a class="btn btn-info btn-fill" type="button"
+                                       href="<?= $this->url('app/animal', [
+                                           'action' => 'editar',
+                                           'id' => $animal->getId()]) ?>"
+                                    >
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </a>
 
-                                    <a href="<?= $this->url('app/animal', ['action' => 'remover', 'id' => $animal->getId()]) ?>"
-                                       class="btn btn-danger btn-fill">
+                                    <a class="btn btn-danger btn-fill" href="<?= $this->url('app/estacao', [
+                                        'action' => 'remover-animal',
+                                        'id' => $animal->getId(),
+                                        'eid' => basename($_SERVER['REQUEST_URI'])]) ?>"
+                                    >
                                         <i class="fa fa-trash" aria-hidden="true" type="hidden"></i>
                                     </a>
                                 </td>
@@ -71,7 +74,7 @@ echo $this->inlineScript()->prependFile($this->basePath() . '/js/data-tables/dat
     jQuery(function ($) {
         $('#animais').DataTable({
             columnDefs: [
-                { targets: '_all', className: 'dt-center' }
+                {targets: '_all', className: 'dt-center'}
             ],
             order: [[3, 'desc']],
             paging: false

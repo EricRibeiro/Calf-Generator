@@ -45,34 +45,41 @@
             </div>
 
             <ul class="nav">
-                <li class="dashboard aba">
+                <li class="app-dashboard">
                     <a href="<?= $this->url('app/dashboard', array('controller' => 'dashboard', 'action' => 'index')); ?>">
                         <i class="ti-panel"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="perfil aba">
+                <li class="app-perfil">
                     <a href="<?= $this->url('app/perfil', array('controller' => 'perfil', 'action' => 'index')); ?>">
                         <i class="ti-user"></i>
                         <p>Perfil do Usuário</p>
                     </a>
                 </li>
 
-                <li class="animal aba">
+                <li class="app-animal">
                     <a href="<?= $this->url('app/animal', array('controller' => 'animal', 'action' => 'index')); ?>">
                         <i class="ti-user"></i>
                         <p>Gerenciar Animais</p>
                     </a>
                 </li>
 
-                <li class="estacao aba">
+                <li class="app-estacao">
                     <a href="<?= $this->url('app/estacao', array('controller' => 'estacao', 'action' => 'index')); ?>">
                         <i class="ti-user"></i>
-                        <p>Gerenciar Estações</p>
+                        <p>Visualizar Estações</p>
                     </a>
                 </li>
 
-                <li class="ia aba">
+                <li class="app-estacao-cadastrar">
+                    <a href="<?= $this->url('app/estacao', array('controller' => 'estacao', 'action' => 'cadastrar')); ?>">
+                        <i class="ti-user"></i>
+                        <p>Cadastrar Estação</p>
+                    </a>
+                </li>
+
+                <li class="app-ia">
                     <a href="<?= $this->url('app/ia', array('controller' => 'ia', 'action' => 'index')); ?>">
                         <i class="ti-user"></i>
                         <p>Gerenciar IAs</p>

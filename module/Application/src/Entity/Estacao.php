@@ -4,6 +4,7 @@ namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\Animal;
+use Application\helper\Data;
 
 /**
  * @ORM\Entity
@@ -54,27 +55,22 @@ class Estacao
 
     public function getdataFinalString()
     {
-        return $this->dataToString($this->dataFinal);
-    }
-
-    public function getdataInicial()
-    {
-        return $this->dataInicio;
+        return Data::dataToString($this->dataFinal);
     }
 
     public function getdataInicialString()
     {
-        return $this->dataToString($this->dataInicio);
+         return Data::dataToString($this->dataInicio);
     }
 
     public function setDataInicio($dataInicio)
     {
-        return $this->dataInicio = new \DateTime($this->formatarData($dataInicio));
+        return $this->dataInicio = Data::setData($dataInicio);
     }
 
     public function setDataFinal($dataFinal)
     {
-        return $this->dataFinal = new \DateTime($this->formatarData($dataFinal));
+        return $this->dataFinal = Data::setData($dataFinal);
     }
 
     public function getAnimal()
@@ -87,20 +83,7 @@ class Estacao
         $this->animal = $animal;
     }
 
-    public function formatarData($data)
-    {
-        $formato = "d/m/Y";
-        $dataObj = date_create_from_format($formato, $data);
-        return date_format($dataObj, 'Y-m-d');
-    }
-
-    public function dataToString($data)
-    {
-        if (!is_null($data)) {
-            return $data->format('d/m/Y');
-        }
-    }
-
+  
 }
 
 ?>

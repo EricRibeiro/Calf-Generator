@@ -33,8 +33,8 @@ class AnimalController extends AbstractActionController
         if ($this->request->isPost()) {
             $numero = $this->request->getPost('numero');
             $dataUltimoParto = $this->request->getPost('dataUltimoParto');
-            $Classificacao = $this->request->getPost('classificacao');
-            $animal = new Animal($numero, $dataUltimoParto, $Classificacao);
+            $classificacao = $this->request->getPost('classificacao');
+            $animal = new Animal($numero, $dataUltimoParto, $classificacao);
 
             $documentManager = $this->sm->get('Doctrine\ORM\EntityManager');
             $documentManager->persist($animal);

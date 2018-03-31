@@ -5,6 +5,8 @@ namespace Application\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\DBAL\Types\DateTimeType;
+use Application\helper\Data;
+
 
 /**
  * @ORM\Entity
@@ -25,7 +27,7 @@ class Animal
     private $numero;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
     private $dataUltimoParto;
 
@@ -39,7 +41,6 @@ class Animal
      */
 
     private $estacao;
-
 
     public function __construct($numero, $dataParto, $classificacao)
     {
@@ -71,16 +72,10 @@ class Animal
     public function getDataUltimoParto()
     {
         return $this->dataUltimoParto;
-
     }
-
     public function setDataUltimoParto($data)
     {
-        if (isset($data)) {
-            return $this->dataUltimoParto = new \DateTime($this->formatarData($data));
-        } else {
-            $this->dataUltimoParto = NULL;
-        }
+        return $this->dataUltimoParto=Data::setData($data);
 
     }
 
@@ -105,21 +100,9 @@ class Animal
         $this->estacao = $estacao;
     }
 
-    public function formatarData($data)
-    {
-        $formato = "d/m/Y";
-        $dataObj = date_create_from_format($formato, $data);
-        return date_format($dataObj, 'Y-m-d');
-    }
-
     public function dataUltimoPartoToString()
     {
-        if (!is_null($this->dataUltimoParto)) {
-            $data = $this->dataUltimoParto;
-            return $data->format('d/m/Y');
-        } else {
-            return '-';
-        }
+        return Data::dataToString($this->dataUltimoParto);
 
     }
 

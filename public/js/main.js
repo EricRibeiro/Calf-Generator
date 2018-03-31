@@ -4,16 +4,16 @@ jQuery(function ($) {
 
 function mudarInfoAbaAtiva() {
     var nomeDoCaminho = window.location.pathname;
-    nomeDoCaminho = nomeDoCaminho.split("/")[2];
+    nomeDoCaminho = nomeDoCaminho.substr(nomeDoCaminho.indexOf("/") + 1);
+    nomeDoCaminho = nomeDoCaminho.replace(/\//ig, "-");
 
-    if(nomeDoCaminho == null)
+    if (nomeDoCaminho == null)
         nomeDoCaminho = "dashboard";
 
-    var $abas = $('.aba');
-    $abas.removeClass('active');
+    $('ul li').removeClass('active');
 
     var $abaAtual = $('.' + nomeDoCaminho);
     $abaAtual.addClass('active');
 
-    $('.navbar-brand').text(nomeDoCaminho).css('textTransform', 'capitalize');
+    $('.navbar-brand').text($abaAtual.find('p').text()).css('textTransform', 'capitalize');
 }

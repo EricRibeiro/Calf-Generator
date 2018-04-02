@@ -42,6 +42,11 @@ class Animal
 
     private $estacao;
 
+    /**      
+    * @ORM\OneToMany(targetEntity="IA", mappedBy="animal")
+    */
+    private $ia;
+
     public function __construct($numero, $dataParto, $classificacao)
     {
         $this->setDataUltimoParto($dataParto);

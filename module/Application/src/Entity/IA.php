@@ -68,11 +68,10 @@ class IA
 
     }
 
-    public function dataUltimoPartoToString()
+    public function getDataInseminacaoToString()
     {
-        return Data::dataToString($this->dataUltimoParto);
+        return Data::dataToString($this->dataInseminacao);
 
     }
-
 }
 ?>

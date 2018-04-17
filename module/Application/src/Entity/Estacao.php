@@ -4,14 +4,13 @@ namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\Animal;
-use Application\helper\Data;
+use Application\Helper\Data;
 
 /**
  * @ORM\Entity
  */
 class Estacao
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -30,7 +29,7 @@ class Estacao
     private $dataFinal;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Application\Entity\Animal", inversedBy="estacao")
+     * @ORM\ManyToMany(targetEntity="Application\Entity\Animal")
      * @ORM\JoinTable(name="Estacao_Animais")
      */
     private $animal;
@@ -83,7 +82,4 @@ class Estacao
         $this->animal = $animal;
     }
 
-  
 }
-
-?>

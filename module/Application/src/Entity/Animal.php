@@ -5,8 +5,6 @@ namespace Application\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\DBAL\Types\DateTimeType;
-use Application\helper\Data;
-
 
 /**
  * @ORM\Entity
@@ -27,89 +25,65 @@ class Animal
     private $numero;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\OneToMany(targetEntity="Cronologia", mappedBy="animal")
      */
-    private $dataUltimoParto;
+    private $cronologia;
 
     /**
-     * @ORM\Column(type="string")
+     * Animal constructor.
+     * @param $numero
      */
-    private $classificacao;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Application\Entity\Estacao", mappedBy="animal")
-     */
-
-    private $estacao;
-
-    /**      
-    * @ORM\OneToMany(targetEntity="IA", mappedBy="animal")
-    */
-    private $ia;
-
-    public function __construct($numero, $dataParto, $classificacao)
+    public function __construct($numero)
     {
-        $this->setDataUltimoParto($dataParto);
         $this->numero = $numero;
-        $this->classificacao = $classificacao;
     }
 
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getNumero()
     {
         return $this->numero;
     }
 
+    /**
+     * @param mixed $numero
+     */
     public function setNumero($numero)
     {
         $this->numero = $numero;
     }
 
-    public function getDataUltimoParto()
+    /**
+     * @return mixed
+     */
+    public function getCronologia()
     {
-        return $this->dataUltimoParto;
-    }
-    public function setDataUltimoParto($data)
-    {
-        return $this->dataUltimoParto=Data::setData($data);
-
+        return $this->cronologia;
     }
 
-    public function getClassificacao()
+    /**
+     * @param mixed $cronologia
+     */
+    public function setCronologia($cronologia)
     {
-        return $this->classificacao;
-
-    }
-
-    public function setClassificacao($classificacao)
-    {
-        $this->classificacao = $classificacao;
-    }
-
-    public function getEstacao()
-    {
-        return $this->estacao;
-    }
-
-    public function setEstacao($estacao)
-    {
-        $this->estacao = $estacao;
-    }
-
-    public function dataUltimoPartoToString()
-    {
-        return Data::dataToString($this->dataUltimoParto);
-
+        $this->cronologia = $cronologia;
     }
 
 }
-?>

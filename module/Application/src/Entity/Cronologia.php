@@ -24,7 +24,7 @@ class Cronologia
 
     /**
      * @ORM\ManyToOne(targetEntity="Animal", inversedBy="cronologia")
-     * @ORM\JoinColumn(name="animal_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="id_animal", referencedColumnName="id", nullable=false)
      */
     private $animal;
 
@@ -59,6 +59,11 @@ class Cronologia
     private $estadoFinal;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dataDaMudanca;
+
+    /**
      * Cronologia constructor.
      * @param $animal
      * @param $ia
@@ -75,6 +80,7 @@ class Cronologia
         $this->classificacao = $classificacao;
         $this->estadoInicial = $estadoInicial;
         $this->estadoFinal = $estadoFinal;
+        $this->dataDaMudanca = new \DateTime();
     }
 
     /**
@@ -188,4 +194,21 @@ class Cronologia
     {
         $this->estadoFinal = $estadoFinal;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDataDaMudanca()
+    {
+        return $this->dataDaMudanca;
+    }
+
+    /**
+     * @param mixed $dataDaMudanca
+     */
+    public function setDataDaMudanca($dataDaMudanca)
+    {
+        $this->dataDaMudanca = $dataDaMudanca;
+    }
+
 }

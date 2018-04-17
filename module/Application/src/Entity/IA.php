@@ -12,6 +12,7 @@ use Application\Helper\Data;
  */
 class IA
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -21,13 +22,13 @@ class IA
 
      /**
      * @ORM\ManyToOne(targetEntity="Animal")
-     * @ORM\JoinColumn(name="animal_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="id_animal", referencedColumnName="id", nullable=false)
      */
     private $animal;
 
     /**
      * @ORM\ManyToOne(targetEntity="Estacao")
-     * @ORM\JoinColumn(name="estacao_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="estacao_id", referencedColumnName="id")
      */
     private $estacao;
 

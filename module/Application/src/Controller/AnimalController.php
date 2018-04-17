@@ -2,24 +2,27 @@
 
 namespace Application\Controller;
 
+use Application\Entity\Animal_Classificacao;
+use Application\Helper\HelperCronologia;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Entity\Animal;
-use Application\Controller\Factory;
+use Application\Helper\HelperClassificacao;
 
 class AnimalController extends AbstractActionController
 {
     private $sm;
+    private $entityManager;
 
     function __construct($sm)
     {
         $this->sm = $sm;
+        $this->entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
     }
 
     public function indexAction()
     {
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorio = $entityManager->getRepository('Application\Entity\Animal');
+        $repositorio = $this->entityManager->getRepository('Application\Entity\Animal');
         $animais = $repositorio->findAll();
         $view_params = array(
             'animais' => $animais,
@@ -33,12 +36,16 @@ class AnimalController extends AbstractActionController
         if ($this->request->isPost()) {
             $numero = $this->request->getPost('numero');
             $dataUltimoParto = $this->request->getPost('dataUltimoParto');
-            $classificacao = $this->request->getPost('classificacao');
-            $animal = new Animal($numero, $dataUltimoParto, $classificacao);
+            $classificacaoID = $this->request->getPost('classificacao');
 
-            $documentManager = $this->sm->get('Doctrine\ORM\EntityManager');
-            $documentManager->persist($animal);
-            $documentManager->flush();
+            $animal = new Animal($numero, $dataUltimoParto);
+            $classificacao = HelperClassificacao::criarClassificacaoNovoAnimal($this->entityManager, $animal, $classificacaoID);
+            $cronologia = HelperCronologia::criarCronologiaNovoAnimal($this->entityManager, $animal, $classificacaoID);
+
+            $this->entityManager->persist($animal);
+            $this->entityManager->persist($classificacao);
+            $this->entityManager->persist($cronologia);
+            $this->entityManager->flush();
         }
 
         return $this->redirect()->toRoute('app/animal', array(

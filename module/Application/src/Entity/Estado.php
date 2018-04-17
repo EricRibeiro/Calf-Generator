@@ -24,7 +24,7 @@ class Estado
     /**
      * @ORM\Column(type="string")
      */
-    private $classificacao;
+    private $estado;
 
     /**
      * Estado constructor.

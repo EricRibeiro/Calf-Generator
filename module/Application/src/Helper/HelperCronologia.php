@@ -27,20 +27,10 @@ class HelperCronologia
     {
         $classificacao = $entityManager->getRepository('Application\Entity\Classificacao')->find($classificacaoID);
         $estado = self::getEstadoID($entityManager, $classificacaoID);
-        $estacao = null;
+        $estacao = self::getEstacao($animal);
+        $ia = self::getIA($animal);
 
-        if (!is_null($animal->getCronologias())) {
-            $ultimaCronologia = $animal->getUltimaCronologia();
-            $estacao = $ultimaCronologia->getEstacao();
-
-            if (!is_null($estacao)) {
-                $dataFinalEstacao = $estacao->getDataFinal();
-                $hoje = new \DateTime();
-                $estacao = ($hoje > $dataFinalEstacao) ? null : $estacao;
-            }
-        }
-
-        $cronologia = new Cronologia($animal, null, $estacao, $classificacao, $estado, null, new \DateTime());
+        $cronologia = new Cronologia($animal, $ia, $estacao, $classificacao, $estado, null, new \DateTime());
 
         return $cronologia;
     }
@@ -72,5 +62,37 @@ class HelperCronologia
         }
 
         return $entityManager->find('Application\Entity\Estado', $estadoID);
+    }
+
+    private static function getEstacao($animal)
+    {
+        $estacao = null;
+
+        if (sizeof($animal->getCronologias()) > 0) {
+            $ultimaCronologia = $animal->getUltimaCronologia();
+            $estacao = $ultimaCronologia->getEstacao();
+
+            if (!is_null($estacao)) {
+                $dataFinalEstacao = $estacao->getDataFinal();
+                $hoje = new \DateTime();
+                $estacao = ($hoje > $dataFinalEstacao) ? null : $estacao;
+            }
+        }
+
+        return $estacao;
+    }
+
+    private static function getIA($animal)
+    {
+        $ia = null;
+
+        if (sizeof($animal->getIAs()) > 0) {
+            $ultimaIA = $animal->getUltimaIA();
+            $dataDiagnostico2 = $ultimaIA->getDataDiagnostico2();
+            $hoje = new \DateTime();
+            $ia = ($hoje > $dataDiagnostico2) ? null : $ia;
+        }
+
+        return $ia;
     }
 }

@@ -107,7 +107,7 @@ class Animal
     /**
      * @return mixed
      */
-    public function getIas()
+    public function getIAs()
     {
         return $this->ias;
     }
@@ -142,6 +142,14 @@ class Animal
     public function getEstado()
     {
         return $this->getUltimaCronologia()->getEstadoInicial()->getEstado();
+    }
+
+    /**
+     * @return Application\Entity\IA
+     */
+    public function getUltimaIA()
+    {
+        return $this->ias->last();
     }
 
     /**

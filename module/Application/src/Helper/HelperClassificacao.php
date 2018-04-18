@@ -28,7 +28,7 @@ class HelperClassificacao
         $classificacao = $entityManager->find('Application\Entity\Classificacao', $classificacaoID);
         $estacao = null;
 
-        if (!is_null($animal->getClassificacoes())) {
+        if (sizeof($animal->getClassificacoes()) > 0) {
             $ultimaClassificacao = $animal->getUltimaClassificacao();
             $estacao = $ultimaClassificacao->getEstacao();
 

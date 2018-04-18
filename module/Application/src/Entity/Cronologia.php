@@ -23,7 +23,7 @@ class Cronologia
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Animal", inversedBy="cronologia")
+     * @ORM\ManyToOne(targetEntity="Animal", inversedBy="cronologias")
      * @ORM\JoinColumn(name="id_animal", referencedColumnName="id", nullable=false)
      */
     private $animal;
@@ -36,25 +36,25 @@ class Cronologia
 
     /**
      * @ORM\ManyToOne(targetEntity="Estacao")
-     * @ORM\JoinColumn(name="estacao_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_estacao", referencedColumnName="id")
      */
     private $estacao;
 
     /**
      * @ORM\ManyToOne(targetEntity="Classificacao")
-     * @ORM\JoinColumn(name="classificacao_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="id_classificacao", referencedColumnName="id", nullable=false)
      */
     private $classificacao;
 
     /**
      * @ORM\ManyToOne(targetEntity="Estado")
-     * @ORM\JoinColumn(name="estadoInicial_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="id_estadoInicial", referencedColumnName="id", nullable=false)
      */
     private $estadoInicial;
 
     /**
      * @ORM\ManyToOne(targetEntity="Estado")
-     * @ORM\JoinColumn(name="estadoFinal_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_estadoFinal", referencedColumnName="id")
      */
     private $estadoFinal;
 

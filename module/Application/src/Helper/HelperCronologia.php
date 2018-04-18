@@ -14,7 +14,7 @@ use Application\Entity\Cronologia;
 class HelperCronologia
 {
 
-    public static function criarCronologiaNovoAnimal($entityManager, $animal, $classificacaoID)
+    public static function criarCronologiaAnimalNovo($entityManager, $animal, $classificacaoID)
     {
         $estadoID = -1;
 
@@ -37,10 +37,5 @@ class HelperCronologia
         $cronologia = new Cronologia($animal, null, null, $classificacao, $estado, null, new \DateTime());
 
         return $cronologia;
-    }
-
-    public static function getEstadoAtual($entityManager, $classificacao)
-    {
-
     }
 }

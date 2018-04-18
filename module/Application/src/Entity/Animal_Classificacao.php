@@ -25,7 +25,7 @@ class Animal_Classificacao
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Animal", inversedBy="classificacao")
+     * @ORM\ManyToOne(targetEntity="Animal", inversedBy="classificacoes")
      * @ORM\JoinColumn(name="animal_id", referencedColumnName="id", nullable=false)
      */
     private $animal;

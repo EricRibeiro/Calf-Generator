@@ -21,14 +21,14 @@ class IA
     private $id;
 
      /**
-     * @ORM\ManyToOne(targetEntity="Animal")
+     * @ORM\ManyToOne(targetEntity="Animal", inversedBy="ias")
      * @ORM\JoinColumn(name="id_animal", referencedColumnName="id", nullable=false)
      */
     private $animal;
 
     /**
      * @ORM\ManyToOne(targetEntity="Estacao")
-     * @ORM\JoinColumn(name="estacao_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_estacao", referencedColumnName="id")
      */
     private $estacao;
 
@@ -50,7 +50,12 @@ class IA
     /**
      * @ORM\Column(type="date")
      */
-    private $dataDiagnostico;
+    private $dataDiagnostico1;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dataDiagnostico2;
 
     /**
      * IA constructor.
@@ -61,14 +66,15 @@ class IA
      * @param $dataRetornoAoCio
      * @param $dataDiagnostico
      */
-    public function __construct($animal, $estacao, $numeroProtocolo, $dataInseminacao, $dataRetornoAoCio, $dataDiagnostico)
+    public function __construct($animal, $estacao, $numeroProtocolo, $dataInseminacao, $dataRetornoAoCio, $dataDiagnostico1, $dataDiagnostico2)
     {
         $this->animal = $animal;
         $this->estacao = $estacao;
         $this->numeroProtocolo = $numeroProtocolo;
         $this->dataInseminacao = $dataInseminacao;
         $this->dataRetornoAoCio = $dataRetornoAoCio;
-        $this->dataDiagnostico = $dataDiagnostico;
+        $this->dataDiagnostico1 = $dataDiagnostico1;
+        $this->dataDiagnostico2 = $dataDiagnostico2;
     }
 
     /**
@@ -170,17 +176,33 @@ class IA
     /**
      * @return mixed
      */
-    public function getDataDiagnostico()
+    public function getDataDiagnostico1()
     {
-        return $this->dataDiagnostico;
+        return $this->dataDiagnostico1;
     }
 
     /**
-     * @param mixed $dataDiagnostico
+     * @param mixed $dataDiagnostico1
      */
-    public function setDataDiagnostico($dataDiagnostico)
+    public function setDataDiagnostico1($dataDiagnostico1)
     {
-        $this->dataDiagnostico = Data::getDataFormatada($dataDiagnostico);
+        $this->dataDiagnostico1 = Data::getDataFormatada($dataDiagnostico1);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDataDiagnostico2()
+    {
+        return $this->dataDiagnostico2;
+    }
+
+    /**
+     * @param mixed $dataDiagnostico2
+     */
+    public function setDataDiagnostico2($dataDiagnostico2)
+    {
+        $this->dataDiagnostico2 = Data::getDataFormatada($dataDiagnostico2);
     }
 
     public function dataToString($data)

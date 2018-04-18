@@ -39,8 +39,8 @@ class AnimalController extends AbstractActionController
             $classificacaoID = $this->request->getPost('classificacao');
 
             $animal = new Animal($numero, $dataUltimoParto);
-            $classificacao = HelperClassificacao::criarClassificacaoNovoAnimal($this->entityManager, $animal, $classificacaoID);
-            $cronologia = HelperCronologia::criarCronologiaNovoAnimal($this->entityManager, $animal, $classificacaoID);
+            $classificacao = HelperClassificacao::criarClassificacaoAnimalNovo($this->entityManager, $animal, $classificacaoID);
+            $cronologia = HelperCronologia::criarCronologiaAnimalNovo($this->entityManager, $animal, $classificacaoID);
 
             $this->entityManager->persist($animal);
             $this->entityManager->persist($classificacao);
@@ -62,17 +62,18 @@ class AnimalController extends AbstractActionController
             $id = $this->request->getPost('id');
         }
 
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorio = $entityManager->getRepository("Application\Entity\Animal");
-        $animal = $repositorio->find($id);
+        $animal = $this->entityManager->getRepository("Application\Entity\Animal")->find($id);
 
         if ($this->request->isPost()) {
+            $numero = $this->request->getPost('numero');
+            $dataUltimoParto = $this->request->getPost('dataUltimoParto');
+            $classificacaoID = $this->request->getPost('classificacao');
 
-            $animal->setNumero($this->request->getPost('numero'));
-            $animal->setDataUltimoParto($this->request->getPost('dataUltimoParto'));
-            $animal->setClassificacao($this->request->getPost('classificacao'));
-            $entityManager->persist($animal);
-            $entityManager->flush();
+            $classificacao = HelperClassificacao::criarClassificacaoNovoAnimal($this->entityManager, $animal, $classificacaoID);
+            $cronologia = HelperCronologia::criarCronologiaNovoAnimal($this->entityManager, $animal, $classificacaoID);
+
+            $this->entityManager->persist($animal);
+            $this->entityManager->flush();
 
             return $this->redirect()->toRoute('app/animal', array(
                 'controller' => 'index',

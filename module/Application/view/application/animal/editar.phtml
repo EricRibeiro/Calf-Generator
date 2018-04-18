@@ -50,7 +50,7 @@
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
                                            oninput="setCustomValidity('')"
                                            required
-                                           value="<?= $animal->dataUltimoPartoToString(); ?>"
+                                           value="<?= $animal->dataToString($animal->getDataUltimoParto()); ?>"
                                     />
                                 </div>
                             </div>

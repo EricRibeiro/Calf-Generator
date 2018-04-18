@@ -31,9 +31,14 @@ class Animal
     private $dataUltimoParto;
 
     /**
+     * @ORM\OneToMany(targetEntity="IA", mappedBy="animal")
+     */
+    private $ias;
+
+    /**
      * @ORM\OneToMany(targetEntity="Cronologia", mappedBy="animal")
      */
-    private $cronologia;
+    private $cronologias;
 
     /**
      * @ORM\OneToMany(targetEntity="Animal_Classificacao", mappedBy="animal")
@@ -102,17 +107,17 @@ class Animal
     /**
      * @return mixed
      */
-    public function getCronologia()
+    public function getIas()
     {
-        return $this->cronologia;
+        return $this->ias;
     }
 
     /**
-     * @param mixed $cronologia
+     * @return mixed
      */
-    public function setCronologia($cronologia)
+    public function getCronologias()
     {
-        $this->cronologia = $cronologia;
+        return $this->cronologias;
     }
 
     /**
@@ -121,15 +126,43 @@ class Animal
     public function getClassificacao()
     {
         $classificacao = "";
+        $ultimaEntrada = $this->classificacoes->last();
 
-        foreach ($this->classificacoes as $c) {
-            if (is_null($c->getClassificacaoFinal())) {
-                $classificacao = $c->getClassificacaoInicial()->getClassificacao();
-                break;
+        if (is_null($ultimaEntrada->getClassificacaoFinal())) {
+            $classificacao = $ultimaEntrada->getClassificacaoInicial()->getClassificacao();
+        } else {
+            foreach ($this->classificacoes as $c) {
+                if (is_null($c->getClassificacaoFinal())) {
+                    $classificacao = $c->getClassificacaoInicial()->getClassificacao();
+                    break;
+                }
             }
         }
 
         return $classificacao;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEstado()
+    {
+
+        $estado = "";
+        $ultimaEntrada = $this->cronologias->last();
+
+        if (is_null($ultimaEntrada->getEstadoFinal())) {
+            $estado = $ultimaEntrada->getEstadoInicial()->getEstado();
+        } else {
+            foreach ($this->cronologias as $c) {
+                if (is_null($c->getEstadoFinal())) {
+                    $estado = $c->getEstadoInicial()->getEstado();
+                    break;
+                }
+            }
+        }
+
+        return $estado;
     }
 
     /**

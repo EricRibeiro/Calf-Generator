@@ -28,11 +28,11 @@ class Estado
 
     /**
      * Estado constructor.
-     * @param $classificacao
+     * @param $estado
      */
-    public function __construct($classificacao)
+    public function __construct($estado)
     {
-        $this->classificacao = $classificacao;
+        $this->estado = $estado;
     }
 
     /**
@@ -54,17 +54,17 @@ class Estado
     /**
      * @return mixed
      */
-    public function getClassificacao()
+    public function getEstado()
     {
-        return $this->classificacao;
+        return $this->estado;
     }
 
     /**
-     * @param mixed $classificacao
+     * @param mixed $estado
      */
-    public function setClassificacao($classificacao)
+    public function setEstado($estado)
     {
-        $this->classificacao = $classificacao;
+        $this->estado = $estado;
     }
 
 }

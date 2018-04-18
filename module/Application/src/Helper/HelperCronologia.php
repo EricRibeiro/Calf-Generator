@@ -14,19 +14,18 @@ use Application\Entity\Cronologia;
 class HelperCronologia
 {
 
-    public static function criarCronologia($entityManager, $animal, $classificacaoID)
+    public static function criarCronologia($entityManager, $animal, $classificacao)
     {
-        $cronologia = self::criarCronologiaAnimal($entityManager, $animal, $classificacaoID);
+        $cronologia = self::criarCronologiaAnimal($entityManager, $animal, $classificacao);
 
-        if (!is_null($animal->getId())) self::atualizarCronologiaAnterior($entityManager, $animal, $classificacaoID);
+        if (!is_null($animal->getId())) self::atualizarCronologiaAnterior($entityManager, $animal, $classificacao);
 
         $entityManager->persist($cronologia);
     }
 
-    private static function criarCronologiaAnimal($entityManager, $animal, $classificacaoID)
+    private static function criarCronologiaAnimal($entityManager, $animal, $classificacao)
     {
-        $classificacao = $entityManager->getRepository('Application\Entity\Classificacao')->find($classificacaoID);
-        $estado = self::getEstadoID($entityManager, $classificacaoID);
+        $estado = self::getEstadoID($entityManager, $classificacao);
         $estacao = self::getEstacao($animal);
         $ia = self::getIA($animal);
 
@@ -35,19 +34,19 @@ class HelperCronologia
         return $cronologia;
     }
 
-    private static function atualizarCronologiaAnterior($entityManager, $animal, $classificacaoID)
+    private static function atualizarCronologiaAnterior($entityManager, $animal, $classificacao)
     {
-        $estadoFinal = self::getEstadoID($entityManager, $classificacaoID);
+        $estadoFinal = self::getEstadoID($entityManager, $classificacao);
         $cronologiaAnterior = $animal->getUltimaCronologia();
         $cronologiaAnterior->setEstadoFinal($estadoFinal);
         $entityManager->persist($cronologiaAnterior);
     }
 
-    private static function getEstadoID($entityManager, $classificacaoID)
+    private static function getEstadoID($entityManager, $classificacao)
     {
         $estadoID = -1;
 
-        switch ($classificacaoID) {
+        switch ($classificacao->getId()) {
             case '1':
                 $estadoID = 1;
                 break;

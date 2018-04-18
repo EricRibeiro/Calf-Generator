@@ -14,10 +14,12 @@ class EstacaoController extends AbstractActionController
 
 
     private $sm;
+    private $entityManager;
 
     public function __construct($sm)
     {
         $this->sm = $sm;
+        $this->entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
     }
 
     public function indexAction()
@@ -49,12 +51,14 @@ class EstacaoController extends AbstractActionController
 
             $lsDeAnimais = new ArrayCollection();
 
+            $estacao = new Estacao($dataInicio, $dataFim, null);
+
             foreach($animais as $idAnimal) {
                 $animal = $repositorio->find($idAnimal);
+
                 $lsDeAnimais[] = $animal;
             }
 
-            $estacao = new Estacao($dataInicio, $dataFim, $lsDeAnimais);
 
             $entityManager->persist($estacao);
             $entityManager->flush();

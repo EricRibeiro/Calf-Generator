@@ -37,12 +37,13 @@ class AnimalController extends AbstractActionController
             $numero = $this->request->getPost('numero');
             $dataUltimoParto = $this->request->getPost('dataUltimoParto');
             $classificacaoID = $this->request->getPost('classificacao');
+            $classificacao = $this->entityManager->getRepository('Application\Entity\Classificacao')->find($classificacaoID);
 
             $animal = new Animal($numero, $dataUltimoParto);
             $this->entityManager->persist($animal);
 
-            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacaoID);
-            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacaoID);
+            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao);
+            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao);
 
             $this->entityManager->flush();
         }
@@ -67,13 +68,14 @@ class AnimalController extends AbstractActionController
             $numero = $this->request->getPost('numero');
             $dataUltimoParto = $this->request->getPost('dataUltimoParto');
             $classificacaoID = $this->request->getPost('classificacao');
+            $classificacao = $this->entityManager->getRepository('Application\Entity\Classificacao')->find($classificacaoID);
 
             $animal->setNumero($numero);
             $animal->setDataUltimoParto($dataUltimoParto);
             $this->entityManager->persist($animal);
 
-            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacaoID);
-            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacaoID);
+            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao);
+            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao);
 
             $this->entityManager->flush();
 

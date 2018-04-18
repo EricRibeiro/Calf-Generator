@@ -137,7 +137,7 @@ class Animal
     }
 
     /**
-     * @return mixed
+     * @return String
      */
     public function getEstado()
     {

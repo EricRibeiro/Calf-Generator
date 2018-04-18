@@ -14,18 +14,17 @@ use Application\Entity\Animal_Classificacao;
 class HelperClassificacao
 {
 
-    public static function criarClassificacao($entityManager, $animal, $classificacaoID)
+    public static function criarClassificacao($entityManager, $animal, $classificacao)
     {
-        $animal_classificacao = self::criarClassificacaoAnimal($entityManager, $animal, $classificacaoID);
+        $animal_classificacao = self::criarClassificacaoAnimal($animal, $classificacao);
 
-        if (!is_null($animal->getId())) self::atualizarClassificacaoAnterior($entityManager, $animal, $classificacaoID);
+        if (!is_null($animal->getId())) self::atualizarClassificacaoAnterior($entityManager, $animal, $classificacao);
 
         $entityManager->persist($animal_classificacao);
     }
 
-    private static function criarClassificacaoAnimal($entityManager, $animal, $classificacaoID)
+    private static function criarClassificacaoAnimal($animal, $classificacao)
     {
-        $classificacao = $entityManager->find('Application\Entity\Classificacao', $classificacaoID);
         $estacao = null;
 
         if (sizeof($animal->getClassificacoes()) > 0) {
@@ -44,11 +43,10 @@ class HelperClassificacao
         return $animal_classificacao;
     }
 
-    private static function atualizarClassificacaoAnterior($entityManager, $animal, $classificacaoID)
+    private static function atualizarClassificacaoAnterior($entityManager, $animal, $classificacaoAtual)
     {
-        $classificacaoFinal = $entityManager->find('Application\Entity\Classificacao', $classificacaoID);
         $classificaoAnterior = $animal->getUltimaClassificacao();
-        $classificaoAnterior->setClassificacaoFinal($classificacaoFinal);
+        $classificaoAnterior->setClassificacaoFinal($classificacaoAtual);
         $entityManager->persist($classificaoAnterior);
     }
 }

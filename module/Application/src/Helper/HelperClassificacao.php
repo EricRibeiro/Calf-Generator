@@ -7,19 +7,48 @@
  */
 
 namespace Application\Helper;
+
 use Application\Entity\Animal_Classificacao;
 
 
 class HelperClassificacao
 {
-    public static function criarClassificacaoAnimalExistente($entityManager, $animal, $classificacaoID, $estacaoID) {
 
+    public static function criarClassificacao($entityManager, $animal, $classificacaoID)
+    {
+        $animal_classificacao = self::criarClassificacaoAnimal($entityManager, $animal, $classificacaoID);
+
+        if (!is_null($animal->getId())) self::atualizarClassificacaoAnterior($entityManager, $animal, $classificacaoID);
+
+        $entityManager->persist($animal_classificacao);
     }
 
-    public static function criarClassificacaoAnimalNovo($entityManager, $animal, $classificacaoID) {
-        $classificacao = $entityManager->getRepository('Application\Entity\Classificacao')->find($classificacaoID);
-        $animal_classificacao = new Animal_Classificacao($animal, $classificacao, null, null, new \DateTime());
+    private static function criarClassificacaoAnimal($entityManager, $animal, $classificacaoID)
+    {
+        $classificacao = $entityManager->find('Application\Entity\Classificacao', $classificacaoID);
+        $estacao = null;
+
+        if (!is_null($animal->getClassificacoes())) {
+            $ultimaClassificacao = $animal->getUltimaClassificacao();
+            $estacao = $ultimaClassificacao->getEstacao();
+
+            if (!is_null($estacao)) {
+                $dataFinalEstacao = $estacao->getDataFinal();
+                $hoje = new \DateTime();
+                $estacao = ($hoje > $dataFinalEstacao) ? null : $estacao;
+            }
+        }
+
+        $animal_classificacao = new Animal_Classificacao($animal, $classificacao, null, $estacao, new \DateTime());
+
         return $animal_classificacao;
     }
 
+    private static function atualizarClassificacaoAnterior($entityManager, $animal, $classificacaoID)
+    {
+        $classificacaoFinal = $entityManager->find('Application\Entity\Classificacao', $classificacaoID);
+        $classificaoAnterior = $animal->getUltimaClassificacao();
+        $classificaoAnterior->setClassificacaoFinal($classificacaoFinal);
+        $entityManager->persist($classificaoAnterior);
+    }
 }

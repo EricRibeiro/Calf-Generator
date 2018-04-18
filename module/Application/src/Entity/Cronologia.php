@@ -30,7 +30,7 @@ class Cronologia
 
     /**
      * @ORM\ManyToOne(targetEntity="IA")
-     * @ORM\JoinColumn(name="ia_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_ia", referencedColumnName="id")
      */
     private $ia;
 

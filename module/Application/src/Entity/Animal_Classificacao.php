@@ -26,25 +26,25 @@ class Animal_Classificacao
 
     /**
      * @ORM\ManyToOne(targetEntity="Animal", inversedBy="classificacoes")
-     * @ORM\JoinColumn(name="animal_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="id_animal", referencedColumnName="id", nullable=false)
      */
     private $animal;
 
     /**
      * @ORM\ManyToOne(targetEntity="Classificacao")
-     * @ORM\JoinColumn(name="classificacaoInicial_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="id_classificacaoInicial", referencedColumnName="id", nullable=false)
      */
     private $classificacaoInicial;
 
     /**
      * @ORM\ManyToOne(targetEntity="Classificacao")
-     * @ORM\JoinColumn(name="classificacaoFinal_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_classificacaoFinal", referencedColumnName="id")
      */
     private $classificacaoFinal;
 
     /**
      * @ORM\ManyToOne(targetEntity="Estacao")
-     * @ORM\JoinColumn(name="estacao_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_estacao", referencedColumnName="id")
      */
     private $estacao;
 

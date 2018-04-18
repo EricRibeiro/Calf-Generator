@@ -1,6 +1,6 @@
 jQuery(function ($) {
-    showSelectOptions();
-    disableInputDataNovilha();
+    // showSelectOptions();
+    // disableInputDataNovilha();
 });
 
 function disableInputDataNovilha() {

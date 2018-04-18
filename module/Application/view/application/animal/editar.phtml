@@ -31,10 +31,11 @@
                                     <label for="sel1">Classificação</label>
                                     <select class="form-control border-input" id="sel1" name="classificacao"
                                             value="<?= $animal->getClassificacao(); ?>">
-                                        <option><?= $animal->getClassificacao(); ?></option>
-                                        <option style="display: none">Novilha</option>
-                                        <option style="display: none">Primípara</option>
-                                        <option style="display: none">Multípara</option>
+                                        <option value="1">Novilha</option>
+                                        <option value="2">Primípara Pós-Parto</option>
+                                        <option value="3">Primípara Gestante da Estação Anterior</option>
+                                        <option value="4">Multípara Pós-Parto</option>
+                                        <option value="5">Multípara Gestante da Estação Anterior</option>
                                     </select>
                                 </div>
                             </div>

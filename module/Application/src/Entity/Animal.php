@@ -123,23 +123,17 @@ class Animal
     /**
      * @return mixed
      */
+    public function getClassificacoes()
+    {
+        return $this->classificacoes;
+    }
+
+    /**
+     * @return String
+     */
     public function getClassificacao()
     {
-        $classificacao = "";
-        $ultimaEntrada = $this->classificacoes->last();
-
-        if (is_null($ultimaEntrada->getClassificacaoFinal())) {
-            $classificacao = $ultimaEntrada->getClassificacaoInicial()->getClassificacao();
-        } else {
-            foreach ($this->classificacoes as $c) {
-                if (is_null($c->getClassificacaoFinal())) {
-                    $classificacao = $c->getClassificacaoInicial()->getClassificacao();
-                    break;
-                }
-            }
-        }
-
-        return $classificacao;
+        return $this->getUltimaClassificacao()->getClassificacaoInicial()->getClassificacao();
     }
 
     /**
@@ -147,22 +141,45 @@ class Animal
      */
     public function getEstado()
     {
+        return $this->getUltimaCronologia()->getEstadoInicial()->getEstado();
+    }
 
-        $estado = "";
+    /**
+     * @return Application\Entity\Cronologia
+     */
+    public function getUltimaCronologia()
+    {
         $ultimaEntrada = $this->cronologias->last();
 
-        if (is_null($ultimaEntrada->getEstadoFinal())) {
-            $estado = $ultimaEntrada->getEstadoInicial()->getEstado();
-        } else {
-            foreach ($this->cronologias as $c) {
-                if (is_null($c->getEstadoFinal())) {
-                    $estado = $c->getEstadoInicial()->getEstado();
+        if (!is_null($ultimaEntrada->getEstadoFinal())) {
+            foreach ($this->cronologias as $cronologia) {
+                if (is_null($cronologia->getEstadoFinal())) {
+                    $ultimaEntrada = $cronologia;
                     break;
                 }
             }
         }
 
-        return $estado;
+        return $ultimaEntrada;
+    }
+
+    /**
+     * @return Application\Entity\Classificacao
+     */
+    public function getUltimaClassificacao()
+    {
+        $ultimaEntrada = $this->classificacoes->last();
+
+        if (!is_null($ultimaEntrada->getClassificacaoFinal())) {
+            foreach ($this->classificacoes as $classificacao) {
+                if (is_null($classificacao->getClassificacaoFinal())) {
+                    $ultimaEntrada = $classificacao;
+                    break;
+                }
+            }
+        }
+
+        return $ultimaEntrada;
     }
 
     /**

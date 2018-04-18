@@ -14,7 +14,46 @@ use Application\Entity\Cronologia;
 class HelperCronologia
 {
 
-    public static function criarCronologiaAnimalNovo($entityManager, $animal, $classificacaoID)
+    public static function criarCronologia($entityManager, $animal, $classificacaoID)
+    {
+        $cronologia = self::criarCronologiaAnimal($entityManager, $animal, $classificacaoID);
+
+        if (!is_null($animal->getId())) self::atualizarCronologiaAnterior($entityManager, $animal, $classificacaoID);
+
+        $entityManager->persist($cronologia);
+    }
+
+    private static function criarCronologiaAnimal($entityManager, $animal, $classificacaoID)
+    {
+        $classificacao = $entityManager->getRepository('Application\Entity\Classificacao')->find($classificacaoID);
+        $estado = self::getEstadoID($entityManager, $classificacaoID);
+        $estacao = null;
+
+        if (!is_null($animal->getCronologias())) {
+            $ultimaCronologia = $animal->getUltimaCronologia();
+            $estacao = $ultimaCronologia->getEstacao();
+
+            if (!is_null($estacao)) {
+                $dataFinalEstacao = $estacao->getDataFinal();
+                $hoje = new \DateTime();
+                $estacao = ($hoje > $dataFinalEstacao) ? null : $estacao;
+            }
+        }
+
+        $cronologia = new Cronologia($animal, null, $estacao, $classificacao, $estado, null, new \DateTime());
+
+        return $cronologia;
+    }
+
+    private static function atualizarCronologiaAnterior($entityManager, $animal, $classificacaoID)
+    {
+        $estadoFinal = self::getEstadoID($entityManager, $classificacaoID);
+        $cronologiaAnterior = $animal->getUltimaCronologia();
+        $cronologiaAnterior->setEstadoFinal($estadoFinal);
+        $entityManager->persist($cronologiaAnterior);
+    }
+
+    private static function getEstadoID($entityManager, $classificacaoID)
     {
         $estadoID = -1;
 
@@ -32,10 +71,6 @@ class HelperCronologia
                 break;
         }
 
-        $estado = $entityManager->getRepository('Application\Entity\Estado')->find($estadoID);
-        $classificacao = $entityManager->getRepository('Application\Entity\Classificacao')->find($classificacaoID);
-        $cronologia = new Cronologia($animal, null, null, $classificacao, $estado, null, new \DateTime());
-
-        return $cronologia;
+        return $entityManager->find('Application\Entity\Estado', $estadoID);
     }
 }

@@ -35,8 +35,8 @@ class Estacao
      */
     public function __construct($dataInicio, $dataFinal)
     {
-        $this->dataInicio = $dataInicio;
-        $this->dataFinal = $dataFinal;
+        $this->setDataInicio($dataInicio);
+        $this->setDataFinal($dataFinal);
     }
 
     /**

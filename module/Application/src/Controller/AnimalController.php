@@ -3,11 +3,11 @@
 namespace Application\Controller;
 
 use Application\Entity\Animal_Classificacao;
-use Application\Helper\HelperCronologia;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Entity\Animal;
 use Application\Helper\HelperClassificacao;
+use Application\Helper\HelperCronologia;
 
 class AnimalController extends AbstractActionController
 {
@@ -42,8 +42,8 @@ class AnimalController extends AbstractActionController
             $animal = new Animal($numero, $dataUltimoParto);
             $this->entityManager->persist($animal);
 
-            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao);
-            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao);
+            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
+            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
 
             $this->entityManager->flush();
         }
@@ -74,8 +74,8 @@ class AnimalController extends AbstractActionController
             $animal->setDataUltimoParto($dataUltimoParto);
             $this->entityManager->persist($animal);
 
-            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao);
-            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao);
+            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
+            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
 
             $this->entityManager->flush();
 

@@ -14,20 +14,20 @@ use Application\Entity\Cronologia;
 class HelperCronologia
 {
 
-    public static function criarCronologia($entityManager, $animal, $classificacao)
+    public static function criarCronologia($entityManager, $animal, $classificacao, $estacao)
     {
-        $cronologia = self::criarCronologiaAnimal($entityManager, $animal, $classificacao);
+        $cronologia = self::criarCronologiaAnimal($entityManager, $animal, $classificacao, $estacao);
 
         if (!is_null($animal->getId())) self::atualizarCronologiaAnterior($entityManager, $animal, $classificacao);
 
         $entityManager->persist($cronologia);
     }
 
-    private static function criarCronologiaAnimal($entityManager, $animal, $classificacao)
+    private static function criarCronologiaAnimal($entityManager, $animal, $classificacao, $estacao)
     {
         $estado = self::getEstadoID($entityManager, $classificacao);
-        $estacao = self::getEstacao($animal);
-        $ia = self::getIA($animal);
+        if (is_null($estacao)) $estacao = self::getEstacao($animal);
+        $ia = null;
 
         $cronologia = new Cronologia($animal, $ia, $estacao, $classificacao, $estado, null, new \DateTime());
 

@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Entity\Estacao;
+use Application\Helper\HelperClassificacao;
+use Application\Helper\HelperCronologia;
 
 class EstacaoController extends AbstractActionController
 {
@@ -24,11 +26,10 @@ class EstacaoController extends AbstractActionController
 
     public function indexAction()
     {
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorio = $entityManager->getRepository('Application\Entity\Estacao');
+        $repositorio = $this->entityManager->getRepository('Application\Entity\Estacao');
         $estacoes = $repositorio->findAll();
 
-        $entityManager->flush();
+        $this->entityManager->flush();
 
         $view_params = array(
             'estacoes' => $estacoes,
@@ -41,39 +42,13 @@ class EstacaoController extends AbstractActionController
     {
 
         if ($this->request->isPost()) {
-            $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-            $repositorio = $entityManager->getRepository('Application\Entity\Animal');
-
-            $dataInicio = $this->request->getPost('dataInicioEstacao');
-            $dataFim = $this->request->getPost('dataTerminoEstacao');
-            $animais = $this->request->getPost('lsIDsAnimais');
-            $animais = explode("-", $animais);
-
-            $lsDeAnimais = new ArrayCollection();
-
-            $estacao = new Estacao($dataInicio, $dataFim, null);
-
-            foreach($animais as $idAnimal) {
-                $animal = $repositorio->find($idAnimal);
-
-                $lsDeAnimais[] = $animal;
-            }
-
-
-            $entityManager->persist($estacao);
-            $entityManager->flush();
-
-            return $this->redirect()->toRoute('app/estacao', array(
-                'controller' => 'estacao',
-                'action' => 'index',
-            ));
+            self::cadastrar();
         }
 
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorio = $entityManager->getRepository('Application\Entity\Animal');
+        $repositorio = $this->entityManager->getRepository('Application\Entity\Animal');
         $animais = $repositorio->findAll();
 
-        $entityManager->flush();
+        $this->entityManager->flush();
 
         $view_params = array(
             'animais' => $animais,
@@ -83,18 +58,46 @@ class EstacaoController extends AbstractActionController
 
     }
 
-    public function listarAction() {
+    private function cadastrar()
+    {
+        $repositorio = $this->entityManager->getRepository('Application\Entity\Animal');
+
+        $dataInicio = $this->request->getPost('dataInicioEstacao');
+        $dataFim = $this->request->getPost('dataTerminoEstacao');
+        $animais = $this->request->getPost('lsIDsAnimais');
+        $animais = explode("-", $animais);
+
+        $lsDeAnimais = new ArrayCollection();
+
+        $estacao = new Estacao($dataInicio, $dataFim);
+        $this->entityManager->persist($estacao);
+
+        foreach ($animais as $idAnimal) {
+            $animal = $repositorio->find($idAnimal);
+            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $animal->getUltimaClassificacao()->getClassificacaoInicial(), $estacao);
+            HelperCronologia::criarCronologia($this->entityManager, $animal, $animal->getUltimaClassificacao()->getClassificacaoInicial(), $estacao);
+        }
+
+        $this->entityManager->flush();
+
+        return $this->redirect()->toRoute('app/estacao', array(
+            'controller' => 'estacao',
+            'action' => 'index',
+        ));
+    }
+
+    public function listarAction()
+    {
         $id = $this->params()->fromRoute('id');
 
         if (is_null($id)) {
             $id = $this->request->getPost('id');
         }
 
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorio = $entityManager->getRepository("Application\Entity\Estacao");
+        $repositorio = $this->entityManager->getRepository("Application\Entity\Estacao");
         $estacao = $repositorio->find($id);
 
-        $entityManager->flush();
+        $this->entityManager->flush();
 
         $view_params = array(
             'animais' => $estacao->getAnimal(),
@@ -103,7 +106,8 @@ class EstacaoController extends AbstractActionController
         return new ViewModel($view_params);
     }
 
-    public function removerAnimalAction() {
+    public function removerAnimalAction()
+    {
         $idAnimal = $this->params()->fromRoute('id');
         $idEstacao = $this->params()->fromRoute('eid');
 
@@ -112,17 +116,16 @@ class EstacaoController extends AbstractActionController
             $idEstacao = $this->request->getPost('idEstacao');
         }
 
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorioAnimal = $entityManager->getRepository("Application\Entity\Animal");
-        $repositorioEstacao = $entityManager->getRepository("Application\Entity\Estacao");
+        $repositorioAnimal = $this->entityManager->getRepository("Application\Entity\Animal");
+        $repositorioEstacao = $this->entityManager->getRepository("Application\Entity\Estacao");
 
         $animal = $repositorioAnimal->find($idAnimal);
         $estacao = $repositorioEstacao->find($idEstacao);
 
         $estacao->getAnimal()->removeElement($animal);
 
-        $entityManager->persist($estacao);
-        $entityManager->flush();
+        $this->entityManager->persist($estacao);
+        $this->entityManager->flush();
 
         return $this->redirect()->toRoute('app/estacao', array(
             'controller' => 'estacao',

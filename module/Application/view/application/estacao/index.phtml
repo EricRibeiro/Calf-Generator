@@ -12,7 +12,6 @@
                             <th hidden>#</th>
                             <th>Data de Início</th>
                             <th>Data de Término</th>
-                            <th>Quantidade de Animais</th>
                             <th>Animais</th>
                         </tr>
                         </thead>
@@ -22,9 +21,8 @@
 
                             <tr>
                                 <td hidden><?= $estacao->getId(); ?></td>
-                                <td><?= $estacao->getDataInicialString(); ?></td>
-                                <td><?= $estacao->getDataFinalString(); ?></td>
-                                <td><?= $estacao->getAnimal()->count(); ?></td>
+                                <td><?= $estacao->dataToString($estacao->getDataInicio()); ?></td>
+                                <td><?= $estacao->dataToString($estacao->getDataFinal()); ?></td>
 
                                 <td>
                                     <a type="button"
@@ -49,14 +47,13 @@
 
         $('#animais').DataTable({
             columnDefs: [
-                { "orderable": false, "targets": 4 },
+                { "orderable": false, "targets": 3 },
                 {targets: '_all', className: 'dt-center'},
             ],
             aoColumns: [
                 null,
                 {"sType": "date-uk"},
                 {"sType": "date-uk"},
-                null,
                 null,
             ],
             order: [[2, 'desc']],

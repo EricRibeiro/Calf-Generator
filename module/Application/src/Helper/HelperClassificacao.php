@@ -14,16 +14,32 @@ use Application\Entity\Animal_Classificacao;
 class HelperClassificacao
 {
 
-    public static function criarClassificacao($entityManager, $animal, $classificacao)
+    public static function criarClassificacao($entityManager, $animal, $classificacao, $estacao)
     {
-        $animal_classificacao = self::criarClassificacaoAnimal($animal, $classificacao);
+        $animal_classificacao = self::criarClassificacaoAnimal($animal, $classificacao, $estacao);
 
         if (!is_null($animal->getId())) self::atualizarClassificacaoAnterior($entityManager, $animal, $classificacao);
 
         $entityManager->persist($animal_classificacao);
     }
 
-    private static function criarClassificacaoAnimal($animal, $classificacao)
+    private static function criarClassificacaoAnimal($animal, $classificacao, $estacao)
+    {
+        if (is_null($estacao)) $estacao = self::getEstacao($animal);
+
+        $animal_classificacao = new Animal_Classificacao($animal, $classificacao, null, $estacao, new \DateTime());
+
+        return $animal_classificacao;
+    }
+
+    private static function atualizarClassificacaoAnterior($entityManager, $animal, $classificacaoAtual)
+    {
+        $classificaoAnterior = $animal->getUltimaClassificacao();
+        $classificaoAnterior->setClassificacaoFinal($classificacaoAtual);
+        $entityManager->persist($classificaoAnterior);
+    }
+
+    private static function getEstacao($animal)
     {
         $estacao = null;
 
@@ -38,15 +54,6 @@ class HelperClassificacao
             }
         }
 
-        $animal_classificacao = new Animal_Classificacao($animal, $classificacao, null, $estacao, new \DateTime());
-
-        return $animal_classificacao;
-    }
-
-    private static function atualizarClassificacaoAnterior($entityManager, $animal, $classificacaoAtual)
-    {
-        $classificaoAnterior = $animal->getUltimaClassificacao();
-        $classificaoAnterior->setClassificacaoFinal($classificacaoAtual);
-        $entityManager->persist($classificaoAnterior);
+        return $estacao;
     }
 }

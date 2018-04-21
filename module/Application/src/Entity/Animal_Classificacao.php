@@ -13,7 +13,7 @@ use Application\Entity\Classificacao;
 use Application\Helper\Data;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Application\Repository\RepoAnimalClassificacao")
  */
 class Animal_Classificacao
 {
@@ -165,5 +165,11 @@ class Animal_Classificacao
     {
         $this->dataDaMudanca = $dataDaMudanca;
     }
+
+    public function __toString()
+    {
+        return strval($this->getId());
+    }
+
 
 }

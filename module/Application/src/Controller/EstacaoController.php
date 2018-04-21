@@ -67,8 +67,6 @@ class EstacaoController extends AbstractActionController
         $animais = $this->request->getPost('lsIDsAnimais');
         $animais = explode("-", $animais);
 
-        $lsDeAnimais = new ArrayCollection();
-
         $estacao = new Estacao($dataInicio, $dataFim);
         $this->entityManager->persist($estacao);
 
@@ -94,13 +92,19 @@ class EstacaoController extends AbstractActionController
             $id = $this->request->getPost('id');
         }
 
-        $repositorio = $this->entityManager->getRepository("Application\Entity\Estacao");
-        $estacao = $repositorio->find($id);
+        $animal_classificacao = $this->entityManager->getRepository("Application\Entity\Animal_Classificacao")
+            ->findAllAnimaisNaEstacao($id);
+
+        $animais = new ArrayCollection();
+
+        foreach ($animal_classificacao as $ac) {
+            $animais->add($ac->getAnimal());
+        }
 
         $this->entityManager->flush();
 
         $view_params = array(
-            'animais' => $estacao->getAnimal(),
+            'animais' => $animais,
         );
 
         return new ViewModel($view_params);

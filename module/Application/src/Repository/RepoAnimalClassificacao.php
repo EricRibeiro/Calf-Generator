@@ -8,7 +8,6 @@
 
 namespace Application\Repository;
 
-
 use Doctrine\ORM\EntityRepository;
 
 class RepoAnimalClassificacao extends EntityRepository

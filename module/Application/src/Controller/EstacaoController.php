@@ -28,7 +28,7 @@ class EstacaoController extends AbstractActionController
     {
         $estacoes = $this->entityManager
             ->getRepository('Application\Entity\Estacao')
-        ->findAll();
+            ->findAll();
 
         $this->entityManager->flush();
 
@@ -65,7 +65,7 @@ class EstacaoController extends AbstractActionController
         $dataInicio = $this->request->getPost('dataInicioEstacao');
         $dataFim = $this->request->getPost('dataTerminoEstacao');
         $animais = $this->request->getPost('lsIDsAnimais');
-        $animais = explode( "-", $animais);
+        $animais = explode("-", $animais);
 
         $estacao = new Estacao($dataInicio, $dataFim);
         $this->entityManager->persist($estacao);

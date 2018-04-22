@@ -8,6 +8,7 @@
 
 namespace Application\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -47,9 +48,17 @@ class ProtocoloController extends AbstractActionController
             ->getQuery()
             ->getResult();
 
-        $animais = $this->entityManager
-            ->getRepository('Application\Entity\Animal')
-            ->findAll();
+        $cronologias = $this->entityManager
+            ->getRepository('Application\Entity\Cronologia')
+            ->findAnimaisAptosOuPosParto();
+
+        $animais = new ArrayCollection();
+
+        foreach ($cronologias as $c) {
+            if ($c->getAnimal()->getDiasDesdeUltimoParto() > 35 || $c->getAnimal()->getDiasDesdeUltimoParto() == "-") {
+                $animais->add($c->getAnimal());
+            }
+        }
 
         $this->entityManager->flush();
 

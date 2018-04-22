@@ -106,36 +106,46 @@
                                         <thead>
                                         <tr>
                                             <th></th>
-                                            <th style="display: none">Objeto</th>
+                                            <th hidden>ID</th>
                                             <th>Número</th>
                                             <th>Classificação</th>
                                             <th>Estado</th>
-                                            <th>Data do Último Parto</th>
-                                            <th hidden>Data do Último Parto - Sort</th>
+                                            <th>Dias Desde o Último Parto</th>
+                                            <th hidden>Último Parto - Sort</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
                                         <?php foreach ($animais as $animal) { ?>
 
-                                            <tr>
+                                            <?php if($animal->getDiasDesdeUltimoParto() < 40 && $animal->getDiasDesdeUltimoParto() != "-") {?>
+                                                <tr class="text-danger">
+                                                <td>
+                                                    <div class="checkbox">
+                                                        <input class="input-checkbox" type="checkbox"/>
+                                                    </div>
+                                                </td>
+
+                                            <?php } else { ?>
+                                                <tr>
                                                 <td>
                                                     <div class="checkbox">
                                                         <input class="input-checkbox" type="checkbox" checked/>
                                                     </div>
                                                 </td>
 
+                                            <?php } ?>
                                                 <td class="idAnimal" style="display: none"><?= $animal->getId(); ?></td>
                                                 <td><?= $animal->getNumero(); ?></td>
                                                 <td><?= $animal->getClassificacao(); ?></td>
                                                 <td><?= $animal->getEstado(); ?></td>
-                                                <td><?= $animal->dataToString($animal->getdataUltimoParto()); ?></td>
+                                                <td><?= $animal->getDiasDesdeUltimoParto(); ?></td>
                                                 <td hidden>
                                                     <?php
-                                                    if ($animal->dataToString($animal->getdataUltimoParto()) == "-")
-                                                        echo "00/00/0000";
+                                                    if ($animal->getDiasDesdeUltimoParto() == "-")
+                                                        echo "9999";
                                                     else
-                                                        echo $animal->dataToString($animal->getdataUltimoParto());
+                                                        echo $animal->getDiasDesdeUltimoParto();
                                                     ?>
                                                 </td>
 
@@ -169,7 +179,7 @@
 </div>
 
 <?php
-echo $this->inlineScript()->prependFile($this->basePath() . '/js/estacao/estacao.js');
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/protocolo/protocolo.js');
 echo $this->inlineScript()->prependFile($this->basePath() . '/js/datehelper.js');
 ?>
 
@@ -182,16 +192,7 @@ echo $this->inlineScript()->prependFile($this->basePath() . '/js/datehelper.js')
                 {targets: '_all', className: 'dt-center'},
                 {"orderData": [6], "targets": [5]}
             ],
-            aoColumns: [
-                null,
-                null,
-                null,
-                null,
-                null,
-                {"sType": "date-uk"},
-                {"sType": "date-uk"},
-            ],
-            order: [[5, 'desc']],
+            order: [[5, 'asc']],
             paging: false,
             searching: false
         });

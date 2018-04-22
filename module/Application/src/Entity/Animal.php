@@ -89,11 +89,25 @@ class Animal
     }
 
     /**
-     * @return mixed
+     * @return DateTime
      */
     public function getDataUltimoParto()
     {
         return $this->dataUltimoParto;
+    }
+
+    /**
+     * @return Integer || String
+     */
+    public function getDiasDesdeUltimoParto()
+    {
+        $hoje = new \DateTime();
+        $diferenca = date_diff($hoje, $this->dataUltimoParto, true)->days;
+
+        if (is_null($diferenca))
+            return "-";
+        else
+            return $diferenca;
     }
 
     /**
@@ -153,7 +167,7 @@ class Animal
     }
 
     /**
-     * @return Application\Entity\IA
+     * @return IA
      */
     public function getUltimaIA()
     {
@@ -161,7 +175,7 @@ class Animal
     }
 
     /**
-     * @return Application\Entity\Cronologia
+     * @return Cronologia
      */
     public function getUltimaCronologia()
     {
@@ -180,7 +194,7 @@ class Animal
     }
 
     /**
-     * @return Application\Entity\Classificacao
+     * @return Classificacao
      */
     public function getUltimaClassificacao()
     {

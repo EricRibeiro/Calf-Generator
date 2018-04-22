@@ -26,8 +26,9 @@ class EstacaoController extends AbstractActionController
 
     public function indexAction()
     {
-        $repositorio = $this->entityManager->getRepository('Application\Entity\Estacao');
-        $estacoes = $repositorio->findAll();
+        $estacoes = $this->entityManager
+            ->getRepository('Application\Entity\Estacao')
+        ->findAll();
 
         $this->entityManager->flush();
 
@@ -45,8 +46,9 @@ class EstacaoController extends AbstractActionController
             self::cadastrar();
         }
 
-        $repositorio = $this->entityManager->getRepository('Application\Entity\Animal');
-        $animais = $repositorio->findAll();
+        $animais = $this->entityManager
+            ->getRepository('Application\Entity\Animal')
+            ->findAll();
 
         $this->entityManager->flush();
 

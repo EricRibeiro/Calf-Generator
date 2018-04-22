@@ -13,6 +13,7 @@ use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Application\Controller\AnimalController;
 use Application\Controller\EstacaoController;
+use Application\Controller\ProtocoloController;
 use Application\Controller\IAController;
 
 
@@ -83,6 +84,20 @@ return [
                             ],
                         ],
                     ],
+                    'protocolo' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/protocolo[/:action[/:id]]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]*'
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\ProtocoloController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                    ],
                     'ia' => [
                         'type' => Segment::class,
                         'options' => [
@@ -112,6 +127,10 @@ return [
 
             Controller\EstacaoController::class => function ($sm) {
                 return new EstacaoController($sm);
+            },
+
+            Controller\ProtocoloController::class => function ($sm) {
+                return new ProtocoloController($sm);
             },
 
             Controller\IAController::class => function ($sm) {

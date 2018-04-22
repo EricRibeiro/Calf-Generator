@@ -1,0 +1,66 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Protocolos</h4>
+                </div>
+                <div class="content">
+                    <table id="animais" class="table table-hover display" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th hidden>#</th>
+                            <th>Data de Início</th>
+                            <th>Data de Término</th>
+                            <th>Animais</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <?php foreach ($estacoes as $estacao) { ?>
+
+                            <tr>
+                                <td hidden><?= $estacao->getId(); ?></td>
+                                <td><?= $estacao->dataToString($estacao->getDataInicio()); ?></td>
+                                <td><?= $estacao->dataToString($estacao->getDataFinal()); ?></td>
+
+                                <td>
+                                    <a type="button"
+                                       href="<?= $this->url('app/estacao', ['action' => 'listar', 'id' => $estacao->getId()]) ?>"
+                                       class="btn btn-info btn-fill">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(function ($) {
+
+        $('#animais').DataTable({
+            columnDefs: [
+                { "orderable": false, "targets": 3 },
+                {targets: '_all', className: 'dt-center'},
+            ],
+            aoColumns: [
+                null,
+                {"sType": "date-uk"},
+                {"sType": "date-uk"},
+                null,
+            ],
+            order: [[2, 'desc']],
+            paging: false
+        });
+
+        $('#animais_filter label input').addClass('form-control border-input');
+    });
+</script>
+

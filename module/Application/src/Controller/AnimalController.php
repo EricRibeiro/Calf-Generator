@@ -22,8 +22,10 @@ class AnimalController extends AbstractActionController
 
     public function indexAction()
     {
-        $repositorio = $this->entityManager->getRepository('Application\Entity\Animal');
-        $animais = $repositorio->findAll();
+        $animais = $this->entityManager
+            ->getRepository('Application\Entity\Animal')
+            ->findAll();
+
         $view_params = array(
             'animais' => $animais
         );

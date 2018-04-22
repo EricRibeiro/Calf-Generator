@@ -70,17 +70,8 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'cadastra
     </div>
 </div>
 
-<script>
-    jQuery(function ($) {
-        $("[name='classificacao']").change(function () {
-            if ($(this).val() != "Novilha")
-                $("[name='dataUltimoParto']").removeAttr('disabled');
-            else {
-                $("[name='dataUltimoParto']").attr('disabled', true);
-                $("[name='dataUltimoParto']").val('');
-            }
-
-        });
-    });
-</script>
+<?php
+echo $this->inlineScript()
+    ->prependFile($this->basePath() . '/js/animal/animal.js');
+?>
 

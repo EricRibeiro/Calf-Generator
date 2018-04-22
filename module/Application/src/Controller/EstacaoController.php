@@ -60,20 +60,20 @@ class EstacaoController extends AbstractActionController
 
     private function cadastrar()
     {
-        $repositorio = $this->entityManager->getRepository('Application\Entity\Animal');
-
         $dataInicio = $this->request->getPost('dataInicioEstacao');
         $dataFim = $this->request->getPost('dataTerminoEstacao');
         $animais = $this->request->getPost('lsIDsAnimais');
-        $animais = explode("-", $animais);
+        $animais = explode( "-", $animais);
 
         $estacao = new Estacao($dataInicio, $dataFim);
         $this->entityManager->persist($estacao);
 
         foreach ($animais as $idAnimal) {
-            $animal = $repositorio->find($idAnimal);
-            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $animal->getUltimaClassificacao()->getClassificacaoInicial(), $estacao);
-            HelperCronologia::criarCronologia($this->entityManager, $animal, $animal->getUltimaClassificacao()->getClassificacaoInicial(), $estacao);
+            $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
+            $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
+
+            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, $estacao);
+            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao);
         }
 
         $this->entityManager->flush();
@@ -92,7 +92,7 @@ class EstacaoController extends AbstractActionController
             $id = $this->request->getPost('id');
         }
 
-        $animal_classificacao = $this->entityManager->getRepository("Application\Entity\Animal_Classificacao")
+        $animal_classificacao = $this->entityManager->getRepository('Application\Entity\Animal_Classificacao')
             ->findAllAnimaisNaEstacao($id);
 
         $animais = new ArrayCollection();
@@ -115,20 +115,12 @@ class EstacaoController extends AbstractActionController
         $idAnimal = $this->params()->fromRoute('id');
         $idEstacao = $this->params()->fromRoute('eid');
 
-        if (is_null($idAnimal) || is_null($idEstacao)) {
-            $idAnimal = $this->request->getPost('id');
-            $idEstacao = $this->request->getPost('idEstacao');
-        }
+        $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
+        $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
 
-        $repositorioAnimal = $this->entityManager->getRepository("Application\Entity\Animal");
-        $repositorioEstacao = $this->entityManager->getRepository("Application\Entity\Estacao");
+        HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao);
+        HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao);
 
-        $animal = $repositorioAnimal->find($idAnimal);
-        $estacao = $repositorioEstacao->find($idEstacao);
-
-        $estacao->getAnimal()->removeElement($animal);
-
-        $this->entityManager->persist($estacao);
         $this->entityManager->flush();
 
         return $this->redirect()->toRoute('app/estacao', array(

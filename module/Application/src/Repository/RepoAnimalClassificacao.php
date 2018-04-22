@@ -16,7 +16,8 @@ class RepoAnimalClassificacao extends EntityRepository
     public function findAllAnimaisNaEstacao($idEstacao)
     {
         return $this->createQueryBuilder('ac')
-            ->where('ac.estacao = :idEstacao')
+            ->where('ac.classificacaoFinal IS NULL')
+            ->andWhere('ac.estacao = :idEstacao')
             ->setParameter('idEstacao', $idEstacao)
             ->groupBy('ac.animal')
             ->getQuery()

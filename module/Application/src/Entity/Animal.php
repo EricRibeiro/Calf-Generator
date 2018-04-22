@@ -139,6 +139,14 @@ class Animal
     /**
      * @return String
      */
+    public function getClassificacaoID()
+    {
+        return $this->getUltimaClassificacao()->getClassificacaoInicial()->getId();
+    }
+
+    /**
+     * @return String
+     */
     public function getEstado()
     {
         return $this->getUltimaCronologia()->getEstadoInicial()->getEstado();

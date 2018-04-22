@@ -1,6 +1,34 @@
 window.onload = function () {
+    showSelectOptions();
     disableDataUltimoParto();
 };
+
+function showSelectOptions() {
+    var classificacoes = getClassificacoes();
+    var $select = $("#sel1");
+    var classificacao = $("option:selected", $select).val();
+
+    $.each(classificacoes, function (key, value) {
+        var option = "";
+
+        if(classificacao === key)
+            option = "<option selected value='" + key + "'>" + value + "</option>";
+        else
+            option = "<option value='" + key + "'>" + value + "</option>";
+
+        $select.append(option);
+    });
+}
+
+function getClassificacoes() {
+    return {
+        1: "Novilha",
+        2: "Primípara Pós-Parto",
+        3: "Primípara Gestante da Estação Anterior",
+        4: "Multípara Pós-Parto",
+        5: "Multípara Gestante da Estação Anterior"
+    };
+}
 
 function disableDataUltimoParto() {
     var $inputClassificacao =  $("[name='classificacao']");

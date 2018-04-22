@@ -13,23 +13,58 @@ use Application\Entity\Cronologia;
 
 class HelperCronologia
 {
-
-    public static function criarCronologia($entityManager, $animal, $classificacao, $estacao)
+    /**
+     * @param EntityManager $args[0]
+     * @param Animal $args[1]
+     * @param Classificacao $args[2]
+     * @param Estacao $args[3] - Opcional
+     */
+    public static function criarCronologia(...$args)
     {
-        $cronologia = self::criarCronologiaAnimal($entityManager, $animal, $classificacao, $estacao);
+        $qtdArgumentos = count($args);
+
+        $entityManager = $args[0];
+        $animal = $args[1];
+        $classificacao = $args[2];
+        $estacao = $args[3];
+        $cronologia = null;
+
+        if ($qtdArgumentos == 3) {
+            $cronologia = self::criarCronologiaAnimal($entityManager, $animal, $classificacao);
+        }
+
+        if ($qtdArgumentos == 4) {
+            $cronologia = self::criarCronologiaAnimal($entityManager, $animal, $classificacao, $estacao);
+        }
 
         if (!is_null($animal->getId())) self::atualizarCronologiaAnterior($entityManager, $animal, $classificacao);
 
         $entityManager->persist($cronologia);
     }
 
-    private static function criarCronologiaAnimal($entityManager, $animal, $classificacao, $estacao)
+    private static function criarCronologiaAnimal(...$args)
     {
-        $estado = self::getEstadoID($entityManager, $classificacao);
-        if (is_null($estacao)) $estacao = self::getEstacao($animal);
-        $ia = null;
+        $qtdArgumentos = count($args);
 
-        $cronologia = new Cronologia($animal, $ia, $estacao, $classificacao, $estado, null, new \DateTime());
+        $entityManager = $args[0];
+        $animal = $args[1];
+        $classificacao = $args[2];
+        $estacao = $args[3];
+        $ia = null;
+        $cronologia = null;
+        $estado = self::getEstadoID($entityManager, $classificacao);
+
+        if ($qtdArgumentos == 3) {
+            $cronologia = new Cronologia($animal, $ia, null, $classificacao, $estado, null, new \DateTime());
+        }
+
+        if ($qtdArgumentos == 4) {
+            if (is_null($estacao)) {
+                $estacao = self::getEstacao($animal);
+            }
+
+            $cronologia = new Cronologia($animal, $ia, $estacao, $classificacao, $estado, null, new \DateTime());
+        }
 
         return $cronologia;
     }

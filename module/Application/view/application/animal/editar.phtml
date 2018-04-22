@@ -29,13 +29,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="sel1">Classificação</label>
-                                    <select class="form-control border-input" id="sel1" name="classificacao"
-                                            value="<?= $animal->getClassificacao(); ?>">
-                                        <option value="1">Novilha</option>
-                                        <option value="2">Primípara Pós-Parto</option>
-                                        <option value="3">Primípara Gestante da Estação Anterior</option>
-                                        <option value="4">Multípara Pós-Parto</option>
-                                        <option value="5">Multípara Gestante da Estação Anterior</option>
+                                    <select class="form-control border-input" id="sel1" name="classificacao">
+                                        <option hidden value="<?= $animal->getClassificacaoId(); ?>"><?= $animal->getClassificacao(); ?></option>
                                     </select>
                                 </div>
                             </div>
@@ -50,6 +45,7 @@
                                            data-mask="00/00/0000"
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
                                            oninput="setCustomValidity('')"
+                                           disabled
                                            required
                                            value="<?= $animal->dataToString($animal->getDataUltimoParto()); ?>"
                                     />
@@ -73,6 +69,5 @@
 
 <?php
 echo $this->inlineScript()
-    ->prependFile($this->basePath() . '/js/datehelper.js')
-    ->prependFile($this->basePath() . '/js/animal/animal.js');
+    ->prependFile($this->basePath() . '/js/animal/animal-editar.js')
 ?>

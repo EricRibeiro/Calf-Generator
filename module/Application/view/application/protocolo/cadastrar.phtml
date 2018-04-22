@@ -27,7 +27,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Estação</label>
-                                    <select class="form-control border-input" id="sel1" name="classificacao">
+                                    <select class="form-control border-input" id="sel1" name="idEstacao">
                                         <?php foreach ($estacoes as $e) { ?>
                                             <option value="<?= $e->getId(); ?>">
                                                 <?= $e->dataToString($e->getDataInicio()); ?> até <?= $e->dataToString($e->getDataFinal()); ?>
@@ -44,7 +44,7 @@
                                     <label>Data de Inseminação</label>
                                     <input type="text"
                                            class="form-control border-input validate-date"
-                                           name="dataDeInseminação"
+                                           name="dataDeInseminacao"
                                            placeholder="Dia/Mês/Ano"
                                            data-mask="00/00/0000"
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
@@ -58,7 +58,7 @@
                                     <label>Data de Retorno ao Cio</label>
                                     <input type="text"
                                            class="form-control border-input validate-date"
-                                           name="dataRetornoAoCio"
+                                           name="dataDeRetornoAoCio"
                                            placeholder="Dia/Mês/Ano"
                                            data-mask="00/00/0000"
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
@@ -74,7 +74,7 @@
                                     <label>Data de Diagnóstico 1</label>
                                     <input type="text"
                                            class="form-control border-input validate-date"
-                                           name="dataDeInseminação"
+                                           name="dataDeDiagnostico1"
                                            placeholder="Dia/Mês/Ano"
                                            data-mask="00/00/0000"
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
@@ -88,7 +88,7 @@
                                     <label>Data de Diagnóstico 2</label>
                                     <input type="text"
                                            class="form-control border-input validate-date"
-                                           name="dataRetornoAoCio"
+                                           name="dataDeDiagnostico2"
                                            placeholder="Dia/Mês/Ano"
                                            data-mask="00/00/0000"
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
@@ -119,6 +119,7 @@
                                         <?php foreach ($animais as $animal) { ?>
 
                                             <?php if($animal->getDiasDesdeUltimoParto() < 40 && $animal->getDiasDesdeUltimoParto() != "-") {?>
+
                                                 <tr class="text-danger">
                                                 <td>
                                                     <div class="checkbox">
@@ -133,8 +134,8 @@
                                                         <input class="input-checkbox" type="checkbox" checked/>
                                                     </div>
                                                 </td>
-
                                             <?php } ?>
+
                                                 <td class="idAnimal" style="display: none"><?= $animal->getId(); ?></td>
                                                 <td><?= $animal->getNumero(); ?></td>
                                                 <td><?= $animal->getClassificacao(); ?></td>

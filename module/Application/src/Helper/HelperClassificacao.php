@@ -10,7 +10,6 @@ namespace Application\Helper;
 
 use Application\Entity\Animal_Classificacao;
 
-
 class HelperClassificacao
 {
 
@@ -60,7 +59,7 @@ class HelperClassificacao
 
         if ($qtdArgumentos == 3) {
             if (is_null($estacao)) {
-                $estacao = self::getEstacao($animal);
+                $estacao = HelperEstacao::getEstacao($animal);
             }
 
             $animal_classificacao = new Animal_Classificacao($animal, $classificacao, null, $estacao, new \DateTime());
@@ -74,23 +73,5 @@ class HelperClassificacao
         $classificaoAnterior = $animal->getUltimaClassificacao();
         $classificaoAnterior->setClassificacaoFinal($classificacaoAtual);
         $entityManager->persist($classificaoAnterior);
-    }
-
-    private static function getEstacao($animal)
-    {
-        $estacao = null;
-
-        if (sizeof($animal->getClassificacoes()) > 0) {
-            $ultimaClassificacao = $animal->getUltimaClassificacao();
-            $estacao = $ultimaClassificacao->getEstacao();
-
-            if (!is_null($estacao)) {
-                $dataFinalEstacao = $estacao->getDataFinal();
-                $hoje = new \DateTime();
-                $estacao = ($hoje > $dataFinalEstacao) ? null : $estacao;
-            }
-        }
-
-        return $estacao;
     }
 }

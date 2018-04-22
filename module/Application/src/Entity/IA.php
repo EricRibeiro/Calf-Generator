@@ -71,10 +71,10 @@ class IA
         $this->animal = $animal;
         $this->estacao = $estacao;
         $this->numeroProtocolo = $numeroProtocolo;
-        $this->dataInseminacao = $dataInseminacao;
-        $this->dataRetornoAoCio = $dataRetornoAoCio;
-        $this->dataDiagnostico1 = $dataDiagnostico1;
-        $this->dataDiagnostico2 = $dataDiagnostico2;
+        $this->setDataInseminacao($dataInseminacao);
+        $this->setDataRetornoAoCio($dataRetornoAoCio);
+        $this->setDataDiagnostico1($dataDiagnostico1);
+        $this->setDataDiagnostico2($dataDiagnostico2);
     }
 
     /**

@@ -45,10 +45,12 @@ class HelperCronologia
             $cronologia = self::criarCronologiaAnimal($entityManager, $animal, $classificacao, $estacao, $ia, $estado);
         }
 
-        if (!is_null($animal->getId()) && $qtdArgumentos == 6) {
-            self::atualizarCronologiaAnterior($entityManager, $animal, $classificacao, $estado);
-        } else {
-            self::atualizarCronologiaAnterior($entityManager, $animal, $classificacao);
+        if (!is_null($animal->getId())) {
+            if($qtdArgumentos == 6) {
+                self::atualizarCronologiaAnterior($entityManager, $animal, $classificacao, $estado);
+            } else {
+                self::atualizarCronologiaAnterior($entityManager, $animal, $classificacao);
+            }
         }
 
         $entityManager->persist($cronologia);

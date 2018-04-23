@@ -27,14 +27,17 @@ class ProtocoloController extends AbstractActionController
 
     public function indexAction()
     {
-        $estacoes = $this->entityManager
+        $ias = $this->entityManager
             ->getRepository('Application\Entity\IA')
-            ->findAll();
+            ->createQueryBuilder('ia')
+            ->groupBy('ia.numeroProtocolo')
+            ->getQuery()
+            ->getResult();
 
         $this->entityManager->flush();
 
         $view_params = array(
-            'estacoes' => $estacoes,
+            'ias' => $ias,
         );
 
         return new ViewModel($view_params);
@@ -50,7 +53,7 @@ class ProtocoloController extends AbstractActionController
             ->getRepository('Application\Entity\Estacao')
             ->createQueryBuilder('estacao')
             ->orderBy("estacao.id", "DESC")
-            ->setMaxResults(3)
+            ->setMaxResults(1)
             ->getQuery()
             ->getResult();
 
@@ -106,5 +109,29 @@ class ProtocoloController extends AbstractActionController
             'controller' => 'protocolo',
             'action' => 'index',
         ));
+    }
+
+    public function listarAction() {
+        $numProtocolo = $this->params()->fromRoute('id');
+
+        $ias = $this->entityManager
+            ->getRepository('Application\Entity\IA')
+            ->createQueryBuilder('ia')
+            ->where('ia.numeroProtocolo = :numProtocolo')
+            ->setParameter('numProtocolo', $numProtocolo)
+            ->getQuery()
+            ->getResult();
+
+        $animais = new ArrayCollection();
+
+        foreach ($ias as $ia) {
+            $animais->add($ia->getAnimal());
+        }
+
+        $view_params = array(
+            'animais' => $animais
+        );
+
+        return new ViewModel($view_params);
     }
 }

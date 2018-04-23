@@ -87,10 +87,11 @@ return [
                     'protocolo' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/protocolo[/:action[/:id]]',
+                            'route' => '/protocolo[/:action[/:id[/:pid]]]',
                             'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id' => '[0-9]*'
+                                'id' => '[0-9]*',
+                                'pid' => '[0-9]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
                             ],
                             'defaults' => [
                                 'controller' => Controller\ProtocoloController::class,

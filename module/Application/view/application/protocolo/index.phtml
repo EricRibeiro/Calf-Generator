@@ -9,24 +9,27 @@
                     <table id="animais" class="table table-hover display" style="width:100%">
                         <thead>
                         <tr>
-                            <th hidden>#</th>
-                            <th>Data de Início</th>
-                            <th>Data de Término</th>
-                            <th>Animais</th>
+                            <th>Nº Protocolo</th>
+                            <th>Inseminação</th>
+                            <th>Retorno ao Cio</th>
+                            <th>Diagnóstico 1</th>
+                            <th>Diagnóstico 2</th>
+                            <th>Detalhes</th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        <?php foreach ($estacoes as $estacao) { ?>
+                        <?php foreach ($ias as $ia) { ?>
 
                             <tr>
-                                <td hidden><?= $estacao->getId(); ?></td>
-                                <td><?= $estacao->dataToString($estacao->getDataInicio()); ?></td>
-                                <td><?= $estacao->dataToString($estacao->getDataFinal()); ?></td>
-
+                                <td><?= $ia->getNumeroProtocolo(); ?></td>
+                                <td><?= $ia->dataToString($ia->getDataInseminacao()); ?></td>
+                                <td><?= $ia->dataToString($ia->getDataRetornoAoCio()); ?></td>
+                                <td><?= $ia->dataToString($ia->getDataDiagnostico1()); ?></td>
+                                <td><?= $ia->dataToString($ia->getDataDiagnostico2()); ?></td>
                                 <td>
                                     <a type="button"
-                                       href="<?= $this->url('app/estacao', ['action' => 'listar', 'id' => $estacao->getId()]) ?>"
+                                       href="<?= $this->url('app/protocolo', ['action' => 'listar', 'id' => $ia->getNumeroProtocolo()]) ?>"
                                        class="btn btn-info btn-fill">
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </a>
@@ -44,19 +47,20 @@
 
 <script>
     jQuery(function ($) {
-
         $('#animais').DataTable({
             columnDefs: [
-                { "orderable": false, "targets": 3 },
+                { "orderable": false, "targets": 5 },
                 {targets: '_all', className: 'dt-center'},
             ],
             aoColumns: [
                 null,
                 {"sType": "date-uk"},
                 {"sType": "date-uk"},
-                null,
+                {"sType": "date-uk"},
+                {"sType": "date-uk"},
+                null
             ],
-            order: [[2, 'desc']],
+            order: [[0, 'desc']],
             paging: false
         });
 

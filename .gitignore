@@ -3,6 +3,7 @@
 
 # User-specific stuff:
 .idea/
+popular.sql
 
 # CMake
 cmake-build-debug/

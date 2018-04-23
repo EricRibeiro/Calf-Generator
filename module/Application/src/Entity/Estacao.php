@@ -3,15 +3,13 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Application\Entity\Animal;
-use Application\helper\Data;
+use Application\Helper\Data;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class Estacao
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -30,60 +28,67 @@ class Estacao
     private $dataFinal;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Application\Entity\Animal", inversedBy="estacao")
-     * @ORM\JoinTable(name="Estacao_Animais")
+     * Estacao constructor.
+     * @param $dataInicio
+     * @param $dataFinal
      */
-    private $animal;
-
-
-    public function __construct($dataInicio, $dataFinal, $animal)
+    public function __construct($dataInicio, $dataFinal)
     {
         $this->setDataInicio($dataInicio);
         $this->setDataFinal($dataFinal);
-        $this->setAnimal($animal);
     }
 
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->id;
     }
 
-    public function getdataFinal()
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDataInicio()
+    {
+        return $this->dataInicio;
+    }
+
+    /**
+     * @param mixed $dataInicio
+     */
+    public function setDataInicio($dataInicio)
+    {
+        $this->dataInicio = Data::getDataFormatada($dataInicio);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDataFinal()
     {
         return $this->dataFinal;
     }
 
-    public function getdataFinalString()
-    {
-        return Data::dataToString($this->dataFinal);
-    }
-
-    public function getdataInicialString()
-    {
-         return Data::dataToString($this->dataInicio);
-    }
-
-    public function setDataInicio($dataInicio)
-    {
-        return $this->dataInicio = Data::setData($dataInicio);
-    }
-
+    /**
+     * @param mixed $dataFinal
+     */
     public function setDataFinal($dataFinal)
     {
-        return $this->dataFinal = Data::setData($dataFinal);
+        $this->dataFinal = Data::getDataFormatada($dataFinal);
     }
 
-    public function getAnimal()
+    public function dataToString($data)
     {
-        return $this->animal;
+        return Data::dataToString($data);
     }
 
-    public function setAnimal($animal)
-    {
-        $this->animal = $animal;
-    }
-
-  
 }
-
-?>

@@ -34,9 +34,11 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'cadastra
                                 <div class="form-group">
                                     <label for="sel1">Classificação</label>
                                     <select class="form-control border-input" id="sel1" name="classificacao">
-                                        <option>Novilha</option>
-                                        <option>Primípara</option>
-                                        <option>Multípara</option>
+                                        <option value="1">Novilha</option>
+                                        <option value="2">Primípara Pós-Parto</option>
+                                        <option value="3">Primípara Gestante da Estação Anterior</option>
+                                        <option value="4">Multípara Pós-Parto</option>
+                                        <option value="5">Multípara Gestante da Estação Anterior</option>
                                     </select>
                                 </div>
                             </div>
@@ -68,17 +70,8 @@ $url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'cadastra
     </div>
 </div>
 
-<script>
-    jQuery(function ($) {
-        $("[name='classificacao']").change(function () {
-            if ($(this).val() != "Novilha")
-                $("[name='dataUltimoParto']").removeAttr('disabled');
-            else {
-                $("[name='dataUltimoParto']").attr('disabled', true);
-                $("[name='dataUltimoParto']").val('');
-            }
-
-        });
-    });
-</script>
+<?php
+echo $this->inlineScript()
+    ->prependFile($this->basePath() . '/js/animal/animal.js');
+?>
 

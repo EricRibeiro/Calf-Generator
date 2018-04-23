@@ -5,8 +5,7 @@ namespace Application\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\DBAL\Types\DateTimeType;
-use Application\helper\Data;
-
+use Application\Helper\Data;
 
 /**
  * @ORM\Entity
@@ -32,84 +31,193 @@ class Animal
     private $dataUltimoParto;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\OneToMany(targetEntity="IA", mappedBy="animal")
      */
-    private $classificacao;
+    private $ias;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Application\Entity\Estacao", mappedBy="animal")
+     * @ORM\OneToMany(targetEntity="Cronologia", mappedBy="animal")
      */
+    private $cronologias;
 
-    private $estacao;
+    /**
+     * @ORM\OneToMany(targetEntity="Animal_Classificacao", mappedBy="animal")
+     */
+    private $classificacoes;
 
-    /**      
-    * @ORM\OneToMany(targetEntity="IA", mappedBy="animal")
-    */
-    private $ia;
-
-    public function __construct($numero, $dataParto, $classificacao)
+    /**
+     * Animal constructor.
+     * @param $numero
+     * @param $dataUltimoParto
+     */
+    public function __construct($numero, $dataUltimoParto)
     {
-        $this->setDataUltimoParto($dataParto);
         $this->numero = $numero;
-        $this->classificacao = $classificacao;
+        $this->setDataUltimoParto($dataUltimoParto);
     }
 
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getNumero()
     {
         return $this->numero;
     }
 
+    /**
+     * @param mixed $numero
+     */
     public function setNumero($numero)
     {
         $this->numero = $numero;
     }
 
+    /**
+     * @return DateTime
+     */
     public function getDataUltimoParto()
     {
         return $this->dataUltimoParto;
     }
-    public function setDataUltimoParto($data)
-    {
-        return $this->dataUltimoParto=Data::setData($data);
 
+    /**
+     * @return Integer || String
+     */
+    public function getDiasDesdeUltimoParto()
+    {
+        $hoje = new \DateTime();
+        $diferenca = date_diff($hoje, $this->dataUltimoParto, true)->days;
+
+        if (is_null($diferenca))
+            return "-";
+        else
+            return $diferenca;
     }
 
+    /**
+     * @param mixed $dataUltimoParto
+     */
+    public function setDataUltimoParto($dataUltimoParto)
+    {
+        $this->dataUltimoParto = Data::getDataFormatada($dataUltimoParto);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIAs()
+    {
+        return $this->ias;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCronologias()
+    {
+        return $this->cronologias;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClassificacoes()
+    {
+        return $this->classificacoes;
+    }
+
+    /**
+     * @return String
+     */
     public function getClassificacao()
     {
-        return $this->classificacao;
-
+        return $this->getUltimaClassificacao()->getClassificacaoInicial()->getClassificacao();
     }
 
-    public function setClassificacao($classificacao)
+    /**
+     * @return String
+     */
+    public function getClassificacaoID()
     {
-        $this->classificacao = $classificacao;
+        return $this->getUltimaClassificacao()->getClassificacaoInicial()->getId();
     }
 
-    public function getEstacao()
+    /**
+     * @return String
+     */
+    public function getEstado()
     {
-        return $this->estacao;
+        return $this->getUltimaCronologia()->getEstadoInicial()->getEstado();
     }
 
-    public function setEstacao($estacao)
+    /**
+     * @return IA
+     */
+    public function getUltimaIA()
     {
-        $this->estacao = $estacao;
+        return $this->ias->last();
     }
 
-    public function dataUltimoPartoToString()
+    /**
+     * @return Cronologia
+     */
+    public function getUltimaCronologia()
     {
-        return Data::dataToString($this->dataUltimoParto);
+        $ultimaEntrada = $this->cronologias->last();
 
+        if (!is_null($ultimaEntrada->getEstadoFinal())) {
+            foreach ($this->cronologias as $cronologia) {
+                if (is_null($cronologia->getEstadoFinal())) {
+                    $ultimaEntrada = $cronologia;
+                    break;
+                }
+            }
+        }
+
+        return $ultimaEntrada;
+    }
+
+    /**
+     * @return Classificacao
+     */
+    public function getUltimaClassificacao()
+    {
+        $ultimaEntrada = $this->classificacoes->last();
+
+        if (!is_null($ultimaEntrada->getClassificacaoFinal())) {
+            foreach ($this->classificacoes as $classificacao) {
+                if (is_null($classificacao->getClassificacaoFinal())) {
+                    $ultimaEntrada = $classificacao;
+                    break;
+                }
+            }
+        }
+
+        return $ultimaEntrada;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function dataToString($data)
+    {
+        return Data::dataToString($data);
     }
 
 }
-?>

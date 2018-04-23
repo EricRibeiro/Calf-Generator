@@ -14,8 +14,9 @@
                             <th hidden>#</th>
                             <th>Número</th>
                             <th>Classificação</th>
-                            <th>Data do Último Parto</th>
-                            <th hidden>Data do Último Parto - Sort</th>
+                            <th>Estado</th>
+                            <th>Dias Desde o Último Parto</th>
+                            <th hidden>Dias Desde o Último Parto - Sort</th>
                             <th>Opções</th>
                         </tr>
                         </thead>
@@ -26,13 +27,14 @@
                                 <td hidden><?= $animal->getId(); ?></td>
                                 <td><?= $animal->getNumero(); ?></td>
                                 <td><?= $animal->getClassificacao(); ?></td>
-                                <td><?= $animal->dataUltimoPartoToString(); ?></td>
+                                <td><?= $animal->getEstado(); ?></td>
+                                <td><?= $animal->getDiasDesdeUltimoParto(); ?></td>
                                 <td hidden>
                                     <?php
-                                    if ($animal->dataUltimoPartoToString() == "-")
-                                        echo "00/00/0000";
+                                    if ($animal->getDiasDesdeUltimoParto() == "-")
+                                        echo "9999";
                                     else
-                                        echo $animal->dataUltimoPartoToString();
+                                        echo $animal->getDiasDesdeUltimoParto();
                                     ?>
                                 </td>
                                 <td>
@@ -64,19 +66,11 @@
     jQuery(function ($) {
         $('#animais').DataTable({
             columnDefs: [
-                { "orderable": false, "targets": 5 },
+                { "orderable": false, "targets": 6 },
                 {targets: '_all', className: 'dt-center'},
-                { "orderData":[ 4 ],   "targets": [ 3 ] },
+                { "orderData":[ 5 ],   "targets": [ 4 ] },
             ],
-            aoColumns: [
-                null,
-                null,
-                null,
-                {"sType": "date-uk"},
-                {"sType": "date-uk"},
-                null,
-            ],
-            order: [[3, 'desc']],
+            order: [[1, 'asc']],
             paging: false
         });
 

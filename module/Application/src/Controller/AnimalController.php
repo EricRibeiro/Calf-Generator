@@ -2,27 +2,32 @@
 
 namespace Application\Controller;
 
+use Application\Entity\Animal_Classificacao;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Entity\Animal;
-use Application\Controller\Factory;
+use Application\Helper\HelperClassificacao;
+use Application\Helper\HelperCronologia;
 
 class AnimalController extends AbstractActionController
 {
     private $sm;
+    private $entityManager;
 
     function __construct($sm)
     {
         $this->sm = $sm;
+        $this->entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
     }
 
     public function indexAction()
     {
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorio = $entityManager->getRepository('Application\Entity\Animal');
-        $animais = $repositorio->findAll();
+        $animais = $this->entityManager
+            ->getRepository('Application\Entity\Animal')
+            ->findAll();
+
         $view_params = array(
-            'animais' => $animais,
+            'animais' => $animais
         );
 
         return new ViewModel($view_params);
@@ -33,12 +38,16 @@ class AnimalController extends AbstractActionController
         if ($this->request->isPost()) {
             $numero = $this->request->getPost('numero');
             $dataUltimoParto = $this->request->getPost('dataUltimoParto');
-            $classificacao = $this->request->getPost('classificacao');
-            $animal = new Animal($numero, $dataUltimoParto, $classificacao);
+            $classificacaoID = $this->request->getPost('classificacao');
+            $classificacao = $this->entityManager->find('Application\Entity\Classificacao', $classificacaoID);
 
-            $documentManager = $this->sm->get('Doctrine\ORM\EntityManager');
-            $documentManager->persist($animal);
-            $documentManager->flush();
+            $animal = new Animal($numero, $dataUltimoParto);
+            $this->entityManager->persist($animal);
+
+            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
+            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
+
+            $this->entityManager->flush();
         }
 
         return $this->redirect()->toRoute('app/animal', array(
@@ -55,17 +64,22 @@ class AnimalController extends AbstractActionController
             $id = $this->request->getPost('id');
         }
 
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorio = $entityManager->getRepository("Application\Entity\Animal");
-        $animal = $repositorio->find($id);
+        $animal = $this->entityManager->find("Application\Entity\Animal", $id);
 
         if ($this->request->isPost()) {
+            $numero = $this->request->getPost('numero');
+            $dataUltimoParto = $this->request->getPost('dataUltimoParto');
+            $classificacaoID = $this->request->getPost('classificacao');
+            $classificacao = $this->entityManager->find('Application\Entity\Classificacao', $classificacaoID);
 
-            $animal->setNumero($this->request->getPost('numero'));
-            $animal->setDataUltimoParto($this->request->getPost('dataUltimoParto'));
-            $animal->setClassificacao($this->request->getPost('classificacao'));
-            $entityManager->persist($animal);
-            $entityManager->flush();
+            $animal->setNumero($numero);
+            $animal->setDataUltimoParto($dataUltimoParto);
+            $this->entityManager->persist($animal);
+
+            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
+            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
+
+            $this->entityManager->flush();
 
             return $this->redirect()->toRoute('app/animal', array(
                 'controller' => 'index',
@@ -81,12 +95,9 @@ class AnimalController extends AbstractActionController
         $id = $this->params()->fromRoute('id');
 
         if (!is_null($id)) {
-            $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-            $repositorio = $entityManager->getRepository("Application\Entity\Animal");
-
-            $animal = $repositorio->find($id);
-            $entityManager->remove($animal);
-            $entityManager->flush();
+            $animal = $this->entityManager->find("Application\Entity\Animal", $id);
+            $this->entityManager->remove($animal);
+            $this->entityManager->flush();
         }
 
         return $this->redirect()->toRoute('app/animal', array(

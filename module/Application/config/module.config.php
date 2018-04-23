@@ -7,11 +7,13 @@
 
 namespace Application;
 
+use Application\Helper\EntityManager;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Application\Controller\AnimalController;
 use Application\Controller\EstacaoController;
+use Application\Controller\ProtocoloController;
 use Application\Controller\IAController;
 
 
@@ -82,6 +84,21 @@ return [
                             ],
                         ],
                     ],
+                    'protocolo' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/protocolo[/:action[/:id[/:pid]]]',
+                            'constraints' => [
+                                'id' => '[0-9]*',
+                                'pid' => '[0-9]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\ProtocoloController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                    ],
                     'ia' => [
                         'type' => Segment::class,
                         'options' => [
@@ -113,9 +130,13 @@ return [
                 return new EstacaoController($sm);
             },
 
+            Controller\ProtocoloController::class => function ($sm) {
+                return new ProtocoloController($sm);
+            },
+
             Controller\IAController::class => function ($sm) {
                 return new IAController($sm);
-            },
+            }
         ],
     ],
     'view_manager' => [

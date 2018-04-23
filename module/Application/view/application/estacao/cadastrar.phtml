@@ -51,8 +51,8 @@
                                             <th>Número</th>
                                             <th>Classificação</th>
                                             <th>Estado</th>
-                                            <th>Data do Último Parto</th>
-                                            <th hidden>Data do Último Parto - Sort</th>
+                                            <th>Dias Desde o Último Parto</th>
+                                            <th hidden>Dias Desde o Último Parto - Sort</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -70,13 +70,13 @@
                                                 <td><?= $animal->getNumero(); ?></td>
                                                 <td><?= $animal->getClassificacao(); ?></td>
                                                 <td><?= $animal->getEstado(); ?></td>
-                                                <td><?= $animal->dataToString($animal->getdataUltimoParto()); ?></td>
+                                                <td><?= $animal->getDiasDesdeUltimoParto(); ?></td>
                                                 <td hidden>
                                                     <?php
-                                                    if ($animal->dataToString($animal->getdataUltimoParto()) == "-")
-                                                        echo "00/00/0000";
+                                                    if ($animal->getDiasDesdeUltimoParto() == "-")
+                                                        echo "9999";
                                                     else
-                                                        echo $animal->dataToString($animal->getdataUltimoParto());
+                                                        echo $animal->getDiasDesdeUltimoParto();
                                                     ?>
                                                 </td>
 
@@ -123,16 +123,7 @@ echo $this->inlineScript()->prependFile($this->basePath() . '/js/datehelper.js')
                 {targets: '_all', className: 'dt-center'},
                 { "orderData":[ 6 ],   "targets": [ 5 ] }
             ],
-            aoColumns: [
-                null,
-                null,
-                null,
-                null,
-                null,
-                {"sType": "date-uk"},
-                {"sType": "date-uk"},
-            ],
-            order: [[5, 'desc']],
+            order: [[5, 'asc']],
             paging: false,
             searching: false
         });

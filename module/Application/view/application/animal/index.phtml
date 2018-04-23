@@ -15,8 +15,8 @@
                             <th>Número</th>
                             <th>Classificação</th>
                             <th>Estado</th>
-                            <th>Data do Último Parto</th>
-                            <th hidden>Data do Último Parto - Sort</th>
+                            <th>Dias Desde o Último Parto</th>
+                            <th hidden>Dias Desde o Último Parto - Sort</th>
                             <th>Opções</th>
                         </tr>
                         </thead>
@@ -28,13 +28,13 @@
                                 <td><?= $animal->getNumero(); ?></td>
                                 <td><?= $animal->getClassificacao(); ?></td>
                                 <td><?= $animal->getEstado(); ?></td>
-                                <td><?= $animal->dataToString($animal->getDataUltimoParto()); ?></td>
+                                <td><?= $animal->getDiasDesdeUltimoParto(); ?></td>
                                 <td hidden>
                                     <?php
-                                    if ($animal->dataToString($animal->getDataUltimoParto()) == "-")
-                                        echo "00/00/0000";
+                                    if ($animal->getDiasDesdeUltimoParto() == "-")
+                                        echo "9999";
                                     else
-                                        echo $animal->dataToString($animal->getDataUltimoParto());
+                                        echo $animal->getDiasDesdeUltimoParto();
                                     ?>
                                 </td>
                                 <td>
@@ -70,15 +70,7 @@
                 {targets: '_all', className: 'dt-center'},
                 { "orderData":[ 5 ],   "targets": [ 4 ] },
             ],
-            aoColumns: [
-                null,
-                null,
-                null,
-                {"sType": "date-uk"},
-                {"sType": "date-uk"},
-                null,
-            ],
-            order: [[4, 'desc']],
+            order: [[1, 'asc']],
             paging: false
         });
 

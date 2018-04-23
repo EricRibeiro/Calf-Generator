@@ -26,6 +26,7 @@
                                 <td><?= $animal->getNumero(); ?></td>
                                 <td><?= $animal->getClassificacao(); ?></td>
                                 <td><?= $animal->getEstado(); ?></td>
+
                                 <td><?= $animal->dataToString($animal->getDataUltimoParto()); ?></td>
                                 <td hidden>
                                     <?php
@@ -35,13 +36,13 @@
                                         echo $animal->dataToString($animal->getDataUltimoParto());
                                     ?>
                                 </td>
+
                                 <td>
                                     <a class="btn btn-info btn-fill" type="button"
                                        href="<?= $this->url('app/animal', [
                                            'action' => 'editar',
                                            'id' => $animal->getId(),
-                                           'redirect' => 'listar',
-                                           'rid' => basename($_SERVER['REQUEST_URI'])]) ?>"
+                                       ]) ?>"
                                     >
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </a>

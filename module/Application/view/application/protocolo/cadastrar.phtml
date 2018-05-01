@@ -28,11 +28,9 @@
                                 <div class="form-group">
                                     <label>Estação</label>
                                     <select class="form-control border-input" id="sel1" name="idEstacao">
-                                        <?php foreach ($estacoes as $e) { ?>
-                                            <option value="<?= $e->getId(); ?>">
-                                                <?= $e->dataToString($e->getDataInicio()); ?> até <?= $e->dataToString($e->getDataFinal()); ?>
+                                            <option value="<?= $estacao->getId(); ?>">
+                                                <?= $estacao->dataToString($estacao->getDataInicio()); ?> até <?= $estacao->dataToString($estacao->getDataFinal()); ?>
                                             </option>
-                                        <?php } ?>
                                     </select>
                                 </div>
                             </div>

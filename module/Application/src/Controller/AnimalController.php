@@ -50,6 +50,8 @@ class AnimalController extends AbstractActionController
             $this->entityManager->flush();
         }
 
+        $this->flashMessenger()->addSuccessMessage("Animal cadastrado com sucesso");
+
         return $this->redirect()->toRoute('app/animal', array(
             'controller' => 'index',
             'action' => 'index',

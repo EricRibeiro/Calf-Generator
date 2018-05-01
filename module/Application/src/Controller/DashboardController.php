@@ -5,6 +5,7 @@ namespace Application\Controller;
 use Application\Helper\HelperEstacao;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\View;
 
 class DashboardController extends AbstractActionController
 {
@@ -19,34 +20,27 @@ class DashboardController extends AbstractActionController
 
     public function indexAction()
     {
-        $animais = $this->entityManager
-            ->getRepository('Application\Entity\Animal')
-            ->findAll();
-
-        $aptos = $this->entityManager
-            ->getRepository('Application\Entity\Cronologia')
-            ->findAnimaisAptos();
-
-        $diagnostico1 = $this->entityManager
-            ->getRepository('Application\Entity\Cronologia')
-            ->findAnimaisDiagnostico1();
-
-        $diagnostico2 = $this->entityManager
-            ->getRepository('Application\Entity\Cronologia')
-            ->findAnimaisDiagnostico2();
-
-        $posparto = $this->entityManager
-            ->getRepository('Application\Entity\Cronologia')
-            ->findAnimaisPosParto();
-
         $estacao = $this->entityManager
             ->getRepository('Application\Entity\Estacao')
             ->findUltimaEstacao();
 
+        $aptos = $this->entityManager
+            ->getRepository('Application\Entity\Cronologia')
+            ->findAnimaisPorEstadoNaUltimaEstacao(1, $estacao);
 
+        $diagnostico1 = $this->entityManager
+            ->getRepository('Application\Entity\Cronologia')
+            ->findAnimaisPorEstadoNaUltimaEstacao(2, $estacao);
+
+        $diagnostico2 = $this->entityManager
+            ->getRepository('Application\Entity\Cronologia')
+            ->findAnimaisPorEstadoNaUltimaEstacao(3, $estacao);
+
+        $posparto = $this->entityManager
+            ->getRepository('Application\Entity\Cronologia')
+            ->findAnimaisPorEstadoNaUltimaEstacao(5, $estacao);
 
         $view_params = array(
-            'animais' => $animais,
             'aptos' => $aptos,
             'diagnostico1' => $diagnostico1,
             'diagnostico2' => $diagnostico2,

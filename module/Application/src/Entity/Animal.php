@@ -2,6 +2,7 @@
 
 namespace Application\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\DBAL\Types\DateTimeType;
@@ -124,6 +125,19 @@ class Animal
     public function getIAs()
     {
         return $this->ias;
+    }
+
+    public function getProtocolos()
+    {
+        $protocolos = new ArrayCollection();
+
+        foreach ($this->ias as $ia) {
+            if (is_null($ia->getNumeroProtocolo())) {
+                $protocolos->add($ia);
+            }
+        }
+
+        return $protocolos;
     }
 
     /**

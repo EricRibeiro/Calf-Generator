@@ -72,8 +72,7 @@
                                                 <td><?= $animal->getEstado(); ?></td>
                                                 <td><?= $animal->getDiasDesdeUltimoParto(); ?></td>
                                                 <td hidden>
-                                                    <?php
-                                                    if ($animal->getDiasDesdeUltimoParto() == "-")
+                                                    <?php if ($animal->getDiasDesdeUltimoParto() == "-")
                                                         echo "9999";
                                                     else
                                                         echo $animal->getDiasDesdeUltimoParto();

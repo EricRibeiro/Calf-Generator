@@ -55,7 +55,7 @@ class ProtocoloController extends AbstractActionController
 
         $cronologias = $this->entityManager
             ->getRepository('Application\Entity\Cronologia')
-            ->findAnimaisAptosOuPosParto();
+            ->findAnimaisAptosOuPosPartoNaUltimaEstacao($estacao);
 
         $animais = new ArrayCollection();
 

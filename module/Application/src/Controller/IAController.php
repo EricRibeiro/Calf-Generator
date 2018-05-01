@@ -81,7 +81,6 @@ class IAController extends AbstractActionController
 
             $query = $repositorio->createQueryBuilder('o')->where('o.numero = :numeroAnimal')->setParameter('numeroAnimal', $numeroAnimal)->getQuery();
             $animal = $query->getSingleResult();
-            //var_dump($animal); exit;
 
             $ia = new IA($animal, $dataInseminacao);
 

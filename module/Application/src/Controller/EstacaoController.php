@@ -4,6 +4,7 @@
 namespace Application\Controller;
 
 use Application\Entity\Animal;
+use Application\Helper\Data;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -41,7 +42,6 @@ class EstacaoController extends AbstractActionController
 
     public function cadastrarAction()
     {
-
         if ($this->request->isPost()) {
             self::cadastrar();
         }
@@ -54,6 +54,7 @@ class EstacaoController extends AbstractActionController
 
         $view_params = array(
             'animais' => $animais,
+            'existeEstacaoNoAnoAtual' => $this->existeEstacaoNoAnoAtual()
         );
 
         return new ViewModel($view_params);
@@ -84,6 +85,18 @@ class EstacaoController extends AbstractActionController
             'controller' => 'estacao',
             'action' => 'index',
         ));
+    }
+
+    private function existeEstacaoNoAnoAtual() {
+        $ultimaEstacao = $this->entityManager
+            ->getRepository('Application\Entity\Estacao')
+            ->findUltimaEstacao();
+
+        $dataFinal = Data::dataToString($ultimaEstacao->getDataFinal());
+
+        $anoDataFinal = substr($dataFinal, strrpos($dataFinal, '/') + 1);
+
+        return (date("Y") == $anoDataFinal);
     }
 
     public function listarAction()

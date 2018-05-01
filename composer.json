@@ -16,7 +16,9 @@
         "zendframework/zend-component-installer": "^1.0 || ^0.7 || ^1.0.0-dev@dev",
         "zendframework/zend-mvc": "^3.0.1",
         "zfcampus/zf-development-mode": "^3.0",
-        "doctrine/doctrine-orm-module": "dev-master"
+        "doctrine/doctrine-orm-module": "dev-master",
+        "zendframework/zend-view": "^2.10",
+        "zendframework/zend-mvc-plugin-flashmessenger": "^1.1"
     },
     "autoload": {
         "psr-4": {

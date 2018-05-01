@@ -11,6 +11,7 @@ use Application\Helper\EntityManager;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
+use Application\Controller\DashboardController;
 use Application\Controller\AnimalController;
 use Application\Controller\EstacaoController;
 use Application\Controller\ProtocoloController;
@@ -120,7 +121,11 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\DashboardController::class => InvokableFactory::class,
+//            Controller\DashboardController::class => InvokableFactory::class,
+
+            Controller\DashboardController::class => function ($sm) {
+                return new DashboardController($sm);
+            },
 
             Controller\AnimalController::class => function ($sm) {
                 return new AnimalController($sm);
@@ -156,7 +161,18 @@ return [
             __DIR__ . '/../view',
         ],
     ],
-
+    'view_helpers' => array(
+        'invokables' => array (
+            'flashHelper' => 'Application\View\Helper\FlashHelper'
+        )
+    ),
+    'view_helper_config' => array(
+        'flashmessenger' => array(
+            'message_open_format'      => '<div%s><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><ul><li>',
+            'message_close_string'     => '</li></ul></div>',
+            'message_separator_string' => '</li><li>'
+        )
+    ),
     'doctrine' => [
         'driver' => [
             // defines an annotation driver with two paths, and names it `my_annotation_driver`

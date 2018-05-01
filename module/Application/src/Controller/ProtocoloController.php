@@ -49,17 +49,13 @@ class ProtocoloController extends AbstractActionController
             self::cadastrar();
         }
 
-        $estacoes = $this->entityManager
+        $estacao = $this->entityManager
             ->getRepository('Application\Entity\Estacao')
-            ->createQueryBuilder('estacao')
-            ->orderBy("estacao.id", "DESC")
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult();
+            ->findUltimaEstacao();
 
         $cronologias = $this->entityManager
             ->getRepository('Application\Entity\Cronologia')
-            ->findAnimaisAptosOuPosParto();
+            ->findAnimaisAptosOuPosPartoNaUltimaEstacao($estacao);
 
         $animais = new ArrayCollection();
 
@@ -72,7 +68,7 @@ class ProtocoloController extends AbstractActionController
         $this->entityManager->flush();
 
         $view_params = array(
-            'estacoes' => $estacoes,
+            'estacao' => $estacao,
             'animais' => $animais
         );
 

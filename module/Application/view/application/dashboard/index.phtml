@@ -5,21 +5,27 @@
                 <div class="content">
                     <div class="row">
                         <div class="col-xs-5">
-                            <div class="icon-big icon-warning text-center">
-                                <i class="ti-server"></i>
+                            <div class="icon-big text-center">
+                                <img src="<?= $this->basePath() . '/img/paper-dashboard/cards/cow.png'; ?>"
+                                     width="42px" height="42px">
                             </div>
                         </div>
                         <div class="col-xs-7">
                             <div class="numbers">
-                                <p>Capacity</p>
-                                105GB
+                                <p>Aptos</p>
+                                <?= sizeof($aptos); ?>
                             </div>
                         </div>
                     </div>
                     <div class="footer">
                         <hr/>
                         <div class="stats">
-                            <i class="ti-reload"></i> Updated now
+                            <i class="fa fa-info" aria-hidden="true"></i>
+                            <?php if (sizeof($aptos) > 0) { ?>
+                                <a data-toggle="modal" href="#modalAptos">Detalhes dos Animais</a>
+                            <?php } else { ?>
+                                Detalhes dos Animais
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -30,21 +36,27 @@
                 <div class="content">
                     <div class="row">
                         <div class="col-xs-5">
-                            <div class="icon-big icon-success text-center">
-                                <i class="ti-wallet"></i>
+                            <div class="icon-big text-center">
+                                <img src="<?= $this->basePath() . '/img/paper-dashboard/cards/stethoscope1.png'; ?>"
+                                     width="50px" height="50px">
                             </div>
                         </div>
                         <div class="col-xs-7">
                             <div class="numbers">
-                                <p>Revenue</p>
-                                $1,345
+                                <p>Diagnóstico 1</p>
+                                <?= sizeof($diagnostico1); ?>
                             </div>
                         </div>
                     </div>
                     <div class="footer">
                         <hr/>
                         <div class="stats">
-                            <i class="ti-calendar"></i> Last day
+                            <i class="fa fa-info" aria-hidden="true"></i>
+                            <?php if (sizeof($diagnostico1) > 0) { ?>
+                                <a data-toggle="modal" href="#modalDiagnostico1">Detalhes dos Animais</a>
+                            <?php } else { ?>
+                                Detalhes dos Animais
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -55,21 +67,27 @@
                 <div class="content">
                     <div class="row">
                         <div class="col-xs-5">
-                            <div class="icon-big icon-danger text-center">
-                                <i class="ti-pulse"></i>
+                            <div class="icon-big text-center">
+                                <img src="<?= $this->basePath() . '/img/paper-dashboard/cards/stethoscope2.png'; ?>"
+                                     width="50px" height="50px">
                             </div>
                         </div>
                         <div class="col-xs-7">
                             <div class="numbers">
-                                <p>Errors</p>
-                                23
+                                <p>Diagnóstico 2</p>
+                                <?= sizeof($diagnostico2); ?>
                             </div>
                         </div>
                     </div>
                     <div class="footer">
                         <hr/>
                         <div class="stats">
-                            <i class="ti-timer"></i> In the last hour
+                            <i class="fa fa-info" aria-hidden="true"></i>
+                            <?php if (sizeof($diagnostico2) > 0) { ?>
+                                <a data-toggle="modal" href="#modalDiagnostico2">Detalhes dos Animais</a>
+                            <?php } else { ?>
+                                Detalhes dos Animais
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -80,27 +98,33 @@
                 <div class="content">
                     <div class="row">
                         <div class="col-xs-5">
-                            <div class="icon-big icon-info text-center">
-                                <i class="ti-twitter-alt"></i>
+                            <div class="icon-big text-center">
+                                <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
                             </div>
                         </div>
                         <div class="col-xs-7">
                             <div class="numbers">
-                                <p>Followers</p>
-                                +45
+                                <p>Pós-Parto</p>
+                                <?= sizeof($posparto); ?>
                             </div>
                         </div>
                     </div>
                     <div class="footer">
                         <hr/>
                         <div class="stats">
-                            <i class="ti-reload"></i> Updated now
+                            <i class="fa fa-info" aria-hidden="true"></i>
+                            <?php if (sizeof($posparto) > 0) { ?>
+                                <a data-toggle="modal" href="#modalPosParto">Detalhes dos Animais</a>
+                            <?php } else { ?>
+                                Detalhes dos Animais
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="row">
 
         <div class="col-md-12">
@@ -175,8 +199,166 @@
     </div>
 </div>
 
+<div id="modals">
+    <!-- Modal dos Animais Aptos-->
+    <div class="modal fade" id="modalAptos" tabindex="-1" role="dialog" aria-labelledby="modalAptosLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Animais Aptos</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th class="text-center"><b>Número</b></th>
+                                <th class="text-center"><b>Protocolos</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($aptos as $c) { ?>
+                                    <tr class="text-center">
+                                        <td><?= $c->getAnimal()->getNumero(); ?></td>
+                                        <td><?= sizeof($c->getAnimal()->getProtocolos()); ?></td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal dos Animais Aguardando Diagnóstico 1-->
+    <div class="modal fade" id="modalDiagnostico1" tabindex="-1" role="dialog" aria-labelledby="modalDiagnostico1Label"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title text-center">Animais Aguardando o Diagnóstico 1</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th class="text-center"><b>Número</b></th>
+                                <th class="text-center"><b>Data da Inseminação</b></th>
+                                <th class="text-center"><b>Data do Diagnóstico</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($diagnostico1 as $d1) { ?>
+                                <tr class="text-center">
+                                    <td><?= $d1->getAnimal()->getNumero(); ?></td>
+                                    <td><?= \Application\Helper\Data::dataToString($d1->getAnimal()->getUltimaIA()->getDataInseminacao()); ?></td>
+                                    <td><?= \Application\Helper\Data::dataToString($d1->getAnimal()->getUltimaIA()->getDataDiagnostico1()); ?></td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal dos Animais Aguardando Diagnóstico 2-->
+    <div class="modal fade" id="modalDiagnostico2" tabindex="-1" role="dialog" aria-labelledby="modalDiagnostico2Label"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title text-center">Animais Aguardando o Diagnóstico 2</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th class="text-center"><b>Número</b></th>
+                                <th class="text-center"><b>Data da Inseminação</b></th>
+                                <th class="text-center"><b>Data do Diagnóstico</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($diagnostico2 as $d2) { ?>
+                                <tr class="text-center">
+                                    <td><?= $d1->getAnimal()->getNumero(); ?></td>
+                                    <td><?= \Application\Helper\Data::dataToString($d2->getAnimal()->getUltimaIA()->getDataInseminacao()); ?></td>
+                                    <td><?= \Application\Helper\Data::dataToString($d2->getAnimal()->getUltimaIA()->getDataDiagnostico2()); ?></td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal dos Animais em Pós-Parto-->
+    <div class="modal fade" id="modalPosParto" tabindex="-1" role="dialog" aria-labelledby="modalPosParto"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title text-center">Animais no Pós-Parto</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th class="text-center"><b>Número</b></th>
+                                <th class="text-center"><b>Dias Desde o Último Parto</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($posparto as $p) { ?>
+                                <tr class="text-center">
+                                    <td><?= $p->getAnimal()->getNumero(); ?></td>
+                                    <td><?= $p->getAnimal()->getDiasDesdeUltimoParto(); ?></td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/dashboard/dashboard.js');
+?>
+
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function () {
 
         demo.initChartist();
 
@@ -184,7 +366,7 @@
             icon: 'ti-gift',
             message: "Welcome to <b>MyTree</b> - Under Construction."
 
-        },{
+        }, {
             type: 'success',
             timer: 4000
         });

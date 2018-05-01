@@ -3,6 +3,14 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12 col-md-12">
+            <?php if ($existeEstacaoNoAnoAtual) { ?>
+
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><ul><li>Já existe uma estação cadastrada em <?= date('Y'); ?></li></ul>
+            </div>
+
+            <?php } ?>
+
             <div class="card">
                 <div class="header">
                     <h4 class="title">Cadastrar a Estação</h4>
@@ -72,8 +80,7 @@
                                                 <td><?= $animal->getEstado(); ?></td>
                                                 <td><?= $animal->getDiasDesdeUltimoParto(); ?></td>
                                                 <td hidden>
-                                                    <?php
-                                                    if ($animal->getDiasDesdeUltimoParto() == "-")
+                                                    <?php if ($animal->getDiasDesdeUltimoParto() == "-")
                                                         echo "9999";
                                                     else
                                                         echo $animal->getDiasDesdeUltimoParto();

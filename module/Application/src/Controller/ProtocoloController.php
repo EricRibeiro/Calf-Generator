@@ -101,6 +101,8 @@ class ProtocoloController extends AbstractActionController
 
         $this->entityManager->flush();
 
+        $this->flashMessenger()->addSuccessMessage("Protocolo cadastrado com sucesso.");
+
         return $this->redirect()->toRoute('app/protocolo', array(
             'controller' => 'protocolo',
             'action' => 'index',

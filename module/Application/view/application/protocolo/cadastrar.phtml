@@ -28,9 +28,19 @@
                                 <div class="form-group">
                                     <label>Estação</label>
                                     <select class="form-control border-input" id="sel1" name="idEstacao">
-                                            <option value="<?= $estacao->getId(); ?>">
-                                                <?= $estacao->dataToString($estacao->getDataInicio()); ?> até <?= $estacao->dataToString($estacao->getDataFinal()); ?>
-                                            </option>
+                                            <?php if (!is_null($estacao)) { ?>
+                                                <option value="<?= $estacao->getId(); ?>">
+                                                    <?= \Application\Helper\Data::dataToString($estacao->getDataInicio()); ?>
+                                                    até
+                                                    <?= \Application\Helper\Data::dataToString($estacao->getDataFinal()); ?>
+                                                </option>
+
+                                            <?php } else { ?>
+                                                <option>
+                                                    -
+                                                </option>
+
+                                            <?php } ?>
                                     </select>
                                 </div>
                             </div>

@@ -13,6 +13,16 @@ use Doctrine\ORM\EntityRepository;
 
 class RepoCronologia extends EntityRepository
 {
+    public function findAnimaisAptosOuPosParto() {
+        return $this->createQueryBuilder('cronologia')
+            ->where('cronologia.estadoFinal IS NULL')
+            ->andWhere('cronologia.estadoInicial = :apto OR cronologia.estadoInicial = :posParto')
+            ->setParameter('apto', 1)
+            ->setParameter('posParto', 5)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAnimaisAptosOuPosPartoNaUltimaEstacao($estacao) {
         return $this->createQueryBuilder('cronologia')
             ->where('cronologia.estadoFinal IS NULL')

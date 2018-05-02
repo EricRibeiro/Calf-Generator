@@ -5,6 +5,7 @@ namespace Application\Controller;
 
 use Application\Entity\Animal;
 use Application\Helper\Data;
+use Application\Helper\HelperEstacao;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -46,9 +47,19 @@ class EstacaoController extends AbstractActionController
             self::cadastrar();
         }
 
-        $animais = $this->entityManager
-            ->getRepository('Application\Entity\Animal')
-            ->findAll();
+        $cronologia = $this->entityManager
+            ->getRepository('Application\Entity\Cronologia')
+            ->findAnimaisAptosOuPosParto();
+
+        $animais = new ArrayCollection();
+
+        foreach ($cronologia as $c) {
+            $estacao = HelperEstacao::getEstacao($c->getAnimal());
+
+            if(!is_null($estacao)) {
+                $animais->add($c->getAnimal());
+            }
+        }
 
         $this->entityManager->flush();
 

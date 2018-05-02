@@ -88,15 +88,20 @@ class EstacaoController extends AbstractActionController
     }
 
     private function existeEstacaoNoAnoAtual() {
+        $existeEstacaoNoAnoAtual = false;
+
+
         $ultimaEstacao = $this->entityManager
             ->getRepository('Application\Entity\Estacao')
             ->findUltimaEstacao();
 
-        $dataFinal = Data::dataToString($ultimaEstacao->getDataFinal());
+        if(!is_null($ultimaEstacao)) {
+            $dataFinal = Data::dataToString($ultimaEstacao->getDataFinal());
+            $anoDataFinal = substr($dataFinal, strrpos($dataFinal, '/') + 1);
+            $existeEstacaoNoAnoAtual = (date("Y") == $anoDataFinal);
+        }
 
-        $anoDataFinal = substr($dataFinal, strrpos($dataFinal, '/') + 1);
-
-        return (date("Y") == $anoDataFinal);
+        return $existeEstacaoNoAnoAtual;
     }
 
     public function listarAction()
@@ -107,19 +112,22 @@ class EstacaoController extends AbstractActionController
             $id = $this->request->getPost('id');
         }
 
-        $animal_classificacao = $this->entityManager->getRepository('Application\Entity\Animal_Classificacao')
-            ->findAllAnimaisNaEstacao($id);
+        $estacao = $this->entityManager->find('Application\Entity\Estacao', $id);
 
-        $animais = new ArrayCollection();
+        $animal_classificacao = $this->entityManager->getRepository('Application\Entity\Animal_Classificacao')
+            ->findAllAnimaisNaEstacao($estacao);
+
+        $animaisNaEstacao = new ArrayCollection();
 
         foreach ($animal_classificacao as $ac) {
-            $animais->add($ac->getAnimal());
+            $animaisNaEstacao->add($ac->getAnimal());
         }
 
         $this->entityManager->flush();
 
         $view_params = array(
-            'animais' => $animais,
+            'animais' => $animaisNaEstacao,
+            'estacao' => $estacao
         );
 
         return new ViewModel($view_params);

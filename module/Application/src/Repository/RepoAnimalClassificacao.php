@@ -12,14 +12,18 @@ use Doctrine\ORM\EntityRepository;
 
 class RepoAnimalClassificacao extends EntityRepository
 {
-    public function findAllAnimaisNaEstacao($idEstacao)
+    public function findAllAnimaisNaEstacao($estacao)
     {
         return $this->createQueryBuilder('ac')
             ->where('ac.classificacaoFinal IS NULL')
             ->andWhere('ac.estacao = :idEstacao')
-            ->setParameter('idEstacao', $idEstacao)
+            ->setParameter('idEstacao', $estacao)
             ->groupBy('ac.animal')
             ->getQuery()
             ->execute();
+    }
+
+    public function findAllAnimaisForaDaEstacao($estacao) {
+
     }
 }

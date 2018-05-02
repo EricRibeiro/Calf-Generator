@@ -23,7 +23,13 @@ class RepoAnimalClassificacao extends EntityRepository
             ->execute();
     }
 
-    public function findAllAnimaisForaDaEstacao($estacao) {
-
+    public function findAllAnimaisForaDeEstacao() {
+        return $this->createQuery('SELECT ac FROM AnimalClassificao ac JOIN Estacao e WHERE ac.estacao')
+            ->where('ac.classificacaoFinal IS NULL')
+            ->andWhere('ac.estacao IS NULL')
+            ->orWhere('ac.estacao')
+            ->groupBy('ac.animal')
+            ->getQuery()
+            ->execute();
     }
 }

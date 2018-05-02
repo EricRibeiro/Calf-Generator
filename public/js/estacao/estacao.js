@@ -42,3 +42,4 @@ function updateAnimalList() {
         $("input[name='lsIDsAnimais']").val(animais.join("-"));
     });
 }
+

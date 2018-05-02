@@ -102,13 +102,14 @@ class Animal
      */
     public function getDiasDesdeUltimoParto()
     {
+        $diferenca = "-";
         $hoje = new \DateTime();
-        $diferenca = date_diff($hoje, $this->dataUltimoParto, true)->days;
 
-        if (is_null($diferenca))
-            return "-";
-        else
-            return $diferenca;
+        if (!is_null($this->dataUltimoParto)) {
+            $diferenca = date_diff($hoje, $this->dataUltimoParto, true)->days;
+        }
+
+        return $diferenca;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Application\Controller;
 
 use Application\Entity\Animal;
 use Application\Helper\Data;
+use Application\Helper\HelperEstacao;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -43,60 +44,35 @@ class EstacaoController extends AbstractActionController
     public function cadastrarAction()
     {
         if ($this->request->isPost()) {
-            self::cadastrar();
+            $dataInicio = $this->request->getPost('dataInicioEstacao');
+            $dataFim = $this->request->getPost('dataTerminoEstacao');
+            $animais = $this->request->getPost('lsIDsAnimais');
+            $animais = explode("-", $animais);
+
+            $estacao = new Estacao($dataInicio, $dataFim);
+            $this->entityManager->persist($estacao);
+
+            foreach ($animais as $idAnimal) {
+                $this->cadastrarAnimalNaEstacao($idAnimal, $estacao);
+            }
+
+            $this->entityManager->flush();
+
+            $this->flashMessenger()->addSuccessMessage("Estação cadastrada com sucesso.");
+
+            return $this->redirect()->toRoute('app/estacao', array(
+                'controller' => 'estacao',
+                'action' => 'index',
+            ));
         }
 
-        $animais = $this->entityManager
-            ->getRepository('Application\Entity\Animal')
-            ->findAll();
-
-        $this->entityManager->flush();
-
         $view_params = array(
-            'animais' => $animais,
-            'existeEstacaoNoAnoAtual' => $this->existeEstacaoNoAnoAtual()
+            'animais' => $this->getAnimaisSemEstacao(),
+            'estacao' => $this->getEstacaoDoAnoAtual()
         );
 
         return new ViewModel($view_params);
 
-    }
-
-    private function cadastrar()
-    {
-        $dataInicio = $this->request->getPost('dataInicioEstacao');
-        $dataFim = $this->request->getPost('dataTerminoEstacao');
-        $animais = $this->request->getPost('lsIDsAnimais');
-        $animais = explode("-", $animais);
-
-        $estacao = new Estacao($dataInicio, $dataFim);
-        $this->entityManager->persist($estacao);
-
-        foreach ($animais as $idAnimal) {
-            $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
-            $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
-
-            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, $estacao);
-            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao);
-        }
-
-        $this->entityManager->flush();
-
-        return $this->redirect()->toRoute('app/estacao', array(
-            'controller' => 'estacao',
-            'action' => 'index',
-        ));
-    }
-
-    private function existeEstacaoNoAnoAtual() {
-        $ultimaEstacao = $this->entityManager
-            ->getRepository('Application\Entity\Estacao')
-            ->findUltimaEstacao();
-
-        $dataFinal = Data::dataToString($ultimaEstacao->getDataFinal());
-
-        $anoDataFinal = substr($dataFinal, strrpos($dataFinal, '/') + 1);
-
-        return (date("Y") == $anoDataFinal);
     }
 
     public function listarAction()
@@ -107,29 +83,67 @@ class EstacaoController extends AbstractActionController
             $id = $this->request->getPost('id');
         }
 
-        $animal_classificacao = $this->entityManager->getRepository('Application\Entity\Animal_Classificacao')
-            ->findAllAnimaisNaEstacao($id);
-
-        $animais = new ArrayCollection();
-
-        foreach ($animal_classificacao as $ac) {
-            $animais->add($ac->getAnimal());
-        }
-
-        $this->entityManager->flush();
+        $estacao = $this->entityManager->find('Application\Entity\Estacao', $id);
 
         $view_params = array(
-            'animais' => $animais,
+            'animaisNaEstacao' => $this->getAnimaisNaEstacao($estacao),
+            'animaisSemEstacao' => $this->getAnimaisSemEstacao(),
+            'estacao' => $estacao
         );
 
         return new ViewModel($view_params);
     }
 
-    public function removerAnimalAction()
-    {
-        $idAnimal = $this->params()->fromRoute('id');
-        $idEstacao = $this->params()->fromRoute('eid');
+    public function editarAction() {
+        $idEstacao = $this->params()->fromRoute('id');
+        $dataInicio = $this->request->getPost('dataInicioEstacao');
+        $dataFinal = $this->request->getPost('dataTerminoEstacao');
+        $lsIDsAnimaisAdicionados = $this->request->getPost('lsIDsAnimaisAdicionados');
+        $lsIDsAnimaisRemovidos = $this->request->getPost('lsIDsAnimaisRemovidos');
 
+        $estacao = $this->entityManager->find('Application\Entity\Estacao', $idEstacao);
+        $estacao->setDataInicio($dataInicio);
+        $estacao->setDataFinal($dataFinal);
+        $this->entityManager->persist($estacao);
+
+        if($lsIDsAnimaisAdicionados != '') {
+            $lsIDs = explode("-", $lsIDsAnimaisAdicionados);
+
+            foreach ($lsIDs as $idAnimal) {
+                $this->cadastrarAnimalNaEstacao($idAnimal, $estacao);
+            }
+
+        }
+
+        if($lsIDsAnimaisRemovidos != '') {
+            $lsIDs = explode("-", $lsIDsAnimaisRemovidos);
+
+            foreach ($lsIDs as $idAnimal) {
+                $this->removerAnimalDaEstacao($idAnimal, $estacao);
+            }
+
+        }
+
+        $this->entityManager->flush();
+
+        $this->flashMessenger()->addSuccessMessage("Estação alterada com sucesso.");
+
+        return $this->redirect()->toRoute('app/estacao', array(
+            'controller' => 'estacao',
+            'action' => 'index',
+        ));
+    }
+
+    private function cadastrarAnimalNaEstacao($idAnimal, $estacao) {
+        $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
+        $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
+
+        HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, $estacao);
+        HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao);
+    }
+
+    private function removerAnimalDaEstacao($idAnimal)
+    {
         $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
         $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
 
@@ -137,12 +151,57 @@ class EstacaoController extends AbstractActionController
         HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao);
 
         $this->entityManager->flush();
+    }
 
-        return $this->redirect()->toRoute('app/estacao', array(
-            'controller' => 'estacao',
-            'action' => 'listar',
-            'id' => $idEstacao
-        ));
+    private function getAnimaisNaEstacao($estacao) {
+        $animal_classificacao = $this->entityManager->getRepository('Application\Entity\Animal_Classificacao')
+            ->findAllAnimaisNaEstacao($estacao);
+
+        $animaisNaEstacao = new ArrayCollection();
+
+        foreach ($animal_classificacao as $ac) {
+            $animaisNaEstacao->add($ac->getAnimal());
+        }
+
+        $this->entityManager->flush();
+
+        return $animaisNaEstacao;
+    }
+
+    private function getAnimaisSemEstacao() {
+        $cronologia = $this->entityManager
+            ->getRepository('Application\Entity\Cronologia')
+            ->findAnimaisAptosOuPosParto();
+
+        $animais = new ArrayCollection();
+
+        foreach ($cronologia as $c) {
+            $estacao = HelperEstacao::getEstacao($c->getAnimal());
+
+            if(is_null($estacao)) {
+                $animais->add($c->getAnimal());
+            }
+        }
+
+        $this->entityManager->flush();
+
+        return $animais;
+    }
+
+    private function getEstacaoDoAnoAtual() {
+        $estacao = null;
+
+        $ultimaEstacao = $this->entityManager
+            ->getRepository('Application\Entity\Estacao')
+            ->findUltimaEstacao();
+
+        if(!is_null($ultimaEstacao)) {
+            $dataFinal = Data::dataToString($ultimaEstacao->getDataFinal());
+            $anoDataFinal = substr($dataFinal, strrpos($dataFinal, '/') + 1);
+            $estacao = (date("Y") == $anoDataFinal) ? $ultimaEstacao : null;
+        }
+
+        return $estacao;
     }
 }
 

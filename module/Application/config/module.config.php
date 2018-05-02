@@ -121,7 +121,6 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-//            Controller\DashboardController::class => InvokableFactory::class,
 
             Controller\DashboardController::class => function ($sm) {
                 return new DashboardController($sm);

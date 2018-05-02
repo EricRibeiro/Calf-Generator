@@ -1,90 +1,165 @@
+<?php $url = $this->url('app/estacao', ['controller' => 'estacao', 'action' => 'editar', 'id' => basename($_SERVER['REQUEST_URI'])]); ?>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="header">
-                    <h4 class="title">Animais da Estação</h4>
+                    <h4 class="title">Editar Dados da Estação</h4>
                 </div>
                 <div class="content">
-                    <table id="animais" class="table table-hover display" style="width:100%">
-                        <thead>
-                        <tr>
-                            <th hidden>#</th>
-                            <th>Número</th>
-                            <th>Classificação</th>
-                            <th>Data do Último Parto</th>
-                            <th hidden>Data do Último Parto - Sort</th>
-                            <th>Opções</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                    <form method="post" action="<?= $url; ?>">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Data de Início da Estação</label>
+                                    <input type="text"
+                                           class="form-control border-input validate-date"
+                                           name="dataInicioEstacao"
+                                           placeholder="Dia/Mês/Ano"
+                                           data-mask="00/00/0000"
+                                           oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
+                                           oninput="setCustomValidity('')"
+                                           value="<?= \Application\Helper\Data::dataToString($estacao->getDataInicio()); ?>"
+                                           required/>
+                                </div>
+                            </div>
 
-                        <?php foreach ($animais as $animal) { ?>
-                            <tr>
-                                <td hidden><?= $animal->getId(); ?></td>
-                                <td><?= $animal->getNumero(); ?></td>
-                                <td><?= $animal->getClassificacao(); ?></td>
-                                <td><?= $animal->dataToString($animal->getDataUltimoParto()); ?></td>
-                                <td hidden>
-                                    <?php
-                                    if ($animal->dataToString($animal->getDataUltimoParto()) == "-")
-                                        echo "00/00/0000";
-                                    else
-                                        echo $animal->dataToString($animal->getDataUltimoParto());
-                                    ?>
-                                </td>
-                                <td>
-                                    <a class="btn btn-info btn-fill" type="button"
-                                       href="<?= $this->url('app/animal', [
-                                           'action' => 'editar',
-                                           'id' => $animal->getId(),
-                                            ]) ?>"
-                                    >
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Data de Término da Estação</label>
+                                    <input type="text"
+                                           class="form-control border-input validate-date"
+                                           name="dataTerminoEstacao"
+                                           placeholder="Dia/Mês/Ano"
+                                           data-mask="00/00/0000"
+                                           oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
+                                           oninput="setCustomValidity('')"
+                                           value="<?= \Application\Helper\Data::dataToString($estacao->getDataFinal()); ?>"
+                                           required/>
+                                </div>
+                            </div>
+                        </div>
 
-                                    <a class="btn btn-danger btn-fill" href="<?= $this->url('app/estacao', [
-                                        'action' => 'remover-animal',
-                                        'id' => $animal->getId(),
-                                        'eid' => basename($_SERVER['REQUEST_URI'])]) ?>"
-                                    >
-                                        <i class="fa fa-trash" aria-hidden="true" type="hidden"></i>
-                                    </a>
-                                </td>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label style="font-size: 16px;">Animais da Estação</label>
+                                    <table id="animais" class="table table-hover display" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th hidden>Estado da Checkbox</th>
+                                            <th></th>
+                                            <th hidden>Objeto</th>
+                                            <th>Número</th>
+                                            <th>Classificação</th>
+                                            <th>Estado</th>
+                                            <th>Dias Desde o Último Parto</th>
+                                            <th hidden>Dias Desde o Último Parto - Sort</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <?php foreach ($animaisSemEstacao as $animal) { ?>
+                                            <tr>
+                                                <td hidden class="checkbox-value">0</td>
+
+                                                <td>
+                                                    <div class="checkbox">
+                                                        <input class="input-checkbox" type="checkbox"/>
+                                                    </div>
+                                                </td>
+
+                                                <td hidden class="idAnimal"><?= $animal->getId(); ?></td>
+                                                <td><?= $animal->getNumero(); ?></td>
+                                                <td><?= $animal->getClassificacao(); ?></td>
+                                                <td><?= $animal->getEstado(); ?></td>
+                                                <td><?= $animal->getDiasDesdeUltimoParto(); ?></td>
+                                                <td hidden>
+                                                    <?php if ($animal->getDiasDesdeUltimoParto() == "-")
+                                                        echo "9999";
+                                                    else
+                                                        echo $animal->getDiasDesdeUltimoParto();
+                                                    ?>
+                                                </td>
+
+                                            </tr>
+
+                                        <?php } ?>
+
+                                        <?php foreach ($animaisNaEstacao as $animal) { ?>
+                                            <tr>
+                                                <td hidden class="checkbox-value">1</td>
+
+                                                <td>
+                                                    <div class="checkbox">
+                                                        <input class="input-checkbox" type="checkbox" checked/>
+                                                    </div>
+                                                </td>
+
+                                                <td class="idAnimal" style="display: none"><?= $animal->getId(); ?></td>
+                                                <td><?= $animal->getNumero(); ?></td>
+                                                <td><?= $animal->getClassificacao(); ?></td>
+                                                <td><?= $animal->getEstado(); ?></td>
+                                                <td><?= $animal->getDiasDesdeUltimoParto(); ?></td>
+                                                <td hidden>
+                                                    <?php if ($animal->getDiasDesdeUltimoParto() == "-")
+                                                        echo "9999";
+                                                    else
+                                                        echo $animal->getDiasDesdeUltimoParto();
+                                                    ?>
+                                                </td>
+
+                                            </tr>
+
+                                        <?php } ?>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Listas de animais editados-->
+                        <input hidden type="text" name="lsIDsAnimaisAdicionados"/>
+                        <input hidden type="text" name="lsIDsAnimaisRemovidos"/>
+
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <button type="button" onclick="window.history.back()" class="btn btn-info btn-fill btn-wd">Cancelar</button>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <button type="submit" class="btn btn-info btn-fill btn-wd">Salvar</button>
+                            </div>
+                        </div>
 
 
-                            </tr>
-
-                        <?php } ?>
-
-                        </tbody>
-                    </table>
+                        <div class="clearfix"></div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<?php
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/estacao/listar.js');
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/datehelper.js');
+?>
+
 <script>
+
     jQuery(function ($) {
         $('#animais').DataTable({
             columnDefs: [
-                {"orderable": false, "targets": 5},
                 {targets: '_all', className: 'dt-center'},
-                {"orderData": [4], "targets": [3]},
+                {"orderData": [0], "targets": [1]},
+                {"orderData": [7], "targets": [6]}
             ],
-            aoColumns: [
-                null,
-                null,
-                null,
-                {"sType": "date-uk"},
-                {"sType": "date-uk"},
-                null,
-            ],
-            order: [[3, 'desc']],
-            paging: false
+            order: [[0, 'asc']],
+            paging: false,
+            searching: false
         });
-
-        $('#animais_filter label input').addClass('form-control border-input');
     });
+
 </script>

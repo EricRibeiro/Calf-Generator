@@ -2,7 +2,8 @@ jQuery(function ($) {
     updateAnimalList();
 });
 
-var animais = [];
+var lsAnimaisEstacaoOriginal = [];
+var lsAnimaisEstacaoPosEdicao = [];
 
 if (window.attachEvent) {
     window.attachEvent('onload', createAnimalList());
@@ -21,10 +22,11 @@ if (window.attachEvent) {
 
 function createAnimalList() {
     $("tbody tr").each(function () {
-        animais.push($(this).children(".idAnimal").html());
+        if($(this).find('.input-checkbox').is(':checked')) {
+            lsAnimaisEstacaoOriginal.push($(this).children(".idAnimal").html());
+            lsAnimaisEstacaoPosEdicao.push($(this).children(".idAnimal").html());
+        }
     });
-
-    $("input[name='lsIDsAnimais']").val(animais.join("-"));
 }
 
 function updateAnimalList() {
@@ -32,13 +34,23 @@ function updateAnimalList() {
 
         if ($(this).is(':checked')) {
             var elementoAdicionado = $(this).parent().parent().next().html();
-            animais.push(elementoAdicionado);
+            lsAnimaisEstacaoPosEdicao.push(elementoAdicionado);
 
         } else {
             var elementoRemovido = $(this).parent().parent().next().html();
-            animais = animais.filter(e => e !== elementoRemovido);
+            lsAnimaisEstacaoPosEdicao = lsAnimaisEstacaoPosEdicao.filter(e => e !== elementoRemovido);
         }
 
-        $("input[name='lsIDsAnimais']").val(animais.join("-"));
+        var lsDeAnimaisAdicionados = lsAnimaisEstacaoPosEdicao.filter(function(val) {
+            return lsAnimaisEstacaoOriginal.indexOf(val) == -1;
+        });
+
+        var lsDeAnimaisRemovidos = lsAnimaisEstacaoOriginal.filter(function(val) {
+            return lsAnimaisEstacaoPosEdicao.indexOf(val) == -1;
+        });
+
+        $("input[name='lsIDsAnimaisAdicionados']").val(lsDeAnimaisAdicionados.join("-"));
+        $("input[name='lsIDsAnimaisRemovidos']").val(lsDeAnimaisRemovidos.join("-"));
+
     });
 }

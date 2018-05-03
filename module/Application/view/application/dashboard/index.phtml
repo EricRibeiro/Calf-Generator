@@ -215,14 +215,12 @@
                             <thead>
                             <tr>
                                 <th class="text-center"><b>Número</b></th>
-                                <th class="text-center"><b>Protocolos</b></th>
                             </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($aptos as $c) { ?>
                                     <tr class="text-center">
                                         <td><?= $c->getAnimal()->getNumero(); ?></td>
-                                        <td><?= sizeof($c->getAnimal()->getProtocolos()); ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -251,16 +249,16 @@
                         <table class="table table-borderless">
                             <thead>
                             <tr>
-                                <th class="text-center"><b>Número</b></th>
-                                <th class="text-center"><b>Data da Inseminação</b></th>
-                                <th class="text-center"><b>Data do Diagnóstico</b></th>
+                                <th class="text-center"><b>Nº do Animal</b></th>
+                                <th class="text-center"><b>Protocolo</b></th>
+                                <th class="text-center"><b>Data do Diagnóstico 1</b></th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php foreach ($diagnostico1 as $d1) { ?>
                                 <tr class="text-center">
                                     <td><?= $d1->getAnimal()->getNumero(); ?></td>
-                                    <td><?= \Application\Helper\Data::dataToString($d1->getAnimal()->getUltimaIA()->getDataInseminacao()); ?></td>
+                                    <td><?= 'Protocolo ' . $d1->getAnimal()->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
                                     <td><?= \Application\Helper\Data::dataToString($d1->getAnimal()->getUltimaIA()->getDataDiagnostico1()); ?></td>
                                 </tr>
                             <?php } ?>
@@ -290,16 +288,16 @@
                         <table class="table table-borderless">
                             <thead>
                             <tr>
-                                <th class="text-center"><b>Número</b></th>
-                                <th class="text-center"><b>Data da Inseminação</b></th>
-                                <th class="text-center"><b>Data do Diagnóstico</b></th>
+                                <th class="text-center"><b>Nº do Animal</b></th>
+                                <th class="text-center"><b>Protocolo</b></th>
+                                <th class="text-center"><b>Data do Diagnóstico 2</b></th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php foreach ($diagnostico2 as $d2) { ?>
                                 <tr class="text-center">
-                                    <td><?= $d1->getAnimal()->getNumero(); ?></td>
-                                    <td><?= \Application\Helper\Data::dataToString($d2->getAnimal()->getUltimaIA()->getDataInseminacao()); ?></td>
+                                    <td><?= $d2->getAnimal()->getNumero(); ?></td>
+                                    <td><?= 'Protocolo ' . $d2->getAnimal()->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
                                     <td><?= \Application\Helper\Data::dataToString($d2->getAnimal()->getUltimaIA()->getDataDiagnostico2()); ?></td>
                                 </tr>
                             <?php } ?>

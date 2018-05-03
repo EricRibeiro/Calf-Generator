@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\DateTimeType;
 use Application\Helper\Data;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Application\Repository\RepoAnimal")
  * @ORM\Table(uniqueConstraints={@UniqueConstraint(name="numero_uniq", columns={"numero"})})
  */
 class Animal
@@ -126,19 +126,6 @@ class Animal
     public function getIAs()
     {
         return $this->ias;
-    }
-
-    public function getProtocolos()
-    {
-        $protocolos = new ArrayCollection();
-
-        foreach ($this->ias as $ia) {
-            if (is_null($ia->getNumeroProtocolo())) {
-                $protocolos->add($ia);
-            }
-        }
-
-        return $protocolos;
     }
 
     /**

@@ -1,4 +1,7 @@
+<?php $url = $this->url('app/protocolo', ['controller' => 'protocolo', 'action' => 'alterarEstado', 'id' => basename($_SERVER['REQUEST_URI']), 'pid' => $proximoEstado->getId()]); ?>
+
 <div class="container-fluid">
+    <?php echo $this->flashHelper(); ?>
     <div class="row">
         <div class="col-lg-12 col-md-12">
             <div class="card">
@@ -6,80 +9,71 @@
                     <h4 class="title">Animais do Protocolo <?= basename($_SERVER['REQUEST_URI']) ?></h4>
                 </div>
                 <div class="content">
-                    <table id="animais" class="table table-hover display" style="width:100%">
-                        <thead>
-                        <tr>
-                            <th hidden>#</th>
-                            <th>Número</th>
-                            <th>Classificação</th>
-                            <th>Estado</th>
-                            <th>Data do Último Parto</th>
-                            <th hidden>Data do Último Parto - Sort</th>
-                            <th>Opções</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <?php foreach ($animais as $animal) { ?>
+                    <form method="post" action="<?= $url; ?>">
+                        <table id="animais" class="table table-hover display" style="width:100%">
+                            <thead>
                             <tr>
-                                <td hidden><?= $animal->getId(); ?></td>
-                                <td><?= $animal->getNumero(); ?></td>
-                                <td><?= $animal->getClassificacao(); ?></td>
-                                <td><?= $animal->getEstado(); ?></td>
-
-                                <td><?= $animal->dataToString($animal->getDataUltimoParto()); ?></td>
-                                <td hidden>
-                                    <?php
-                                    if ($animal->dataToString($animal->getDataUltimoParto()) == "-")
-                                        echo "00/00/0000";
-                                    else
-                                        echo $animal->dataToString($animal->getDataUltimoParto());
-                                    ?>
-                                </td>
-
-                                <td>
-                                    <a class="btn btn-info btn-fill" type="button"
-                                       href="<?= $this->url('app/animal', [
-                                           'action' => 'editar',
-                                           'id' => $animal->getId(),
-                                       ]) ?>"
-                                    >
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
-                                </td>
-
-
+                                <th hidden>#</th>
+                                <th>Número</th>
+                                <th>Estado Atual</th>
+                                <th>Próximo Estado</th>
                             </tr>
+                            </thead>
+                            <tbody>
 
-                        <?php } ?>
+                            <?php foreach ($animais as $animal) { ?>
+                                <tr>
+                                    <td hidden id="idAnimal"><?= $animal->getId(); ?></td>
+                                    <td><?= $animal->getNumero(); ?></td>
+                                    <td><?= $animal->getEstado(); ?></td>
+                                    <td>
+                                        <?php if ($animal->getEstado() == 'Gestante') { ?>
+                                            <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                        <?php } else { ?>
+                                            <select class="form-control border-input" name="estado">
+                                                <option value="<?= $proximoEstado->getId(); ?>"
+                                                        selected="selected"><?= $proximoEstado->getEstado(); ?></option>
+                                                <option value="1">Apto</option>
+                                            </select>
+                                        <?php }; ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+
+                        <!-- Lista de Animais e seus respectivos Estados -->
+                        <input hidden name="lsIDsAnimaisEstados" required/>
+
+                        <div class="text-center ">
+                            <?php if ($animal->getEstado() == 'Gestante') { ?>
+                                <button type="button" onclick="window.history.back()" class="btn btn-info btn-fill btn-wd">Voltar</button>
+                            <?php } else { ?>
+                                <button type="submit" class="btn btn-info btn-fill btn-wd">Salvar</button>
+                            <?php }; ?>
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<?php echo $this->inlineScript()->prependFile($this->basePath() . '/js/protocolo/protocolo-alterar-estado.js'); ?>
+
 <script>
     jQuery(function ($) {
         $('#animais').DataTable({
             columnDefs: [
-                {"orderable": false, "targets": 6},
+                {"orderable": false, "targets": 3},
                 {targets: '_all', className: 'dt-center'},
-                {"orderData": [5], "targets": [4]},
             ],
-            aoColumns: [
-                null,
-                null,
-                null,
-                null,
-                {"sType": "date-uk"},
-                {"sType": "date-uk"},
-                null,
-            ],
-            order: [[4, 'desc']],
-            paging: false
+            order: [[1, 'desc']],
+            paging: false,
+            scrollY: "600px",
+            scrollCollapse: true,
         });
 
         $('#animais_filter label input').addClass('form-control border-input');

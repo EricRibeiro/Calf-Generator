@@ -13,10 +13,10 @@
                         <tr>
                             <th>Nº Protocolo</th>
                             <th>Inseminação</th>
-                            <th>Retorno ao Cio</th>
                             <th>Diagnóstico 1</th>
                             <th>Diagnóstico 2</th>
-                            <th>Detalhes</th>
+                            <th>Estado</th>
+                            <th>Alterar Estado</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -24,14 +24,20 @@
                         <?php foreach ($ias as $ia) { ?>
 
                             <tr>
-                                <td><?= $ia->getNumeroProtocolo(); ?></td>
+                                <td><b><?= $ia->getProtocolo()->getNumero(); ?></b></td>
                                 <td><?= $ia->dataToString($ia->getDataInseminacao()); ?></td>
-                                <td><?= $ia->dataToString($ia->getDataRetornoAoCio()); ?></td>
                                 <td><?= $ia->dataToString($ia->getDataDiagnostico1()); ?></td>
                                 <td><?= $ia->dataToString($ia->getDataDiagnostico2()); ?></td>
                                 <td>
+                                    <?php if ($ia->getProtocolo()->getEstado()->getEstado() == 'Gestante') { ?>
+                                        <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                    <?php } else { ?>
+                                        <?= $ia->getProtocolo()->getEstado()->getEstado(); ?>
+                                    <?php } ?>
+                                </td>
+                                <td>
                                     <a type="button"
-                                       href="<?= $this->url('app/protocolo', ['action' => 'listar', 'id' => $ia->getNumeroProtocolo()]) ?>"
+                                       href="<?= $this->url('app/protocolo', ['action' => 'listar', 'id' => $ia->getProtocolo()->getNumero()]) ?>"
                                        class="btn btn-info btn-fill">
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </a>
@@ -51,7 +57,7 @@
     jQuery(function ($) {
         $('#animais').DataTable({
             columnDefs: [
-                { "orderable": false, "targets": 5 },
+                {"orderable": false, "targets": 5},
                 {targets: '_all', className: 'dt-center'},
             ],
             aoColumns: [
@@ -59,7 +65,7 @@
                 {"sType": "date-uk"},
                 {"sType": "date-uk"},
                 {"sType": "date-uk"},
-                {"sType": "date-uk"},
+                null,
                 null
             ],
             order: [[0, 'desc']],

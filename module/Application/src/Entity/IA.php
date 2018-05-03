@@ -33,9 +33,10 @@ class IA
     private $estacao;
 
     /**
-     * @ORM\Column(type="integer", nullable=true, options={"unsigned":true})
+     * @ORM\ManyToOne(targetEntity="Protocolo", inversedBy="ias")
+     * @ORM\JoinColumn(name="id_protocolo", referencedColumnName="id")
      */
-    private $numeroProtocolo;
+    private $protocolo;
 
     /**
      * @ORM\Column(type="date")
@@ -61,16 +62,17 @@ class IA
      * IA constructor.
      * @param $animal
      * @param $estacao
-     * @param $numeroProtocolo
+     * @param $protocolo
      * @param $dataInseminacao
      * @param $dataRetornoAoCio
-     * @param $dataDiagnostico
+     * @param $dataDiagnostico1
+     * @param $dataDiagnostico2
      */
-    public function __construct($animal, $estacao, $numeroProtocolo, $dataInseminacao, $dataRetornoAoCio, $dataDiagnostico1, $dataDiagnostico2)
+    public function __construct($animal, $estacao, $protocolo, $dataInseminacao, $dataRetornoAoCio, $dataDiagnostico1, $dataDiagnostico2)
     {
         $this->animal = $animal;
         $this->estacao = $estacao;
-        $this->numeroProtocolo = $numeroProtocolo;
+        $this->protocolo = $protocolo;
         $this->setDataInseminacao($dataInseminacao);
         $this->setDataRetornoAoCio($dataRetornoAoCio);
         $this->setDataDiagnostico1($dataDiagnostico1);
@@ -128,17 +130,17 @@ class IA
     /**
      * @return mixed
      */
-    public function getNumeroProtocolo()
+    public function getProtocolo()
     {
-        return $this->numeroProtocolo;
+        return $this->protocolo;
     }
 
     /**
      * @param mixed $numeroProtocolo
      */
-    public function setNumeroProtocolo($numeroProtocolo)
+    public function setNumeroProtocolo($protocolo)
     {
-        $this->numeroProtocolo = $numeroProtocolo;
+        $this->protocolo = $protocolo;
     }
 
     /**

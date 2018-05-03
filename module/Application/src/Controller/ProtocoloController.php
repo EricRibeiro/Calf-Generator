@@ -8,6 +8,7 @@
 
 namespace Application\Controller;
 
+use Application\Entity\Protocolo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -30,7 +31,7 @@ class ProtocoloController extends AbstractActionController
         $ias = $this->entityManager
             ->getRepository('Application\Entity\IA')
             ->createQueryBuilder('ia')
-            ->groupBy('ia.numeroProtocolo')
+            ->groupBy('ia.protocolo')
             ->getQuery()
             ->getResult();
 
@@ -88,12 +89,14 @@ class ProtocoloController extends AbstractActionController
         $animais = explode("-", $animais);
         $estacao = $this->entityManager->find('Application\Entity\Estacao', $idEstacao);
         $estado = $this->entityManager->find('Application\Entity\Estado', 2);
+        $protocolo = new Protocolo($numeroDoProtocolo, $estado);
+        $this->entityManager->persist($protocolo);
 
         foreach ($animais as $idAnimal) {
             $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
             $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
 
-            $ia = new IA($animal, $estacao, $numeroDoProtocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2);
+            $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2);
             $this->entityManager->persist($ia);
 
             HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
@@ -102,7 +105,6 @@ class ProtocoloController extends AbstractActionController
         $this->entityManager->flush();
 
         $this->flashMessenger()->addSuccessMessage("Protocolo cadastrado com sucesso.");
-
         return $this->redirect()->toRoute('app/protocolo', array(
             'controller' => 'protocolo',
             'action' => 'index',
@@ -111,25 +113,77 @@ class ProtocoloController extends AbstractActionController
 
     public function listarAction() {
         $numProtocolo = $this->params()->fromRoute('id');
+        $protocolo = $this->entityManager
+            ->getRepository('Application\Entity\Protocolo')
+            ->findOneBy(array('numero' => $numProtocolo));
 
-        $ias = $this->entityManager
-            ->getRepository('Application\Entity\IA')
-            ->createQueryBuilder('ia')
-            ->where('ia.numeroProtocolo = :numProtocolo')
-            ->setParameter('numProtocolo', $numProtocolo)
-            ->getQuery()
-            ->getResult();
+        if(!is_null($protocolo)) {
+            $proximoEstado = $protocolo->getEstado()->getId() + 1;
+            $proximoEstado = $this->entityManager->find('Application\Entity\Estado', $proximoEstado);
 
-        $animais = new ArrayCollection();
+            $animais = $this->entityManager
+                ->getRepository('Application\Entity\Animal')
+                ->findAllAnimaisNoProtocolo($protocolo);
 
-        foreach ($ias as $ia) {
-            $animais->add($ia->getAnimal());
+            $view_params = array(
+                'animais' => $animais,
+                'proximoEstado' => $proximoEstado
+            );
+
+            return new ViewModel($view_params);
         }
 
-        $view_params = array(
-            'animais' => $animais
-        );
+        return $this->redirect()->toRoute('app/protocolo', array(
+            'controller' => 'protocolo',
+            'action' => 'index'
+        ));
+    }
 
-        return new ViewModel($view_params);
+    public function alterarEstadoAction() {
+        if ($this->request->isPost()) {
+            $numProtocolo = $this->params()->fromRoute('id');
+            $idEstado = $this->params()->fromRoute('pid');
+            $lsIDsAnimaisEstados = $this->request->getPost('lsIDsAnimaisEstados');
+
+            $estado = $this->entityManager->find('Application\Entity\Estado', $idEstado);
+
+            $protocolo = $this->entityManager
+                ->getRepository('Application\Entity\Protocolo')
+                ->findOneBy(array('numero' => $numProtocolo));
+            $protocolo->setEstado($estado);
+
+            $this->entityManager->persist($protocolo);
+
+            $lsIDsAnimaisEstados = explode("-", $lsIDsAnimaisEstados);
+
+            foreach ($lsIDsAnimaisEstados as $ids) {
+                $tupla = explode("/", $ids);
+                $idAnimal = $tupla[0];
+                $idEstado = $tupla[1];
+
+                $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
+                $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
+                $ia = $this->entityManager
+                    ->getRepository('Application\Entity\IA')
+                    ->findOneBy(array('protocolo' => $protocolo, 'animal' => $animal));
+                $estacao = $ia->getEstacao();
+                $estado = $this->entityManager->find('Application\Entity\Estado', $idEstado);
+
+                HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
+            }
+
+            $this->entityManager->flush();
+
+            $this->flashMessenger()->addSuccessMessage("Estados alterados com sucesso.");
+            return $this->redirect()->toRoute('app/protocolo', array(
+                'controller' => 'protocolo',
+                'action' => 'index',
+            ));
+        }
+
+        return $this->redirect()->toRoute('app/protocolo', array(
+            'controller' => 'protocolo',
+            'action' => 'index'
+        ));
     }
 }

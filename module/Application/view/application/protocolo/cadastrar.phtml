@@ -28,19 +28,19 @@
                                 <div class="form-group">
                                     <label>Estação</label>
                                     <select class="form-control border-input" id="sel1" name="idEstacao">
-                                            <?php if (!is_null($estacao)) { ?>
-                                                <option value="<?= $estacao->getId(); ?>">
-                                                    <?= \Application\Helper\Data::dataToString($estacao->getDataInicio()); ?>
-                                                    até
-                                                    <?= \Application\Helper\Data::dataToString($estacao->getDataFinal()); ?>
-                                                </option>
+                                        <?php if (!is_null($estacao)) { ?>
+                                            <option value="<?= $estacao->getId(); ?>">
+                                                <?= \Application\Helper\Data::dataToString($estacao->getDataInicio()); ?>
+                                                até
+                                                <?= \Application\Helper\Data::dataToString($estacao->getDataFinal()); ?>
+                                            </option>
 
-                                            <?php } else { ?>
-                                                <option>
-                                                    -
-                                                </option>
+                                        <?php } else { ?>
+                                            <option>
+                                                -
+                                            </option>
 
-                                            <?php } ?>
+                                        <?php } ?>
                                     </select>
                                 </div>
                             </div>
@@ -126,7 +126,7 @@
 
                                         <?php foreach ($animais as $animal) { ?>
 
-                                            <?php if($animal->getDiasDesdeUltimoParto() < 40 && $animal->getDiasDesdeUltimoParto() != "-") {?>
+                                            <?php if ($animal->getDiasDesdeUltimoParto() < 40 && $animal->getDiasDesdeUltimoParto() != "-") { ?>
 
                                                 <tr class="text-danger">
                                                 <td>
@@ -144,19 +144,19 @@
                                                 </td>
                                             <?php } ?>
 
-                                                <td class="idAnimal" style="display: none"><?= $animal->getId(); ?></td>
-                                                <td><?= $animal->getNumero(); ?></td>
-                                                <td><?= $animal->getClassificacao(); ?></td>
-                                                <td><?= $animal->getEstado(); ?></td>
-                                                <td><?= $animal->getDiasDesdeUltimoParto(); ?></td>
-                                                <td hidden>
-                                                    <?php
-                                                    if ($animal->getDiasDesdeUltimoParto() == "-")
-                                                        echo "9999";
-                                                    else
-                                                        echo $animal->getDiasDesdeUltimoParto();
-                                                    ?>
-                                                </td>
+                                            <td class="idAnimal" style="display: none"><?= $animal->getId(); ?></td>
+                                            <td><?= $animal->getNumero(); ?></td>
+                                            <td><?= $animal->getClassificacao(); ?></td>
+                                            <td><?= $animal->getEstado(); ?></td>
+                                            <td><?= $animal->getDiasDesdeUltimoParto(); ?></td>
+                                            <td hidden>
+                                                <?php
+                                                if ($animal->getDiasDesdeUltimoParto() == "-")
+                                                    echo "9999";
+                                                else
+                                                    echo $animal->getDiasDesdeUltimoParto();
+                                                ?>
+                                            </td>
 
                                             </tr>
 
@@ -168,13 +168,8 @@
                             </div>
                         </div>
 
-                        <div class="row" style="display: none;">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="text" name="lsIDsAnimais" required/>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Lista de Animais -->
+                        <input hidden name="lsIDsAnimais" required/>
 
                         <div class="text-center ">
                             <button type="submit" class="btn btn-info btn-fill btn-wd">Cadastrar</button>

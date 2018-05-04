@@ -88,6 +88,8 @@ class ProtocoloController extends AbstractActionController
             $this->entityManager->persist($ia);
 
             HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
+
+            $this->entityManager->flush();
         }
 
         $this->entityManager->flush();

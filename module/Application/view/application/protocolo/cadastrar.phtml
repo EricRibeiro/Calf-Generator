@@ -1,6 +1,20 @@
 <?php $url = $this->url('app/protocolo', ['controller' => 'protocolo', 'action' => 'cadastrar']); ?>
+<?php $this->headLink()->appendStylesheet($this->basePath() . '/css/protocolo/protocolo.css'); ?>
 
 <div class="container-fluid">
+    <?php if (is_null($estacao)) { ?>
+
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <ul>
+                <li>Não existe estação em andamento. Você deve criar uma para cadastrar um protocolo, bastar clicar
+                    <a href="<?= $this->url('app/estacao', array('controller' => 'estacao', 'action' => 'cadastrar')); ?>"><strong>aqui</strong></a>.
+                </li>
+            </ul>
+        </div>
+
+    <?php } ?>
+
     <div class="row">
         <div class="col-lg-12 col-md-12">
             <div class="card">
@@ -20,6 +34,9 @@
                                            pattern="[0-9]"
                                            oninvalid="this.setCustomValidity('Insira um número válido')"
                                            oninput="setCustomValidity('')"
+                                        <?php if (!is_null($estacao)) { ?>
+                                            value="<?= $numProxProtocolo; ?>"
+                                        <?php } ?>
                                            required/>
                                 </div>
                             </div>
@@ -36,9 +53,7 @@
                                             </option>
 
                                         <?php } else { ?>
-                                            <option>
-                                                Não existem estações cadastradas.
-                                            </option>
+                                            <option></option>
 
                                         <?php } ?>
                                     </select>
@@ -72,6 +87,7 @@
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
                                            oninput="setCustomValidity('')"
                                            required/>
+                                    <p hidden class="text-info date-info"></p>
                                 </div>
                             </div>
                         </div>
@@ -88,6 +104,7 @@
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
                                            oninput="setCustomValidity('')"
                                            required/>
+                                    <p hidden class="text-info date-info"></p>
                                 </div>
                             </div>
 
@@ -102,6 +119,7 @@
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
                                            oninput="setCustomValidity('')"
                                            required/>
+                                    <p hidden class="text-info date-info"></p>
                                 </div>
                             </div>
                         </div>

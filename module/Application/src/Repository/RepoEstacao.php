@@ -12,9 +12,15 @@ use Doctrine\ORM\EntityRepository;
 
 class RepoEstacao extends EntityRepository
 {
-    public function findUltimaEstacao() {
-        return $this->createQueryBuilder('estacao')
-            ->orderBy("estacao.id", "DESC")
+    /**
+     * @return \Application\Entity\Estacao | Null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findUltimaEstacaoNoAno()  {
+
+        return $this->createQueryBuilder('e')
+            ->where('DATE_DIFF(CURRENT_DATE(), e.dataFinal) <= 0')
+            ->orderBy("e.id", "DESC")
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

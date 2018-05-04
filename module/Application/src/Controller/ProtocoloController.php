@@ -9,6 +9,7 @@
 namespace Application\Controller;
 
 use Application\Entity\Protocolo;
+use Application\Helper\HelperQuery;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Entity\IA;
@@ -49,16 +50,21 @@ class ProtocoloController extends AbstractActionController
 
         $estacao = $this->entityManager
             ->getRepository('Application\Entity\Estacao')
-            ->findUltimaEstacao();
+            ->findUltimaEstacaoNoAno();
 
         $minimoDeDias = 35  ;
         $animais = $this->entityManager
             ->getRepository('Application\Entity\Animal')
             ->findAllAnimaisAptosOuPosPartoComMinimoDeDiasNaUltimaEstacao($estacao, $minimoDeDias);
 
+        $repositorioProtocolo = $this->entityManager->getRepository('Application\Entity\Protocolo');
+        $ultimoProtocolo = HelperQuery::getUltimaInsercao($repositorioProtocolo);
+        $numProxProtocolo = $ultimoProtocolo->getNumero() + 1;
+
         $view_params = array(
             'estacao' => $estacao,
-            'animais' => $animais
+            'animais' => $animais,
+            'numProxProtocolo' => $numProxProtocolo
         );
 
         return new ViewModel($view_params);

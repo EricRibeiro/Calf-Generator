@@ -175,7 +175,7 @@ class EstacaoController extends AbstractActionController
 
         $ultimaEstacao = $this->entityManager
             ->getRepository('Application\Entity\Estacao')
-            ->findUltimaEstacao();
+            ->findUltimaEstacaoNoAno();
 
         if (!is_null($ultimaEstacao)) {
             $dataFinal = Data::dataToString($ultimaEstacao->getDataFinal());

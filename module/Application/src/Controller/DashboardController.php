@@ -22,7 +22,7 @@ class DashboardController extends AbstractActionController
     {
         $estacao = $this->entityManager
             ->getRepository('Application\Entity\Estacao')
-            ->findUltimaEstacao();
+            ->findUltimaEstacaoNoAno();
 
         $animaisAptos = $this->entityManager
             ->getRepository('Application\Entity\Animal')

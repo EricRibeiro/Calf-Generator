@@ -24,27 +24,27 @@ class DashboardController extends AbstractActionController
             ->getRepository('Application\Entity\Estacao')
             ->findUltimaEstacao();
 
-        $aptos = $this->entityManager
-            ->getRepository('Application\Entity\Cronologia')
+        $animaisAptos = $this->entityManager
+            ->getRepository('Application\Entity\Animal')
             ->findAnimaisPorEstadoNaUltimaEstacao(1, $estacao);
 
-        $diagnostico1 = $this->entityManager
-            ->getRepository('Application\Entity\Cronologia')
+        $animaisD1 = $this->entityManager
+            ->getRepository('Application\Entity\Animal')
             ->findAnimaisPorEstadoNaUltimaEstacao(2, $estacao);
 
-        $diagnostico2 = $this->entityManager
-            ->getRepository('Application\Entity\Cronologia')
+        $animaisD2 = $this->entityManager
+            ->getRepository('Application\Entity\Animal')
             ->findAnimaisPorEstadoNaUltimaEstacao(3, $estacao);
 
-        $posparto = $this->entityManager
-            ->getRepository('Application\Entity\Cronologia')
+        $animaisPosParto = $this->entityManager
+            ->getRepository('Application\Entity\Animal')
             ->findAnimaisPorEstadoNaUltimaEstacao(5, $estacao);
 
         $view_params = array(
-            'aptos' => $aptos,
-            'diagnostico1' => $diagnostico1,
-            'diagnostico2' => $diagnostico2,
-            'posparto' => $posparto,
+            'animaisAptos' => $animaisAptos,
+            'animaisD1' => $animaisD1,
+            'animaisD2' => $animaisD2,
+            'animaisPosParto' => $animaisPosParto,
             'estacao' => $estacao
         );
 

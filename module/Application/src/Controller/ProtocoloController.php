@@ -9,7 +9,6 @@
 namespace Application\Controller;
 
 use Application\Entity\Protocolo;
-use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Entity\IA;
@@ -35,8 +34,6 @@ class ProtocoloController extends AbstractActionController
             ->getQuery()
             ->getResult();
 
-        $this->entityManager->flush();
-
         $view_params = array(
             'ias' => $ias,
         );
@@ -54,19 +51,10 @@ class ProtocoloController extends AbstractActionController
             ->getRepository('Application\Entity\Estacao')
             ->findUltimaEstacao();
 
-        $cronologias = $this->entityManager
-            ->getRepository('Application\Entity\Cronologia')
-            ->findAnimaisAptosOuPosPartoNaUltimaEstacao($estacao);
-
-        $animais = new ArrayCollection();
-
-        foreach ($cronologias as $c) {
-            if ($c->getAnimal()->getDiasDesdeUltimoParto() > 35 || $c->getAnimal()->getDiasDesdeUltimoParto() == "-") {
-                $animais->add($c->getAnimal());
-            }
-        }
-
-        $this->entityManager->flush();
+        $minimoDeDias = 35  ;
+        $animais = $this->entityManager
+            ->getRepository('Application\Entity\Animal')
+            ->findAllAnimaisAptosOuPosPartoComMinimoDeDiasNaUltimaEstacao($estacao, $minimoDeDias);
 
         $view_params = array(
             'estacao' => $estacao,
@@ -170,6 +158,8 @@ class ProtocoloController extends AbstractActionController
                 $estado = $this->entityManager->find('Application\Entity\Estado', $idEstado);
 
                 HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
+
+                $this->entityManager->flush();
             }
 
             $this->entityManager->flush();

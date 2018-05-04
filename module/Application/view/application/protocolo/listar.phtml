@@ -28,7 +28,7 @@
                                     <td><?= $animal->getEstado(); ?></td>
                                     <td>
                                         <?php if ($animal->getEstado() == 'Gestante') { ?>
-                                            <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                            -
                                         <?php } else { ?>
                                             <select class="form-control border-input" name="estado">
                                                 <option value="<?= $proximoEstado->getId(); ?>"
@@ -46,14 +46,24 @@
                         <!-- Lista de Animais e seus respectivos Estados -->
                         <input hidden name="lsIDsAnimaisEstados" required/>
 
-                        <div class="text-center ">
+                        <div class="row">
                             <?php if ($animal->getEstado() == 'Gestante') { ?>
-                                <button type="button" onclick="window.history.back()" class="btn btn-info btn-fill btn-wd">Voltar</button>
+                            <div class="col-md-12 text-center">
+                                <button type="button" onclick="window.history.back()"
+                                        class="btn btn-info btn-fill btn-wd">Voltar
+                                </button>
+                            </div>
                             <?php } else { ?>
-                                <button type="submit" class="btn btn-info btn-fill btn-wd">Salvar</button>
+                                <div class="col-md-6 text-center">
+                                    <button type="button" onclick="window.history.back()"
+                                            class="btn btn-info btn-fill btn-wd">Cancelar
+                                    </button>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <button type="submit" class="btn btn-info btn-fill btn-wd">Salvar</button>
+                                </div>
                             <?php }; ?>
                         </div>
-
                     </form>
                 </div>
             </div>

@@ -12,9 +12,9 @@
                         <thead>
                         <tr>
                             <th>Nº Protocolo</th>
-                            <th>Inseminação</th>
-                            <th>Diagnóstico 1</th>
-                            <th>Diagnóstico 2</th>
+                            <th>Data da Inseminação</th>
+                            <th>Data do Próximo Diagnóstico</th>
+                            <th hidden>Data do Próximo Diagnóstico - Sort</th>
                             <th>Estado</th>
                             <th>Alterar Estado</th>
                         </tr>
@@ -25,16 +25,43 @@
 
                             <tr>
                                 <td><b><?= $ia->getProtocolo()->getNumero(); ?></b></td>
-                                <td><?= $ia->dataToString($ia->getDataInseminacao()); ?></td>
-                                <td><?= $ia->dataToString($ia->getDataDiagnostico1()); ?></td>
-                                <td><?= $ia->dataToString($ia->getDataDiagnostico2()); ?></td>
+                                <td><?= \Application\Helper\Data::dataToString($ia->getDataInseminacao()); ?></td>
+
+                                <td>
+                                    <?php if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 1') { ?>
+                                        <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico1()); ?>
+
+                                    <?php } else if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 2') { ?>
+                                        <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico2()); ?>
+
+                                    <?php } else { ?>
+                                        -
+
+                                    <?php }; ?>
+                                </td>
+
+                                <td hidden>
+                                    <?php if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 1') { ?>
+                                        <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico1()); ?>
+
+                                    <?php } else if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 2') { ?>
+                                        <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico2()); ?>
+
+                                    <?php } else { ?>
+                                        00/00/0000
+
+                                    <?php }; ?>
+                                </td>
+
                                 <td>
                                     <?php if ($ia->getProtocolo()->getEstado()->getEstado() == 'Gestante') { ?>
+                                        <i class="text-success">Finalizado</i>
                                         <i class="fa fa-check text-success" aria-hidden="true"></i>
                                     <?php } else { ?>
-                                        <?= $ia->getProtocolo()->getEstado()->getEstado(); ?>
+                                        <i><?= $ia->getProtocolo()->getEstado()->getEstado(); ?></i>
                                     <?php } ?>
                                 </td>
+
                                 <td>
                                     <a type="button"
                                        href="<?= $this->url('app/protocolo', ['action' => 'listar', 'id' => $ia->getProtocolo()->getNumero()]) ?>"
@@ -58,6 +85,7 @@
         $('#animais').DataTable({
             columnDefs: [
                 {"orderable": false, "targets": 5},
+                {"orderData": [3], "targets": [2]},
                 {targets: '_all', className: 'dt-center'},
             ],
             aoColumns: [

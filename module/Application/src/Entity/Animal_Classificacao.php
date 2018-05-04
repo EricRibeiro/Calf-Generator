@@ -13,7 +13,7 @@ use Application\Entity\Classificacao;
 use Application\Helper\Data;
 
 /**
- * @ORM\Entity(repositoryClass="Application\Repository\RepoAnimalClassificacao")
+ * @ORM\Entity
  */
 class Animal_Classificacao
 {

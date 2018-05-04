@@ -13,7 +13,7 @@
                         <div class="col-xs-7">
                             <div class="numbers">
                                 <p>Aptos</p>
-                                <?= sizeof($aptos); ?>
+                                <?= sizeof($animaisAptos); ?>
                             </div>
                         </div>
                     </div>
@@ -21,7 +21,7 @@
                         <hr/>
                         <div class="stats">
                             <i class="fa fa-info" aria-hidden="true"></i>
-                            <?php if (sizeof($aptos) > 0) { ?>
+                            <?php if (sizeof($animaisAptos) > 0) { ?>
                                 <a data-toggle="modal" href="#modalAptos">Detalhes dos Animais</a>
                             <?php } else { ?>
                                 Detalhes dos Animais
@@ -44,7 +44,7 @@
                         <div class="col-xs-7">
                             <div class="numbers">
                                 <p>Diagnóstico 1</p>
-                                <?= sizeof($diagnostico1); ?>
+                                <?= sizeof($animaisD1); ?>
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                         <hr/>
                         <div class="stats">
                             <i class="fa fa-info" aria-hidden="true"></i>
-                            <?php if (sizeof($diagnostico1) > 0) { ?>
+                            <?php if (sizeof($animaisD1) > 0) { ?>
                                 <a data-toggle="modal" href="#modalDiagnostico1">Detalhes dos Animais</a>
                             <?php } else { ?>
                                 Detalhes dos Animais
@@ -75,7 +75,7 @@
                         <div class="col-xs-7">
                             <div class="numbers">
                                 <p>Diagnóstico 2</p>
-                                <?= sizeof($diagnostico2); ?>
+                                <?= sizeof($animaisD2); ?>
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         <hr/>
                         <div class="stats">
                             <i class="fa fa-info" aria-hidden="true"></i>
-                            <?php if (sizeof($diagnostico2) > 0) { ?>
+                            <?php if (sizeof($animaisD2) > 0) { ?>
                                 <a data-toggle="modal" href="#modalDiagnostico2">Detalhes dos Animais</a>
                             <?php } else { ?>
                                 Detalhes dos Animais
@@ -105,7 +105,7 @@
                         <div class="col-xs-7">
                             <div class="numbers">
                                 <p>Pós-Parto</p>
-                                <?= sizeof($posparto); ?>
+                                <?= sizeof($animaisPosParto); ?>
                             </div>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                         <hr/>
                         <div class="stats">
                             <i class="fa fa-info" aria-hidden="true"></i>
-                            <?php if (sizeof($posparto) > 0) { ?>
+                            <?php if (sizeof($animaisPosParto) > 0) { ?>
                                 <a data-toggle="modal" href="#modalPosParto">Detalhes dos Animais</a>
                             <?php } else { ?>
                                 Detalhes dos Animais
@@ -218,9 +218,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($aptos as $c) { ?>
+                                <?php foreach ($animaisAptos as $a) { ?>
                                     <tr class="text-center">
-                                        <td><?= $c->getAnimal()->getNumero(); ?></td>
+                                        <td><?= $a->getNumero(); ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -255,11 +255,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($diagnostico1 as $d1) { ?>
+                            <?php foreach ($animaisD1 as $a) { ?>
                                 <tr class="text-center">
-                                    <td><?= $d1->getAnimal()->getNumero(); ?></td>
-                                    <td><?= 'Protocolo ' . $d1->getAnimal()->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
-                                    <td><?= \Application\Helper\Data::dataToString($d1->getAnimal()->getUltimaIA()->getDataDiagnostico1()); ?></td>
+                                    <td><?= $a->getNumero(); ?></td>
+                                    <td><?= 'Protocolo ' . $a->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
+                                    <td><?= \Application\Helper\Data::dataToString($a->getUltimaIA()->getDataDiagnostico1()); ?></td>
                                 </tr>
                             <?php } ?>
                             </tbody>
@@ -294,11 +294,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($diagnostico2 as $d2) { ?>
+                            <?php foreach ($animaisD2 as $a) { ?>
                                 <tr class="text-center">
-                                    <td><?= $d2->getAnimal()->getNumero(); ?></td>
-                                    <td><?= 'Protocolo ' . $d2->getAnimal()->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
-                                    <td><?= \Application\Helper\Data::dataToString($d2->getAnimal()->getUltimaIA()->getDataDiagnostico2()); ?></td>
+                                    <td><?= $a->getNumero(); ?></td>
+                                    <td><?= 'Protocolo ' . $a->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
+                                    <td><?= \Application\Helper\Data::dataToString($a->getUltimaIA()->getDataDiagnostico2()); ?></td>
                                 </tr>
                             <?php } ?>
                             </tbody>
@@ -332,10 +332,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($posparto as $p) { ?>
+                            <?php foreach ($animaisPosParto as $a) { ?>
                                 <tr class="text-center">
-                                    <td><?= $p->getAnimal()->getNumero(); ?></td>
-                                    <td><?= $p->getAnimal()->getDiasDesdeUltimoParto(); ?></td>
+                                    <td><?= $a->getNumero(); ?></td>
+                                    <td><?= $a->getDiasDesdeUltimoParto(); ?></td>
                                 </tr>
                             <?php } ?>
                             </tbody>

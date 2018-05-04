@@ -11,7 +11,7 @@ namespace Application\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Application\Repository\RepoCronologia")
+ * @ORM\Entity()
  */
 class Cronologia
 {

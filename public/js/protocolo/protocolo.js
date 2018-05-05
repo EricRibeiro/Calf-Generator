@@ -46,43 +46,59 @@ function insertDates() {
             var dataDeDiagnostico2 = moment(dataDeDiagnostico1, "DD/MM/YYYY").add(60, 'days');
 
             $dataDeRetornoAoCio.val(dataDeRetornoAoCio.format('DD/MM/YYYY'));
-            showDateInfo($dataDeRetornoAoCio, $dataDeInseminacao, "Data de Inseminação")
+            showDateInfo($dataDeRetornoAoCio, $dataDeInseminacao, "Data de Inseminação");
 
             $dataDeDiagnostico1.val(dataDeDiagnostico1.format('DD/MM/YYYY'));
-            showDateInfo($dataDeDiagnostico1, $dataDeInseminacao, "Data de Inseminação")
+            showDateInfo($dataDeDiagnostico1, $dataDeInseminacao, "Data de Inseminação");
 
             $dataDeDiagnostico2.val(dataDeDiagnostico2.format('DD/MM/YYYY'));
-            showDateInfo($dataDeDiagnostico2, $dataDeDiagnostico1, "Data de Diagnóstico 1")
+            showDateInfo($dataDeDiagnostico2, $dataDeDiagnostico1, "Data de Diagnóstico 1");
 
         } else {
             $dataDeRetornoAoCio.val("");
+            $dataDeRetornoAoCio.next().hide();
+
             $dataDeDiagnostico1.val("");
+            $dataDeDiagnostico1.next().hide();
+
             $dataDeDiagnostico2.val("");
+            $dataDeDiagnostico2.next().hide();
         }
     });
 }
 
 function dateInfo() {
-    $dataDeRetornoAoCio.keyup(function() {
-        showDateInfo($dataDeRetornoAoCio, $dataDeInseminacao, "Data de Inseminação")
+    $dataDeRetornoAoCio.keyup(function () {
+        showDateInfo($dataDeRetornoAoCio, $dataDeInseminacao, "Data de Inseminação");
     });
 
-    $dataDeDiagnostico1.keyup(function() {
-        showDateInfo($dataDeDiagnostico1, $dataDeInseminacao, "Data de Inseminação")
+    $dataDeDiagnostico1.keyup(function () {
+        showDateInfo($dataDeDiagnostico1, $dataDeInseminacao, "Data de Inseminação");
+        if ($dataDeDiagnostico2 != "")
+            showDateInfo($dataDeDiagnostico2, $dataDeDiagnostico1, "Data de Diagnóstico 1");
     });
 
-    $dataDeDiagnostico2.keyup(function() {
-        showDateInfo($dataDeDiagnostico2, $dataDeDiagnostico1, "Data de Diagnóstico 1")
+    $dataDeDiagnostico2.keyup(function () {
+        showDateInfo($dataDeDiagnostico2, $dataDeDiagnostico1, "Data de Diagnóstico 1");
     });
 }
 
 function showDateInfo($inputDataA, $inputDataB, descDataB) {
-    if(isDateValid($inputDataA.val()) && isDateValid($inputDataB.val())) {
+    if (isDateValid($inputDataA.val()) && isDateValid($inputDataB.val())) {
         var diferenca = getDateDiff($inputDataA.val(), $inputDataB.val());
-        $inputDataA.next().show().html(diferenca + " dias após a " + descDataB);
 
+        $inputDataA.next().show()
+
+        if (diferenca > 0) {
+            $inputDataA.next().removeClass("text-danger").addClass("text-info");
+            $inputDataA.next().html("<b>" + diferenca + " dias </b> após a <b>" + descDataB + "</b>");
+        } else {
+            $inputDataA.next().removeClass("text-info").addClass("text-danger");
+            $inputDataA.next().html("<b>O valor informado deve ser maior do que a " + descDataB + ".</b>");
+        }
     } else {
-        $inputDataA.next().hide();
+        $inputDataA.next().hide()
+
     }
 }
 

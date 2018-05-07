@@ -64,7 +64,7 @@ class ProtocoloController extends AbstractActionController
         $view_params = array(
             'estacao' => $estacao,
             'animais' => $animais,
-            'numProxProtocolo' => $numProxProtocolo
+            'numProxProtocolo' => is_null($numProxProtocolo) ? 1 : $numProxProtocolo
         );
 
         return new ViewModel($view_params);

@@ -8,7 +8,7 @@ use Application\Helper\Data;
 
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Application\Repository\RepoIA")
  */
 class IA
 {

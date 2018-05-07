@@ -1,46 +1,77 @@
-<?php echo $this->render("cadastrar.phtml");?>
 <div class="container-fluid">
+    <?php echo $this->flashHelper(); ?>
+
     <div class="row">
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="header">
-                    <h4 class="title">Todos as IAs</h4>
+                    <h4 class="title">IAs</h4>
                 </div>
                 <div class="content">
-                    <table id="ias" class="table table-hover display" style="width:100%">
+                    <table id="animais" class="table table-hover display" style="width:100%">
                         <thead>
                         <tr>
-                            <th hidden>#</th>
-                            <th>Número</th>
+                            <th>Nº Animal</th>
                             <th>Data da Inseminação</th>
-                            <th>Opções</th>
+                            <th>Data do Próximo Diagnóstico</th>
+                            <th hidden>Data do Próximo Diagnóstico - Sort</th>
+                            <th>Estado</th>
+                            <th>Alterar Estado</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         <?php foreach ($ias as $ia) { ?>
+
                             <tr>
-                                <td hidden><?= $ia->getId(); ?></td>
-                                <td><?= $ia->getAnimal()->getNumero(); ?></td>
-                                <td><?= $ia->getDataInseminacaoToString(); ?></td>
+                                <td><b><?= $ia->getProtocolo()->getNumero(); ?></b></td>
+                                <td><?= \Application\Helper\Data::dataToString($ia->getDataInseminacao()); ?></td>
+
+                                <td>
+                                    <?php if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 1') { ?>
+                                        <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico1()); ?>
+
+                                    <?php } else if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 2') { ?>
+                                        <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico2()); ?>
+
+                                    <?php } else { ?>
+                                        -
+
+                                    <?php }; ?>
+                                </td>
+
+                                <td hidden>
+                                    <?php if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 1') { ?>
+                                        <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico1()); ?>
+
+                                    <?php } else if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 2') { ?>
+                                        <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico2()); ?>
+
+                                    <?php } else { ?>
+                                        00/00/0000
+
+                                    <?php }; ?>
+                                </td>
+
+                                <td>
+                                    <?php if ($ia->getProtocolo()->getEstado()->getEstado() == 'Gestante') { ?>
+                                        <i class="text-success">Finalizado</i>
+                                        <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                    <?php } else { ?>
+                                        <i><?= $ia->getProtocolo()->getEstado()->getEstado(); ?></i>
+                                    <?php } ?>
+                                </td>
 
                                 <td>
                                     <a type="button"
-                                       href="<?= $this->url('app/ia', ['action' => 'editar', 'id' => $ia->getId()]) ?>"
+                                       href="<?= $this->url('app/protocolo', ['action' => 'listar', 'id' => $ia->getProtocolo()->getNumero()]) ?>"
                                        class="btn btn-info btn-fill">
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </a>
-
-                                    <a href="<?= $this->url('app/ia', ['action' => 'remover', 'id' => $ia->getId()]) ?>"
-                                       class="btn btn-danger btn-fill">
-                                        <i class="fa fa-trash" aria-hidden="true" type="hidden"></i>
-                                    </a>
                                 </td>
-
-
                             </tr>
 
-                            <?php } ?>
+                        <?php } ?>
                         </tbody>
                     </table>
                 </div>
@@ -51,26 +82,25 @@
 
 <script>
     jQuery(function ($) {
-        $('#ias').DataTable({
+        $('#animais').DataTable({
             columnDefs: [
+                {"orderable": false, "targets": 5},
+                {"orderData": [3], "targets": [2]},
                 {targets: '_all', className: 'dt-center'},
-                { "orderable": false, "targets": 3 },
             ],
             aoColumns: [
                 null,
-                null,
                 {"sType": "date-uk"},
+                {"sType": "date-uk"},
+                {"sType": "date-uk"},
+                null,
                 null
-            
             ],
-            order: [[2, 'desc']],
+            order: [[0, 'desc']],
             paging: false
-            
         });
 
-        $('#ias_filter label input').addClass('form-control border-input');
-
+        $('#animais_filter label input').addClass('form-control border-input');
     });
-
 </script>
 

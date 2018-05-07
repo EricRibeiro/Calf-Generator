@@ -12,19 +12,19 @@ use Application\Entity\IA;
 class IAController extends AbstractActionController
 {
     private $sm;
+    private $entityManager;
 
-    public function __construct($sm)
+    function __construct($sm)
     {
         $this->sm = $sm;
+        $this->entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
     }
 
    public function indexAction()
     {
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorio = $entityManager->getRepository('Application\Entity\IA');
-        $ias = $repositorio->findAll();
-
-        $entityManager->flush();
+        $ias = $this->entityManager
+            ->getRepository('Application\Entity\IA')
+            ->findAllIAs();
 
         $view_params = array(
             'ias' => $ias,

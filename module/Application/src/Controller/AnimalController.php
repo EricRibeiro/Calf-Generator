@@ -8,6 +8,7 @@ use Zend\View\Model\ViewModel;
 use Application\Entity\Animal;
 use Application\Helper\HelperClassificacao;
 use Application\Helper\HelperCronologia;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class AnimalController extends AbstractActionController
 {
@@ -42,15 +43,23 @@ class AnimalController extends AbstractActionController
             $classificacao = $this->entityManager->find('Application\Entity\Classificacao', $classificacaoID);
 
             $animal = new Animal($numero, $dataUltimoParto);
-            $this->entityManager->persist($animal);
 
-            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
-            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
+            try {
 
-            $this->entityManager->flush();
+                $this->entityManager->persist($animal);
+                 
+                HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
+                HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
+                
+                $this->entityManager->flush();
+                $this->flashMessenger()->addSuccessMessage("Animal cadastrado com sucesso.");
+
+            }catch(UniqueConstraintViolationException $e){
+
+                $this->flashMessenger()->addErrorMessage(" Animal já cadastrado, escolha outro número.");
+                 
+            }
         }
-
-        $this->flashMessenger()->addSuccessMessage("Animal cadastrado com sucesso.");
 
         return $this->redirect()->toRoute('app/animal', array(
             'controller' => 'index',

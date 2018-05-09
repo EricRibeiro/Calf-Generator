@@ -59,7 +59,7 @@ class ProtocoloController extends AbstractActionController
 
         $repositorioProtocolo = $this->entityManager->getRepository('Application\Entity\Protocolo');
         $ultimoProtocolo = HelperQuery::getUltimaInsercao($repositorioProtocolo);
-        $numProxProtocolo = $ultimoProtocolo->getNumero() + 1;
+        $numProxProtocolo = (is_null($ultimoProtocolo)) ? 1 : $ultimoProtocolo->getNumero() + 1;
 
         $view_params = array(
             'estacao' => $estacao,

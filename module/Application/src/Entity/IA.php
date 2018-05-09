@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 use Application\Helper\Data;
 
 
+
 /**
  * @ORM\Entity
  */
@@ -211,5 +212,15 @@ class IA
     {
         return Data::dataToString($data);
     }
+
+    public function qtdProtEstacao(){
+
+
+
+    }
+
+
+
+
 
 }

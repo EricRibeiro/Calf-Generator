@@ -1,13 +1,12 @@
 <?php
-
 namespace Application\Entity;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\DBAL\Types\DateTimeType;
 use Application\Helper\Data;
-
+use Application\Helper\HelperEstacao;
+use Application\Entity\Animal;
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\RepoAnimal")
  * @ORM\Table(uniqueConstraints={@UniqueConstraint(name="numero_uniq", columns={"numero"})})
@@ -20,32 +19,26 @@ class Animal
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
      * @ORM\Column(type="integer")
      */
     private $numero;
-
     /**
      * @ORM\Column(type="date", nullable=true)
      */
     private $dataUltimoParto;
-
     /**
      * @ORM\OneToMany(targetEntity="IA", mappedBy="animal")
      */
     private $ias;
-
     /**
      * @ORM\OneToMany(targetEntity="Cronologia", mappedBy="animal")
      */
     private $cronologias;
-
     /**
      * @ORM\OneToMany(targetEntity="Animal_Classificacao", mappedBy="animal")
      */
     private $classificacoes;
-
     /**
      * Animal constructor.
      * @param $numero
@@ -56,7 +49,6 @@ class Animal
         $this->numero = $numero;
         $this->setDataUltimoParto($dataUltimoParto);
     }
-
     /**
      * @return mixed
      */
@@ -64,7 +56,6 @@ class Animal
     {
         return $this->id;
     }
-
     /**
      * @param mixed $id
      */
@@ -72,7 +63,6 @@ class Animal
     {
         $this->id = $id;
     }
-
     /**
      * @return mixed
      */
@@ -80,7 +70,6 @@ class Animal
     {
         return $this->numero;
     }
-
     /**
      * @param mixed $numero
      */
@@ -88,7 +77,6 @@ class Animal
     {
         $this->numero = $numero;
     }
-
     /**
      * @return DateTime
      */
@@ -96,7 +84,6 @@ class Animal
     {
         return $this->dataUltimoParto;
     }
-
     /**
      * @return Integer || String
      */
@@ -104,14 +91,11 @@ class Animal
     {
         $diferenca = "-";
         $hoje = new \DateTime();
-
         if (!is_null($this->dataUltimoParto)) {
             $diferenca = date_diff($hoje, $this->dataUltimoParto, true)->days;
         }
-
         return $diferenca;
     }
-
     /**
      * @param mixed $dataUltimoParto
      */
@@ -119,7 +103,6 @@ class Animal
     {
         $this->dataUltimoParto = Data::getDataFormatada($dataUltimoParto);
     }
-
     /**
      * @return mixed
      */
@@ -127,7 +110,6 @@ class Animal
     {
         return $this->ias;
     }
-
     /**
      * @return mixed
      */
@@ -135,7 +117,6 @@ class Animal
     {
         return $this->cronologias;
     }
-
     /**
      * @return mixed
      */
@@ -143,7 +124,6 @@ class Animal
     {
         return $this->classificacoes;
     }
-
     /**
      * @return String
      */
@@ -151,7 +131,6 @@ class Animal
     {
         return $this->getUltimaClassificacao()->getClassificacaoInicial()->getClassificacao();
     }
-
     /**
      * @return String
      */
@@ -159,7 +138,6 @@ class Animal
     {
         return $this->getUltimaClassificacao()->getClassificacaoInicial()->getId();
     }
-
     /**
      * @return String
      */
@@ -167,7 +145,6 @@ class Animal
     {
         return $this->getUltimaCronologia()->getEstadoInicial()->getEstado();
     }
-
     /**
      * @return IA
      */
@@ -175,14 +152,12 @@ class Animal
     {
         return $this->ias->last();
     }
-
     /**
      * @return Cronologia
      */
     public function getUltimaCronologia()
     {
         $ultimaEntrada = $this->cronologias->last();
-
         if (!is_null($ultimaEntrada->getEstadoFinal())) {
             foreach ($this->cronologias as $cronologia) {
                 if (is_null($cronologia->getEstadoFinal())) {
@@ -191,17 +166,14 @@ class Animal
                 }
             }
         }
-
         return $ultimaEntrada;
     }
-
     /**
      * @return Classificacao
      */
     public function getUltimaClassificacao()
     {
         $ultimaEntrada = $this->classificacoes->last();
-
         if (!is_null($ultimaEntrada->getClassificacaoFinal())) {
             foreach ($this->classificacoes as $classificacao) {
                 if (is_null($classificacao->getClassificacaoFinal())) {
@@ -210,10 +182,8 @@ class Animal
                 }
             }
         }
-
         return $ultimaEntrada;
     }
-
     /**
      * @return mixed
      */
@@ -221,5 +191,43 @@ class Animal
     {
         return Data::dataToString($data);
     }
+
+    public function qtdIasEstacaoAtual(){
+        $iasAnimal = $this->getIAs()->filter(function(IA $ia){
+            return $ia->getEstacao()==HelperEstacao::getEstacao($this);
+        });
+        return count($iasAnimal);
+    }
+
+
+    public function qtdIasMalSucedidadasEstAtual(){
+
+         $iasMalSucedidadas = $this->getCronologias()->filter(function(Cronologia $cronologia){
+            return $cronologia->getEstadoFinal()=="Apto" && $cronologia->getEstacao()==HelperEstacao::getEstacao($this);
+
+        });
+        return count($iasMalSucedidadas);
+    }
+
+    public function qtdProtNaEstAtual(){
+         $ProtsAnimal=$this->getIAs()->filter(function(IA $ia){
+            return $ia->getEstacao()==HelperEstacao::getEstacao($this) && $ia->getProtocolo()!=NULL;
+        });
+        return count($ProtsAnimal);
+    }
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -1,4 +1,10 @@
-<?php echo $this->render("cadastrar.phtml"); ?>
+<?php 
+
+echo $this->render("cadastrar.phtml"); 
+
+
+$url = $this->url('app/animal', ['controller' => 'animal', 'action' => 'editar',]);
+?>
 
 <div class="container-fluid">
     <div class="row">
@@ -10,19 +16,22 @@
                 <div class="content">
                     <table id="animais" class="table table-hover display" style="width:100%">
                         <thead>
-                        <tr>
-                            <th hidden>#</th>
-                            <th>Número</th>
-                            <th>Classificação</th>
-                            <th>Estado</th>
-                            <th>Dias Desde o Último Parto</th>
-                            <th hidden>Dias Desde o Último Parto - Sort</th>
-                            <th>Opções</th>
-                        </tr>
+                            <tr>
+                                <th hidden>#</th>
+                                <th>Número</th>
+                                <th>Classificação</th>
+                                <th>Estado</th>
+                                <th>Dias Desde o Último Parto</th>
+                                <th hidden>Dias Desde o Último Parto - Sort</th>
+                                <th>Opções</th>
+                                <th hidden>data Ultimo Parto</th>
+                                <th hidden>classificacaoId</th>
+                                <th hidden>qtdProtNaEstacaoAtual</th>
+                            </tr>
                         </thead>
                         <tbody>
 
-                        <?php foreach ($animais as $animal) { ?>
+                            <?php foreach ($animais as $animal) { ?>
                             <tr>
                                 <td hidden><?= $animal->getId(); ?></td>
                                 <td><?= $animal->getNumero(); ?></td>
@@ -38,42 +47,133 @@
                                     ?>
                                 </td>
                                 <td>
-                                    <a type="button"
-                                       href="<?= $this->url('app/animal', ['action' => 'editar', 'id' => $animal->getId()]) ?>"
-                                       class="btn btn-info btn-fill">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
 
-                                    <a href="<?= $this->url('app/animal', ['action' => 'remover', 'id' => $animal->getId()]) ?>"
-                                       class="btn btn-danger btn-fill">
-                                        <i class="fa fa-trash" aria-hidden="true" type="hidden"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                                    <a data-toggle="modal" href="#modalAnimal"
+                                    class="btn btn-info btn-fill">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </a>
 
-                        <?php } ?>
+                                <a href="<?= $this->url('app/animal', ['action' => 'remover', 'id' => $animal->getId()]) ?>"
+                                   class="btn btn-danger btn-fill">
+                                   <i class="fa fa-trash" aria-hidden="true" type="hidden"></i>
+                               </a>
+                           </td>
+                           <td hidden><?= $animal->dataToString($animal->getDataUltimoParto()); ?></td>
+                           <td hidden><?= $animal->getClassificacaoId(); ?></td>
+                           <td hidden><?= $animal->qtdIasEstacaoAtual();?></td>
+                       </tr>
+
+                       <?php } ?>
 
 
-                        </tbody>
-                    </table>
-                </div>
+                   </tbody>
+               </table>
+
+           </div>
+       </div>
+   </div>
+</div>
+</div>
+
+
+<div id="modals">
+    <div class="modal fade" id="modalAnimal" tabindex="-1" role="dialog" aria-labelledby="modalPosParto"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title text-center">Animais no Pós-Parto</h4>
             </div>
+            <div class="modal-body">
+               <form method="post" action="<?= $url; ?>">
+                <input type="hidden" value= "" name="idAnimal">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Nº do Animal</label>
+                            <input type="text" class="form-control border-input"
+                            placeholder="Somente números"
+                            name="numero"
+                            pattern="\d*"
+                            required
+                            oninvalid="this.setCustomValidity('Insira um número válido!')"
+                            oninput="setCustomValidity('')"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="sel1">Classificação</label>
+                            <select class="form-control border-input" id="sel1" name="classificacao">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Último Parto</label>
+                            <input type="text"
+                            class="form-control border-input validate-date"
+                            name="dataUltimoParto"
+                            placeholder="Dia/Mês/Ano"
+                            data-mask="00/00/0000"
+                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
+                            oninput="setCustomValidity('')"
+                            disabled
+                            required
+                            value=""
+                            />
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-info btn-fill btn-wd" style="margin: 3%">Confirmar
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+
 </div>
+</div>
+</div>
+
+
+
+<?php
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/animal/animal-editar.js');
+?>
+
 
 <script>
     jQuery(function ($) {
         $('#animais').DataTable({
             columnDefs: [
-                { "orderable": false, "targets": 6 },
-                {targets: '_all', className: 'dt-center'},
-                { "orderData":[ 5 ],   "targets": [ 4 ] },
+            { "orderable": false, "targets": 6 },
+            {targets: '_all', className: 'dt-center'},
+            { "orderData":[ 5 ],   "targets": [ 4 ] },
             ],
             order: [[1, 'desc']],
-            paging: false
+            paging:false
+
         });
 
         $('#animais_filter label input').addClass('form-control border-input');
+
     });
+
 </script>
+
+
+
+
+
+
+
+
+

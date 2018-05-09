@@ -8,6 +8,9 @@ use Zend\View\Model\ViewModel;
 use Application\Entity\Animal;
 use Application\Helper\HelperClassificacao;
 use Application\Helper\HelperCronologia;
+use Application\Helper\HelperAnimal;
+use Doctrine\Common\Collections\ArrayCollection;
+use Application\Entity\Estacao;
 
 class AnimalController extends AbstractActionController
 {
@@ -20,93 +23,100 @@ class AnimalController extends AbstractActionController
         $this->entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
     }
 
+
     public function indexAction()
     {
         $animais = $this->entityManager
-            ->getRepository('Application\Entity\Animal')
-            ->findAll();
+        ->getRepository('Application\Entity\Animal')
+        ->findAll();
 
+        $estacao=$this->entityManager
+        ->getRepository('Application\Entity\Estacao')
+        ->findUltimaEstacaoNoAno();
+        
         $view_params = array(
-            'animais' => $animais
+            'animais' => $animais,  
         );
 
         return new ViewModel($view_params);
     }
 
-    public function cadastrarAction()
-    {
-        if ($this->request->isPost()) {
-            $numero = $this->request->getPost('numero');
-            $dataUltimoParto = $this->request->getPost('dataUltimoParto');
-            $classificacaoID = $this->request->getPost('classificacao');
-            $classificacao = $this->entityManager->find('Application\Entity\Classificacao', $classificacaoID);
 
-            $animal = new Animal($numero, $dataUltimoParto);
-            $this->entityManager->persist($animal);
+ public function cadastrarAction()
+ {
+    if ($this->request->isPost()) {
+        $numero = $this->request->getPost('numero');
+        $dataUltimoParto = $this->request->getPost('dataUltimoParto');
+        $classificacaoID = $this->request->getPost('classificacao');
+        $classificacao = $this->entityManager->find('Application\Entity\Classificacao', $classificacaoID);
 
-            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
-            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
+        $animal = new Animal($numero, $dataUltimoParto);
+        $this->entityManager->persist($animal);
 
-            $this->entityManager->flush();
-        }
+        HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
+        HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
 
-        $this->flashMessenger()->addSuccessMessage("Animal cadastrado com sucesso.");
+        $this->entityManager->flush();
+    }
 
+    $this->flashMessenger()->addSuccessMessage("Animal cadastrado com sucesso.");
+
+    return $this->redirect()->toRoute('app/animal', array(
+        'controller' => 'index',
+        'action' => 'index',
+    ));
+}
+
+public function editarAction()
+{
+ 
+    if ($this->request->isPost()) {
+        
+        $idAnimal=$this->request->getPost('idAnimal');
+        $numero = $this->request->getPost('numero');
+        $dataUltimoParto = $this->request->getPost('dataUltimoParto');
+        $classificacaoID = $this->request->getPost('classificacao');
+        $classificacao = $this->entityManager->find('Application\Entity\Classificacao', $classificacaoID);
+        
+        $animal= $this->entityManager->find("Application\Entity\Animal", $idAnimal); 
+        $animal->setNumero($numero);
+        
+        $animal->setDataUltimoParto($dataUltimoParto);
+        
+        $this->entityManager->persist($animal);
+        
+        HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
+        
+        HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
+        
+        $this->entityManager->flush();
+        
         return $this->redirect()->toRoute('app/animal', array(
             'controller' => 'index',
             'action' => 'index',
         ));
     }
+    
+    return new ViewModel();
+}
 
-    public function editarAction()
-    {
-        $id = $this->params()->fromRoute('id');
 
-        if (is_null($id)) {
-            $id = $this->request->getPost('id');
-        }
+public function removerAction()
+{
+    $id = $this->params()->fromRoute('id');
 
+    if (!is_null($id)) {
         $animal = $this->entityManager->find("Application\Entity\Animal", $id);
-
-        if ($this->request->isPost()) {
-            $numero = $this->request->getPost('numero');
-            $dataUltimoParto = $this->request->getPost('dataUltimoParto');
-            $classificacaoID = $this->request->getPost('classificacao');
-            $classificacao = $this->entityManager->find('Application\Entity\Classificacao', $classificacaoID);
-
-            $animal->setNumero($numero);
-            $animal->setDataUltimoParto($dataUltimoParto);
-            $this->entityManager->persist($animal);
-
-            HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
-            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
-
-            $this->entityManager->flush();
-
-            return $this->redirect()->toRoute('app/animal', array(
-                'controller' => 'index',
-                'action' => 'index',
-            ));
-        }
-
-        return new ViewModel(['animal' => $animal]);
+        $this->entityManager->remove($animal);
+        $this->entityManager->flush();
     }
 
-    public function removerAction()
-    {
-        $id = $this->params()->fromRoute('id');
+    return $this->redirect()->toRoute('app/animal', array(
+        'controller' => 'index',
+        'action' => 'index',
+    ));
+}
 
-        if (!is_null($id)) {
-            $animal = $this->entityManager->find("Application\Entity\Animal", $id);
-            $this->entityManager->remove($animal);
-            $this->entityManager->flush();
-        }
-
-        return $this->redirect()->toRoute('app/animal', array(
-            'controller' => 'index',
-            'action' => 'index',
-        ));
-    }
 
 }
 

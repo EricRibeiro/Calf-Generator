@@ -7,7 +7,7 @@
                         <div class="col-xs-5">
                             <div class="icon-big text-center">
                                 <img src="<?= $this->basePath() . '/img/paper-dashboard/cards/cow.png'; ?>"
-                                     width="42px" height="42px">
+                                width="42px" height="42px">
                             </div>
                         </div>
                         <div class="col-xs-7">
@@ -22,9 +22,9 @@
                         <div class="stats">
                             <i class="fa fa-info" aria-hidden="true"></i>
                             <?php if (sizeof($animaisAptos) > 0) { ?>
-                                <a data-toggle="modal" href="#modalAptos">Detalhes dos Animais</a>
+                            <a data-toggle="modal" href="#modalAptos">Detalhes dos Animais</a>
                             <?php } else { ?>
-                                Detalhes dos Animais
+                            Detalhes dos Animais
                             <?php } ?>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                         <div class="col-xs-5">
                             <div class="icon-big text-center">
                                 <img src="<?= $this->basePath() . '/img/paper-dashboard/cards/stethoscope1.png'; ?>"
-                                     width="50px" height="50px">
+                                width="50px" height="50px">
                             </div>
                         </div>
                         <div class="col-xs-7">
@@ -53,9 +53,9 @@
                         <div class="stats">
                             <i class="fa fa-info" aria-hidden="true"></i>
                             <?php if (sizeof($animaisD1) > 0) { ?>
-                                <a data-toggle="modal" href="#modalDiagnostico1">Detalhes dos Animais</a>
+                            <a data-toggle="modal" href="#modalDiagnostico1">Detalhes dos Animais</a>
                             <?php } else { ?>
-                                Detalhes dos Animais
+                            Detalhes dos Animais
                             <?php } ?>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                         <div class="col-xs-5">
                             <div class="icon-big text-center">
                                 <img src="<?= $this->basePath() . '/img/paper-dashboard/cards/stethoscope2.png'; ?>"
-                                     width="50px" height="50px">
+                                width="50px" height="50px">
                             </div>
                         </div>
                         <div class="col-xs-7">
@@ -84,9 +84,9 @@
                         <div class="stats">
                             <i class="fa fa-info" aria-hidden="true"></i>
                             <?php if (sizeof($animaisD2) > 0) { ?>
-                                <a data-toggle="modal" href="#modalDiagnostico2">Detalhes dos Animais</a>
+                            <a data-toggle="modal" href="#modalDiagnostico2">Detalhes dos Animais</a>
                             <?php } else { ?>
-                                Detalhes dos Animais
+                            Detalhes dos Animais
                             <?php } ?>
                         </div>
                     </div>
@@ -114,9 +114,9 @@
                         <div class="stats">
                             <i class="fa fa-info" aria-hidden="true"></i>
                             <?php if (sizeof($animaisPosParto) > 0) { ?>
-                                <a data-toggle="modal" href="#modalPosParto">Detalhes dos Animais</a>
+                            <a data-toggle="modal" href="#modalPosParto">Detalhes dos Animais</a>
                             <?php } else { ?>
-                                Detalhes dos Animais
+                            Detalhes dos Animais
                             <?php } ?>
                         </div>
                     </div>
@@ -202,154 +202,155 @@
 <div id="modals">
     <!-- Modal dos Animais Aptos-->
     <div class="modal fade" id="modalAptos" tabindex="-1" role="dialog" aria-labelledby="modalAptosLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Animais Aptos</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-borderless">
-                            <thead>
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Animais Aptos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
                             <tr>
                                 <th class="text-center"><b>Número</b></th>
                             </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($animaisAptos as $a) { ?>
-                                    <tr class="text-center">
-                                        <td><?= $a->getNumero(); ?></td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal dos Animais Aguardando Diagnóstico 1-->
-    <div class="modal fade" id="modalDiagnostico1" tabindex="-1" role="dialog" aria-labelledby="modalDiagnostico1Label"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title text-center">Animais Aguardando o Diagnóstico 1</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-borderless">
-                            <thead>
-                            <tr>
-                                <th class="text-center"><b>Nº do Animal</b></th>
-                                <th class="text-center"><b>Protocolo</b></th>
-                                <th class="text-center"><b>Data do Diagnóstico 1</b></th>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($animaisAptos as $a) { ?>
+                            <tr class="text-center">
+                                <td><?= $a->getNumero(); ?></td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach ($animaisD1 as $a) { ?>
-                                <tr class="text-center">
-                                    <td><?= $a->getNumero(); ?></td>
-                                    <td><?= 'Protocolo ' . $a->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
-                                    <td><?= \Application\Helper\Data::dataToString($a->getUltimaIA()->getDataDiagnostico1()); ?></td>
-                                </tr>
                             <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
+                </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal dos Animais Aguardando Diagnóstico 2-->
-    <div class="modal fade" id="modalDiagnostico2" tabindex="-1" role="dialog" aria-labelledby="modalDiagnostico2Label"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title text-center">Animais Aguardando o Diagnóstico 2</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-borderless">
-                            <thead>
-                            <tr>
-                                <th class="text-center"><b>Nº do Animal</b></th>
-                                <th class="text-center"><b>Protocolo</b></th>
-                                <th class="text-center"><b>Data do Diagnóstico 2</b></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach ($animaisD2 as $a) { ?>
-                                <tr class="text-center">
-                                    <td><?= $a->getNumero(); ?></td>
-                                    <td><?= 'Protocolo ' . $a->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
-                                    <td><?= \Application\Helper\Data::dataToString($a->getUltimaIA()->getDataDiagnostico2()); ?></td>
-                                </tr>
-                            <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal dos Animais em Pós-Parto-->
-    <div class="modal fade" id="modalPosParto" tabindex="-1" role="dialog" aria-labelledby="modalPosParto"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title text-center">Animais no Pós-Parto</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-borderless">
-                            <thead>
-                            <tr>
-                                <th class="text-center"><b>Número</b></th>
-                                <th class="text-center"><b>Dias Desde o Último Parto</b></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach ($animaisPosParto as $a) { ?>
-                                <tr class="text-center">
-                                    <td><?= $a->getNumero(); ?></td>
-                                    <td><?= $a->getDiasDesdeUltimoParto(); ?></td>
-                                </tr>
-                            <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal dos Animais Aguardando Diagnóstico 1-->
+<div class="modal fade" id="modalDiagnostico1" tabindex="-1" role="dialog" aria-labelledby="modalDiagnostico1Label"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title text-center">Animais Aguardando o Diagnóstico 1</h4>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th class="text-center"><b>Nº do Animal</b></th>
+                            <th class="text-center"><b>Protocolo</b></th>
+                            <th class="text-center"><b>Data do Diagnóstico 1</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($animaisD1 as $a) { ?>
+                        <tr class="text-center">
+                            <td><?= $a->getNumero(); ?></td>
+                            <td><?= 'Protocolo ' . $a->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
+                            <td><?= \Application\Helper\Data::dataToString($a->getUltimaIA()->getDataDiagnostico1()); ?></td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Modal dos Animais Aguardando Diagnóstico 2-->
+<div class="modal fade" id="modalDiagnostico2" tabindex="-1" role="dialog" aria-labelledby="modalDiagnostico2Label"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title text-center">Animais Aguardando o Diagnóstico 2</h4>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th class="text-center"><b>Nº do Animal</b></th>
+                            <th class="text-center"><b>Protocolo</b></th>
+                            <th class="text-center"><b>Data do Diagnóstico 2</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($animaisD2 as $a) { ?>
+                        <tr class="text-center">
+                            <td><?= $a->getNumero(); ?></td>
+                            <td><?= 'Protocolo ' . $a->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
+                            <td><?= \Application\Helper\Data::dataToString($a->getUltimaIA()->getDataDiagnostico2()); ?></td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Modal dos Animais em Pós-Parto-->
+<div class="modal fade" id="modalPosParto" tabindex="-1" role="dialog" aria-labelledby="modalPosParto"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title text-center">Animais no Pós-Parto</h4>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th class="text-center"><b>Número</b></th>
+                            <th class="text-center"><b>Dias Desde o Último Parto</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($animaisPosParto as $a) { ?>
+                        <tr class="text-center">
+                            <td><?= $a->getNumero(); ?></td>
+                            <td><?= $a->getDiasDesdeUltimoParto(); ?></td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
 
 <?php
 echo $this->inlineScript()->prependFile($this->basePath() . '/js/dashboard/dashboard.js');

@@ -7,6 +7,9 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Controller\Factory;
 use Application\Entity\IA;
+use Application\Helper\HelperCronologia;
+use Application\Helper\HelperQuery;
+
 
 
 class IAController extends AbstractActionController
@@ -67,11 +70,39 @@ class IAController extends AbstractActionController
             ));
         }
 
+
+
         return new ViewModel(['ia' => $ia]);
     }
 
     public function cadastrarAction()
-    {
+    {   
+
+         if ($this->request->isPost()) {
+            self::cadastrar();
+        }
+
+        $estacao = $this->entityManager
+            ->getRepository('Application\Entity\Estacao')
+            ->findUltimaEstacaoNoAno();
+
+        $minimoDeDias = 35  ;
+        $animais = $this->entityManager
+            ->getRepository('Application\Entity\Animal')
+            ->findAllAnimaisAptosOuPosPartoComMinimoDeDiasNaUltimaEstacao($estacao, $minimoDeDias);
+
+        $repositorioProtocolo = $this->entityManager->getRepository('Application\Entity\Protocolo');
+        $ultimoProtocolo = HelperQuery::getUltimaInsercao($repositorioProtocolo);
+        $numProxProtocolo = (is_null($ultimoProtocolo)) ? 1 : $ultimoProtocolo->getNumero() + 1;
+        $view_params = array(
+            'estacao' => $estacao
+        
+            
+        );
+
+        return new ViewModel($view_params);
+
+        /*ANTIGO cadastrarAction
         $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
         $repositorio = $entityManager->getRepository('Application\Entity\Animal');
        
@@ -90,6 +121,46 @@ class IAController extends AbstractActionController
 
         return $this->redirect()->toRoute('app/ia', array(
             'controller' => 'index',
+            'action' => 'index',
+        ));
+
+        */
+
+        return new ViewModel();
+    }
+
+    private function cadastrar()
+    {
+        $numeroDoAnimal = $this->request->getPost('numeroDoAnimal');
+        $idEstacao = $this->request->getPost('idEstacao');
+        $dataDeInseminacao = $this->request->getPost('dataDeInseminacao');
+        $dataDeRetornoAoCio = $this->request->getPost('dataDeRetornoAoCio');
+        $dataDeDiagnostico1 = $this->request->getPost('dataDeDiagnostico1');
+        $dataDeDiagnostico2 = $this->request->getPost('dataDeDiagnostico2');
+
+        $animais = explode("-", $animais);
+        $estacao = $this->entityManager->find('Application\Entity\Estacao', $idEstacao);
+        $estado = $this->entityManager->find('Application\Entity\Estado', 2);
+        $protocolo = new Protocolo($numeroDoProtocolo, $estado);
+        $this->entityManager->persist($protocolo);
+
+        foreach ($animais as $idAnimal) {
+            $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
+            $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
+
+            $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2);
+            $this->entityManager->persist($ia);
+
+            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
+
+            $this->entityManager->flush();
+        }
+
+        $this->entityManager->flush();
+
+        $this->flashMessenger()->addSuccessMessage("Protocolo cadastrado com sucesso.");
+        return $this->redirect()->toRoute('app/protocolo', array(
+            'controller' => 'protocolo',
             'action' => 'index',
         ));
     }

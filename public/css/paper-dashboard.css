@@ -265,7 +265,6 @@ hr {
     margin-top: 20px; }
     .sidebar .nav li > a,
     .off-canvas-sidebar .nav li > a {
-      margin: 10px 0px;
       padding-left: 25px;
       padding-right: 25px;
       opacity: .7; }
@@ -2762,3 +2761,53 @@ textarea.form-control {
     overflow-y: hidden;
     -ms-overflow-style: -ms-autohiding-scrollbar;
     -webkit-overflow-scrolling: touch; } }
+
+.bootstrap-tagsinput .tag,
+.bootstrap-tagsinput [data-role="remove"],
+.filter,
+.btn-hover,
+[data-toggle="collapse"] i {
+    -webkit-transition: all 150ms linear;
+    -moz-transition: all 150ms linear;
+    -o-transition: all 150ms linear;
+    -ms-transition: all 150ms linear;
+    transition: all 150ms linear;
+}
+
+.sidebar .nav a,
+.sidebar .nav .collapse i,
+.sidebar .nav .collapse a > span,
+.sidebar .sidebar-wrapper > .nav p,
+.sidebar .user .info > a > span,
+.sidebar .user .info .collapse .nav a > span,
+.sidebar .logo a.logo-mini,
+.sidebar .logo a.logo-normal,
+.table > tbody > tr .td-actions .btn,
+.caret {
+    -webkit-transition: all 150ms ease-in;
+    -moz-transition: all 150ms ease-in;
+    -o-transition: all 150ms ease-in;
+    -ms-transition: all 150ms ease-in;
+    transition: all 150ms ease-in;
+}
+
+a[data-toggle="collapse"][aria-expanded="true"] .caret,
+.btn[data-toggle="collapse"][aria-expanded="true"] .caret,
+a.dropdown-toggle[aria-expanded="true"] .caret {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.sidebar .sidebar-wrapper > .nav .caret,
+.off-canvas-sidebar .sidebar-wrapper > .nav .caret {
+  margin-top: 12px;
+  position: absolute;
+  right: 30px;
+}
+
+
+
+
+

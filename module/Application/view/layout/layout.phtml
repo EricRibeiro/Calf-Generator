@@ -55,7 +55,7 @@
                     </a>
                 </li>
 
-                <li class="app-animal">
+                <li class="app-animal app-animal-editar">
                     <a href="<?= $this->url('app/animal', array('controller' => 'animal', 'action' => 'index')); ?>">
                         <i class="fa fa-paw" aria-hidden="true"></i>
                         <p>Gerenciar Animais</p>
@@ -64,49 +64,80 @@
 
                 <hr class="custom"/>
 
-                <li class="app-protocolo">
-                    <a href="<?= $this->url('app/protocolo', array('controller' => 'protocolo', 'action' => 'index')); ?>">
+                <li>
+                    <a data-toggle="collapse" href="#protocolo" aria-expanded="false" class="collapsed">
                         <i class="fa fa-book" aria-hidden="true"></i>
-                        <p>Visualizar Protocolos</p>
+                        <p>Protocolo
+                            <b class="caret"></b>
+                        </p>
                     </a>
-                </li>
-
-                <li class="app-protocolo-cadastrar">
-                    <a href="<?= $this->url('app/protocolo', array('controller' => 'protocolo', 'action' => 'cadastrar')); ?>">
-                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                        <p>Cadastrar Protocolo</p>
-                    </a>
-                </li>
-
-                <hr class="custom"/>
-
-                <li class="app-ia">
-                    <a href="<?= $this->url('app/ia', array('controller' => 'ia', 'action' => 'index')); ?>">
-                        <i class="fa fa-stethoscope" aria-hidden="true"></i>
-                        <p>Visualizar IAs</p>
-                    </a>
-                </li>
-                 <li class="app-ia-cadastra">
-                    <a href="<?= $this->url('app/ia', array('controller' => 'ia', 'action' => 'cadastrar')); ?>">
-                        <i class="fa fa-stethoscope" aria-hidden="true"></i>
-                        <p>Cadastrar IAs</p>
-                    </a>
+                    <div class="collapse" id="protocolo">
+                        <ul class="nav" style="margin-top: 2px">
+                            <li class="app-protocolo app-protocolo-listar text-center">
+                                <a href="<?= $this->url('app/protocolo', array('controller' => 'protocolo', 'action' => 'index')); ?>">
+                                    <p>Visualizar Protocolos</p>
+                                </a>
+                            </li>
+                            <li class="app-protocolo-cadastrar text-center">
+                                <a href="<?= $this->url('app/protocolo', array('controller' => 'protocolo', 'action' => 'cadastrar')); ?>">
+                                    <p>Cadastrar Protocolo</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
 
                 <hr class="custom"/>
 
-                <li class="app-estacao">
-                    <a href="<?= $this->url('app/estacao', array('controller' => 'estacao', 'action' => 'index')); ?>">
-                        <i class="fa fa-pagelines" aria-hidden="true"></i>
-                        <p>Visualizar Estações</p>
+                <li>
+                    <a data-toggle="collapse" href="#ia" aria-expanded="false" class="collapsed">
+                        <i class="fa fa-stethoscope" aria-hidden="true"></i>
+                        <p>IA
+                            <b class="caret"></b>
+                        </p>
                     </a>
+                    <div class="collapse" id="ia">
+                        <ul class="nav" style="margin-top: 2px">
+                            <li class="app-ia app-ia-listar text-center">
+                                <a href="<?= $this->url('app/ia', array('controller' => 'ia', 'action' => 'index')); ?>">
+                                    <p>Visualizar IAs</p>
+                                </a>
+                            </li>
+
+                            <li class="app-ia-cadastrar text-center">
+                                <a href="<?= $this->url('app/ia', array('controller' => 'ia', 'action' => 'cadastrar')); ?>">
+                                    <p>Cadastrar IA</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
 
-                <li class="app-estacao-cadastrar">
-                    <a href="<?= $this->url('app/estacao', array('controller' => 'estacao', 'action' => 'cadastrar')); ?>">
-                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                        <p>Cadastrar Estação</p>
+                <hr class="custom"/>
+
+
+                <li>
+                    <a data-toggle="collapse" href="#estacao" aria-expanded="false" class="collapsed">
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                        <p>Estação
+                            <b class="caret"></b>
+                        </p>
                     </a>
+                    <div class="collapse" id="estacao">
+                        <ul class="nav" style="margin-top: 2px">
+                            <li class="app-estacao app-estacao-listar text-center">
+                                <a href="<?= $this->url('app/estacao', array('controller' => 'estacao', 'action' => 'index')); ?>">
+                                    <p>Visualizar Estações</p>
+                                </a>
+                            </li>
+
+                            <li class="app-estacao-cadastrar text-center">
+                                <a href="<?= $this->url('app/estacao', array('controller' => 'estacao', 'action' => 'cadastrar')); ?>">
+                                    <p>Cadastrar Estação</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
 
             </ul>

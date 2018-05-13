@@ -24,14 +24,13 @@
                         <?php foreach ($ias as $ia) { ?>
 
                             <tr>
-                                <td><b><?= $ia->getProtocolo()->getNumero(); ?></b></td>
+                                <td><b><?= $ia->getAnimal()->getNumero(); ?></b></td>
                                 <td><?= \Application\Helper\Data::dataToString($ia->getDataInseminacao()); ?></td>
-
                                 <td>
-                                    <?php if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 1') { ?>
+                                    <?php if ($ia->getEstado()->getEstado() == 'Aguardando Diagnóstico 1') { ?>
                                         <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico1()); ?>
 
-                                    <?php } else if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 2') { ?>
+                                    <?php } else if ($ia->getEstado()->getEstado() == 'Aguardando Diagnóstico 2') { ?>
                                         <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico2()); ?>
 
                                     <?php } else { ?>
@@ -41,10 +40,10 @@
                                 </td>
 
                                 <td hidden>
-                                    <?php if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 1') { ?>
+                                    <?php if ($ia->getEstado()->getEstado() == 'Aguardando Diagnóstico 1') { ?>
                                         <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico1()); ?>
 
-                                    <?php } else if ($ia->getProtocolo()->getEstado()->getEstado() == 'Aguardando Diagnóstico 2') { ?>
+                                    <?php } else if ($ia->getEstado()->getEstado() == 'Aguardando Diagnóstico 2') { ?>
                                         <?= \Application\Helper\Data::dataToString($ia->getDataDiagnostico2()); ?>
 
                                     <?php } else { ?>
@@ -54,17 +53,17 @@
                                 </td>
 
                                 <td>
-                                    <?php if ($ia->getProtocolo()->getEstado()->getEstado() == 'Gestante') { ?>
+                                    <?php if ($ia->getEstado()->getEstado() == 'Gestante') { ?>
                                         <i class="text-success">Finalizado</i>
                                         <i class="fa fa-check text-success" aria-hidden="true"></i>
                                     <?php } else { ?>
-                                        <i><?= $ia->getProtocolo()->getEstado()->getEstado(); ?></i>
+                                        <i><?= $ia->getEstado()->getEstado(); ?></i>
                                     <?php } ?>
                                 </td>
 
                                 <td>
                                     <a type="button"
-                                       href="<?= $this->url('app/protocolo', ['action' => 'listar', 'id' => $ia->getProtocolo()->getNumero()]) ?>"
+                                       href="<?= $this->url('app/ia', ['action' => 'editar', 'id' => $ia->getId()]) ?>"
                                        class="btn btn-info btn-fill">
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </a>

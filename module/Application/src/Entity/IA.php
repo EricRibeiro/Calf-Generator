@@ -58,6 +58,12 @@ class IA
      */
     private $dataDiagnostico2;
 
+        /**
+     * @ORM\ManyToOne(targetEntity="Estado")
+     * @ORM\JoinColumn(name="id_estado", referencedColumnName="id", nullable=false)
+     */
+    private $estado;
+
     /**
      * IA constructor.
      * @param $animal
@@ -68,7 +74,7 @@ class IA
      * @param $dataDiagnostico1
      * @param $dataDiagnostico2
      */
-    public function __construct($animal, $estacao, $protocolo, $dataInseminacao, $dataRetornoAoCio, $dataDiagnostico1, $dataDiagnostico2)
+    public function __construct($animal, $estacao, $protocolo, $dataInseminacao, $dataRetornoAoCio, $dataDiagnostico1, $dataDiagnostico2, $estado)
     {
         $this->animal = $animal;
         $this->estacao = $estacao;
@@ -77,6 +83,8 @@ class IA
         $this->setDataRetornoAoCio($dataRetornoAoCio);
         $this->setDataDiagnostico1($dataDiagnostico1);
         $this->setDataDiagnostico2($dataDiagnostico2);
+        $this->estado = $estado;
+
     }
 
     /**
@@ -132,6 +140,7 @@ class IA
      */
     public function getProtocolo()
     {
+        
         return $this->protocolo;
     }
 
@@ -210,6 +219,22 @@ class IA
     public function dataToString($data)
     {
         return Data::dataToString($data);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * @param mixed $estadoInicial
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
     }
 
 }

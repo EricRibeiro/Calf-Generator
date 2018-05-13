@@ -22,7 +22,7 @@
                         <tbody>
 
                         <?php foreach ($ias as $ia) { ?>
-
+                            <?php  if (!is_null($ia->getProtocolo())) { ?>
                             <tr>
                                 <td><b><?= $ia->getProtocolo()->getNumero(); ?></b></td>
                                 <td><?= \Application\Helper\Data::dataToString($ia->getDataInseminacao()); ?></td>
@@ -36,7 +36,6 @@
 
                                     <?php } else { ?>
                                         -
-
                                     <?php }; ?>
                                 </td>
 
@@ -68,6 +67,7 @@
                                        class="btn btn-info btn-fill">
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </a>
+                            <?php }; ?>
                                 </td>
                             </tr>
 

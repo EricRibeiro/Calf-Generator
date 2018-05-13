@@ -1,27 +1,71 @@
-<?php
-
-echo $this->inlineScript()
-    ->prependFile($this->basePath() . '/js/datehelper.js');
-
-    $url = $this->url('app/ia', ['controller' => 'ia', 'action' => 'cadastrar']);
-?>
+<?php $url = $this->url('app/ia', ['controller' => 'ia', 'action' => 'cadastrar']); ?>
+<?php $this->headLink()->appendStylesheet($this->basePath() . '/css/protocolo/protocolo.css'); ?>
 
 <div class="container-fluid">
+    <?php echo $this->flashHelper(); ?>
+    <?php if (is_null($estacao)) { ?>
+
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <ul>
+                <li>Não existe estação em andamento. Você deve criar uma para cadastrar uma IA, bastar clicar
+                    <a href="<?= $this->url('app/estacao', array('controller' => 'estacao', 'action' => 'cadastrar')); ?>"><strong>aqui</strong></a>.
+                </li>
+            </ul>
+        </div>
+
+    <?php } ?>
+
     <div class="row">
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="header">
-                    <h4 class="title">Cadastrar a IA</h4>
+                    <h4 class="title">Cadastrar uma IA</h4>
                 </div>
                 <div class="content">
                     <form method="post" action="<?= $url; ?>">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Data da Inseminação</label>
+                                    <label>Número do Animal</label>
+                                    <input type="number"
+                                           class="form-control border-input"
+                                           name="numeroDoAnimal"
+                                           placeholder="Número do Animal"
+                                           pattern="[0-9]"
+                                           oninvalid="this.setCustomValidity('Insira um número válido')"
+                                           oninput="setCustomValidity('')"
+                                           required/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Estação</label>
+                                    <select class="form-control border-input" id="sel1" name="idEstacao">
+                                        <?php if (!is_null($estacao)) { ?>
+                                            <option value="<?= $estacao->getId(); ?>">
+                                                <?= \Application\Helper\Data::dataToString($estacao->getDataInicio()); ?>
+                                                até
+                                                <?= \Application\Helper\Data::dataToString($estacao->getDataFinal()); ?>
+                                            </option>
+
+                                        <?php } else { ?>
+                                            <option></option>
+
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Data de Inseminação</label>
                                     <input type="text"
                                            class="form-control border-input validate-date"
-                                           name="dataInseminacao"
+                                           name="dataDeInseminacao"
                                            placeholder="Dia/Mês/Ano"
                                            data-mask="00/00/0000"
                                            oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
@@ -32,19 +76,51 @@ echo $this->inlineScript()
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Número da Vaca</label>
-                                    <input type="number"
+                                    <label>Data de Retorno ao Cio</label>
+                                    <input type="text"
                                            class="form-control border-input validate-date"
-                                           name="numeroAnimal"
-                                           placeholder="Número da Vaca"
-                                           pattern="[0-9]"
-                                           oninvalid="this.setCustomValidity('Insira um número válido')"
+                                           name="dataDeRetornoAoCio"
+                                           placeholder="Dia/Mês/Ano"
+                                           data-mask="00/00/0000"
+                                           oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
                                            oninput="setCustomValidity('')"
                                            required/>
+                                    <p hidden class="date-info"></p>
                                 </div>
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Data de Diagnóstico 1</label>
+                                    <input type="text"
+                                           class="form-control border-input validate-date"
+                                           name="dataDeDiagnostico1"
+                                           placeholder="Dia/Mês/Ano"
+                                           data-mask="00/00/0000"
+                                           oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
+                                           oninput="setCustomValidity('')"
+                                           required/>
+                                    <p hidden class="date-info"></p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Data de Diagnóstico 2</label>
+                                    <input type="text"
+                                           class="form-control border-input validate-date"
+                                           name="dataDeDiagnostico2"
+                                           placeholder="Dia/Mês/Ano"
+                                           data-mask="00/00/0000"
+                                           oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
+                                           oninput="setCustomValidity('')"
+                                           required/>
+                                    <p hidden class="date-info"></p>
+                                </div>
+                            </div>
+                        </div>
                         <div class="text-center ">
                             <button type="submit" class="btn btn-info btn-fill btn-wd">Cadastrar</button>
                         </div>
@@ -55,3 +131,8 @@ echo $this->inlineScript()
         </div>
     </div>
 </div>
+
+<?php
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/protocolo/protocolo.js');
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/datehelper.js');
+?>

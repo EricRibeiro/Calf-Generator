@@ -1,54 +1,61 @@
-<?php $url = $this->url('app/ia', ['controller' => 'ia', 'action' => 'editar']); ?>
-
+<?php $url = $this->url('app/ia', ['controller' => 'ia', 'action' => 'alterarEstado', 'id' => basename($_SERVER['REQUEST_URI']), 
+'proxEstado' => $proximoEstado]); ?>
 <div class="container-fluid">
+    <?php echo $this->flashHelper(); ?>
     <div class="row">
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="header">
-                    <h4 class="title">Editar a Inseminação</h4>
+                    <h4 class="title">Editar Inseminação Artificial</h4>
                 </div>
                 <div class="content">
                     <form method="post" action="<?= $url; ?>">
-                        <input type="hidden" value="<?= $ia->getId(); ?>" name="id">
+                        <table id="animais" class="table table-hover display" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th hidden>#</th>
+                                <th>Número</th>
+                                <th>Estado Atual</th>
+                                <th>Próximo Estado</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td hidden id="idAnimal"><?= $animal->getId(); ?></td>
+                                    <td><?= $animal->getNumero(); ?></td>
+                                    <td><?= $animal->getEstado(); ?></td>
+                                    <td>
+                                        <?php if ($animal->getEstado() == 'Gestante') { ?>
+                                            -
+                                        <?php } else { ?>
+                                            <select class="form-control border-input" name="estado">
+                                                <option value="<?= $proximoEstado->getId(); ?>"
+                                                        selected="selected"><?= $proximoEstado->getEstado(); ?></option>
+                                                <option value="1">Apto</option>
+                                            </select>
+                                        <?php }; ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Número do Animal</label>
-                                    <input type="text" class="form-control border-input"
-                                           placeholder="Somente números"
-                                           name="numero"
-                                           pattern="\d*"
-                                           required
-                                           oninvalid="this.setCustomValidity('Insira um número válido!')"
-                                           oninput="setCustomValidity('')"
-                                           value="<?= $ia->getAnimal()->getNumero(); ?>"
-                                    />
+                            <?php if ($animal->getEstado() == 'Gestante') { ?>
+                                <div class="col-md-12 text-center">
+                                    <button type="button" onclick="window.history.back()"
+                                            class="btn btn-info btn-fill btn-wd">Voltar
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Data da Inseminação</label>
-                                    <input type="text"
-                                           class="form-control border-input validate-date"
-                                           name="dataInseminacao"
-                                           placeholder="Dia/Mês/Ano"
-                                           data-mask="00/00/0000"
-                                           oninvalid="this.setCustomValidity('Insira uma data válida no formato: Dia/Mês/Ano')"
-                                           oninput="setCustomValidity('')"
-                                           required
-                                           value="<?= $ia->getDataInseminacaoToString(); ?>"
-                                    />
+                            <?php } else { ?>
+                                <div class="col-md-6 text-center">
+                                    <button type="button" onclick="window.history.back()"
+                                            class="btn btn-info btn-fill btn-wd">Cancelar
+                                    </button>
                                 </div>
-                            </div>
+                                <div class="col-md-6 text-center">
+                                    <button type="submit" class="btn btn-info btn-fill btn-wd">Salvar</button>
+                                </div>
+                            <?php }; ?>
                         </div>
-
-                        <div class="text-center">
-                            <a type="button" onclick="window.history.back()"
-                               class="btn btn-info btn-fill btn-wd" style="margin: 3%">Cancelar</a>
-                            <button type="submit" class="btn btn-info btn-fill btn-wd" style="margin: 3%">Confirmar
-                            </button>
-                        </div>
-                        <div class="clearfix"></div>
                     </form>
                 </div>
             </div>
@@ -56,7 +63,4 @@
     </div>
 </div>
 
-<?php
-echo $this->inlineScript()
-    ->prependFile($this->basePath() . '/js/datehelper.js')
-?>
+<?php echo $this->inlineScript()->prependFile($this->basePath() . '/js/protocolo/protocolo-alterar-estado.js'); ?>

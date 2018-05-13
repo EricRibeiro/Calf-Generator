@@ -1,12 +1,14 @@
 <?php
 
-
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Controller\Factory;
 use Application\Entity\IA;
+use Application\Helper\HelperCronologia;
+use Application\Helper\HelperQuery;
+use Exception;
 
 
 class IAController extends AbstractActionController
@@ -22,10 +24,12 @@ class IAController extends AbstractActionController
 
    public function indexAction()
     {
+        //$ias = $this->entityManager
+            //->getRepository('Application\Entity\IA')
+           // ->findAllIAs();
         $ias = $this->entityManager
             ->getRepository('Application\Entity\IA')
-            ->findAllIAs();
-
+            ->findBy(array('protocolo' => null));
         $view_params = array(
             'ias' => $ias,
         );
@@ -35,63 +39,148 @@ class IAController extends AbstractActionController
 
     public function editarAction()
     {
-        $id = $this->params()->fromRoute('id');
 
-        if (is_null($id)) {
-            $id = $this->request->getPost('id');
-        }
+        $numIa = $this->params()->fromRoute('id');
+        $ia = $this->entityManager
+            ->getRepository('Application\Entity\IA')
+            ->findOneBy(array('id' => $numIa));
 
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
+        if(!is_null($ia)) {
+            $proximoEstado = $ia->getEstado()->getId() + 1;
+            $proximoEstado = $this->entityManager->find('Application\Entity\Estado', $proximoEstado);
 
-        $repositorio = $entityManager->getRepository("Application\Entity\IA");
-        $repositorioAnimal = $entityManager->getRepository("Application\Entity\Animal");
+            $animal = $this->entityManager
+                ->getRepository('Application\Entity\Animal')
+                ->find($ia->getAnimal()->getId());
 
-        $ia = $repositorio->find($id);
-
-        if ($this->request->isPost()) {
-
-            $numero = $this->request->getPost('numero');
-
-            $query = $repositorioAnimal->createQueryBuilder('o')->where('o.numero = :numero')->setParameter('numero', $numero)->getQuery();
-            $animal = $query->getSingleResult();
-
-            $ia->setDataInseminacao($this->request->getPost('dataInseminacao'));
-            $ia->setAnimal($animal);
-
-            $entityManager->persist($ia);
-            $entityManager->flush();
-
-            return $this->redirect()->toRoute('app/ia', array(
-                'controller' => 'index',
-                'action' => 'index',
-            ));
-        }
-
-        return new ViewModel(['ia' => $ia]);
-    }
-
-    public function cadastrarAction()
-    {
-        $entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
-        $repositorio = $entityManager->getRepository('Application\Entity\Animal');
-       
-        if ($this->request->isPost()) {
-            $numeroAnimal = $this->request->getPost('numeroAnimal');
-            $dataInseminacao = $this->request->getPost('dataInseminacao');
-
-            $query = $repositorio->createQueryBuilder('o')->where('o.numero = :numeroAnimal')->setParameter('numeroAnimal', $numeroAnimal)->getQuery();
-            $animal = $query->getSingleResult();
-
-            $ia = new IA($animal, $dataInseminacao);
-
-            $entityManager->persist($ia);
-            $entityManager->flush();
+            $view_params = array(
+                'animal' => $animal,
+                'proximoEstado' => $proximoEstado
+            );
+            
+            return new ViewModel($view_params);
         }
 
         return $this->redirect()->toRoute('app/ia', array(
-            'controller' => 'index',
-            'action' => 'index',
+            'controller' => 'ia',
+            'action' => 'index'
         ));
+
+        
+    }
+
+
+    public function alterarEstadoAction() {
+        
+        if ($this->request->isPost()) {
+
+            $idIa = $this->params()->fromRoute('id');
+            $numEstado = $this->request->getPost('estado');
+
+            $ia = $this->entityManager
+                ->getRepository('Application\Entity\IA')
+                ->findOneBy(array('id' => $idIa));
+
+            $estado = $this->entityManager->find('Application\Entity\Estado', $numEstado);
+            
+            $ia->setEstado($estado);
+
+            $estacao = $ia->getEstacao();
+
+            $animal = $this->entityManager
+                ->getRepository('Application\Entity\Animal')
+                ->findOneBy(array('id' => $ia->getAnimal()));
+
+            $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
+
+            $this->entityManager->persist($ia);
+
+            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
+
+            $this->entityManager->flush();
+
+            $this->flashMessenger()->addSuccessMessage("Estado alterado com sucesso.");
+
+            return $this->redirect()->toRoute('app/ia', array(
+                'controller' => 'ia',
+                'action' => 'index',
+            ));
+
+        }
+
+        return $this->redirect()->toRoute('app/ia', array(
+            'controller' => 'ia',
+            'action' => 'index'
+        ));
+    }
+
+    public function cadastrarAction()
+    {   
+
+         if ($this->request->isPost()) {
+            
+            try{
+
+                $numeroDoAnimal = $this->request->getPost('numeroDoAnimal');
+
+                $animal = $this->entityManager->getRepository('Application\Entity\Animal')->
+                                        findOneBy(array('numero' => $numeroDoAnimal));
+            
+                if ( is_null($animal) )
+
+                    throw new Exception("Número do animal não encontrado.");
+
+                $idEstacao = $this->request->getPost('idEstacao');
+
+                if ( empty($idEstacao) )
+
+                    throw new Exception("Estação não cadastrada, não é possível cadastrar uma IA.");
+
+                $dataDeInseminacao = $this->request->getPost('dataDeInseminacao');
+                $dataDeRetornoAoCio = $this->request->getPost('dataDeRetornoAoCio');
+                $dataDeDiagnostico1 = $this->request->getPost('dataDeDiagnostico1');
+                $dataDeDiagnostico2 = $this->request->getPost('dataDeDiagnostico2');
+
+                $estacao = $this->entityManager->find('Application\Entity\Estacao', $idEstacao);
+                $estado = $this->entityManager->find('Application\Entity\Estado', 2);
+
+                $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
+
+                $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2, $estado);
+        
+                $this->entityManager->persist($ia);
+
+                HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
+
+                $this->flashMessenger()->addSuccessMessage("IA cadastrada com sucesso.");
+
+            }catch(Exception $e){
+
+                $this->flashMessenger()->addErrorMessage($e->getMessage());
+
+            }
+
+                $this->entityManager->flush();
+
+            return $this->redirect()->toRoute('app/ia', array(
+                'controller' => 'index',
+                'action' => 'cadastrar',
+            ));
+
+        }else{
+
+            $estacao = $this->entityManager
+            ->getRepository('Application\Entity\Estacao')
+            ->findUltimaEstacaoNoAno();
+
+            $view_params = array(
+            'estacao' => $estacao
+            );
+
+        }
+
+        return new ViewModel($view_params);
+
     }
 
     public function removerAction()

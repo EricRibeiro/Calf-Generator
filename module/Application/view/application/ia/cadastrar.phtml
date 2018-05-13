@@ -2,6 +2,7 @@
 <?php $this->headLink()->appendStylesheet($this->basePath() . '/css/protocolo/protocolo.css'); ?>
 
 <div class="container-fluid">
+    <?php echo $this->flashHelper(); ?>
     <?php if (is_null($estacao)) { ?>
 
         <div class="alert alert-warning">
@@ -34,9 +35,6 @@
                                            pattern="[0-9]"
                                            oninvalid="this.setCustomValidity('Insira um número válido')"
                                            oninput="setCustomValidity('')"
-                                        <?php if (!is_null($estacao)) { ?>
-                                            value="<?= $numProxProtocolo; ?>"
-                                        <?php } ?>
                                            required/>
                                 </div>
                             </div>

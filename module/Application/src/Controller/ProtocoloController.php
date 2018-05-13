@@ -88,8 +88,8 @@ class ProtocoloController extends AbstractActionController
         foreach ($animais as $idAnimal) {
             $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
             $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
-
-            $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2);
+            
+            $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2, $estado);
             $this->entityManager->persist($ia);
 
             HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);

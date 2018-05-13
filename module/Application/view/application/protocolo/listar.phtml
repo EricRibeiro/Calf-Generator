@@ -47,6 +47,7 @@
                         <input hidden name="lsIDsAnimaisEstados" required/>
 
                         <div class="row">
+                        <?php if (!is_null($animal)) { ?>
                             <?php if ($animal->getEstado() == 'Gestante') { ?>
                                 <div class="col-md-12 text-center">
                                     <button type="button" onclick="window.history.back()"
@@ -63,6 +64,7 @@
                                     <button type="submit" class="btn btn-info btn-fill btn-wd">Salvar</button>
                                 </div>
                             <?php }; ?>
+                        <?php } ?>
                         </div>
                     </form>
                 </div>

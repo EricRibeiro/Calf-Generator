@@ -30,20 +30,21 @@ function mudarCollapsablesNav() {
         $parentCollapse = $('.' + classe).parent().parent();
         $parentToggle = $parentCollapse.prev();
 
-        esconderCollapsablesNavRestantes();
-
         $parentCollapse.addClass('in');
         $parentToggle.removeClass('collapsed').attr('aria-expanded', 'true');
     }
 
     $collapsables.click(function() {
-        esconderCollapsablesNavRestantes();
+        esconderCollapsablesNavRestantes($(this));
     });
 }
 
-function esconderCollapsablesNavRestantes() {
-    $collapsables.addClass('collapsed').attr('aria-expanded', 'false');
-    $('.collapse').removeClass('in');
+function esconderCollapsablesNavRestantes($elemento) {
+    for(var i = 0; i < $collapsables.length; i++) {
+        if($collapsables.eq(i).get(0) !== $elemento.get(0) && $collapsables.eq(i).attr('class') === "") {
+            $collapsables.eq(i).click();
+        }
+    }
 }
 
 function getClasse(caminho) {

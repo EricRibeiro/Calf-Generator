@@ -297,11 +297,13 @@
                             </thead>
                             <tbody>
                             <?php foreach ($animaisD2 as $a) { ?>
-                                <tr class="text-center">
-                                    <td><?= $a->getNumero(); ?></td>
-                                    <td><?= 'Protocolo ' . $a->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
-                                    <td><?= \Application\Helper\Data::dataToString($a->getUltimaIA()->getDataDiagnostico2()); ?></td>
-                                </tr>
+                                <?php  if (!is_null($a->getUltimaIA()->getProtocolo())) { ?>
+                                    <tr class="text-center">
+                                        <td><?= $a->getNumero(); ?></td>
+                                        <td><?= 'Protocolo ' . $a->getUltimaIA()->getProtocolo()->getNumero(); ?></td>
+                                        <td><?= \Application\Helper\Data::dataToString($a->getUltimaIA()->getDataDiagnostico2()); ?></td>
+                                    </tr>
+                                <?php } ?>
                             <?php } ?>
                             </tbody>
                         </table>

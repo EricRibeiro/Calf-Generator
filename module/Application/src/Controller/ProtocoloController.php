@@ -164,7 +164,11 @@ class ProtocoloController extends AbstractActionController
                 $estacao = $ia->getEstacao();
                 $estado = $this->entityManager->find('Application\Entity\Estado', $idEstado);
 
-                HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
+                if($idEstado==1)
+                    HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, null, $estado);
+                
+                else
+                    HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
 
                 $this->entityManager->flush();
             }

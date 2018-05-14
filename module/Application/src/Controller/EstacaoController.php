@@ -50,12 +50,14 @@ class EstacaoController extends AbstractActionController
             $animais = explode("-", $animais);
 
             $estacao = new Estacao($dataInicio, $dataFim);
-            $this->entityManager->persist($estacao);
+            $this->entityManager->persist($estacao);;
 
-            foreach ($animais as $idAnimal) {
-                $this->cadastrarAnimalNaEstacao($idAnimal, $estacao);
+            if ($animais != '') {
+                foreach ($animais as $idAnimal) {
+                    $this->cadastrarAnimalNaEstacao($idAnimal, $estacao);
+                }
             }
-
+            
             $this->entityManager->flush();
 
             $this->flashMessenger()->addSuccessMessage("Estação cadastrada com sucesso.");
@@ -142,6 +144,9 @@ class EstacaoController extends AbstractActionController
 
         HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, $estacao);
         HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao);
+
+       $this->entityManager->flush();
+
     }
 
     private function removerAnimalDaEstacao($idAnimal)

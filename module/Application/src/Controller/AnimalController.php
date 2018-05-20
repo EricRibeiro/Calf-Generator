@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use Application\Entity\Animal_Classificacao;
+use Application\Entity\Parto;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Entity\Animal;
@@ -42,22 +43,22 @@ class AnimalController extends AbstractActionController
             $classificacaoID = $this->request->getPost('classificacao');
             $classificacao = $this->entityManager->find('Application\Entity\Classificacao', $classificacaoID);
 
-            $animal = new Animal($numero, $dataUltimoParto);
+            $animal = new Animal($numero);
+            $parto = new Parto($animal, $dataUltimoParto);
 
             try {
-
                 $this->entityManager->persist($animal);
-                 
+                $this->entityManager->persist($parto);
+
                 HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
                 HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
-                
+
                 $this->entityManager->flush();
                 $this->flashMessenger()->addSuccessMessage("Animal cadastrado com sucesso.");
 
-            }catch(UniqueConstraintViolationException $e){
-
+            } catch (UniqueConstraintViolationException $e) {
                 $this->flashMessenger()->addErrorMessage(" Animal já cadastrado, escolha outro número.");
-                 
+
             }
         }
 
@@ -67,6 +68,8 @@ class AnimalController extends AbstractActionController
         ));
     }
 
+
+    // Vai ser reescrito na implementação da feature de visualizar histórico do animal.
     public function editarAction()
     {
         $id = $this->params()->fromRoute('id');
@@ -85,6 +88,7 @@ class AnimalController extends AbstractActionController
 
             $animal->setNumero($numero);
             $animal->setDataUltimoParto($dataUltimoParto);
+            
             $this->entityManager->persist($animal);
 
             HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);

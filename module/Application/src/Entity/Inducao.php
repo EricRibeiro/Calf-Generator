@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Application\Helper\Data;
 
 /**
- * @ORM\Entity(repositoryClass="Application\Repository\RepoEstacao")
+ * @ORM\Entity
  */
-class Estacao
+class Inducao
 {
     /**
      * @ORM\Id
@@ -16,6 +16,11 @@ class Estacao
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Animal", mappedBy="inducao")
+     */
+    private $animais;
 
     /**
      * @ORM\Column(type="date")
@@ -28,19 +33,24 @@ class Estacao
     private $dataFinal;
 
     /**
-     * @ORM\OneToOne(targetEntity="Inducao", mappedBy="estacao")
+     * @ORM\OneToOne(targetEntity="Estacao", inversedBy="inducao")
+     * @ORM\JoinColumn(name="id_estacao", referencedColumnName="id", nullable=false)
      */
-    private $inducao;
+    private $estacao;
 
     /**
-     * Estacao constructor.
+     * Inducao constructor.
+     * @param $animais
      * @param $dataInicio
      * @param $dataFinal
+     * @param $estacao
      */
-    public function __construct($dataInicio, $dataFinal)
+    public function __construct($animais, $dataInicio, $dataFinal, $estacao)
     {
-        $this->setDataInicio($dataInicio);
-        $this->setDataFinal($dataFinal);
+        $this->animais = $animais;
+        $this->dataInicio = $this->setDataInicio($dataInicio);
+        $this->dataFinal = $this->setDataFinal($dataFinal);
+        $this->estacao = $estacao;
     }
 
     /**
@@ -57,6 +67,22 @@ class Estacao
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnimais()
+    {
+        return $this->animais;
+    }
+
+    /**
+     * @param mixed $animais
+     */
+    public function setAnimais($animais)
+    {
+        $this->animais = $animais;
     }
 
     /**
@@ -91,25 +117,20 @@ class Estacao
         $this->dataFinal = Data::getDataFormatada($dataFinal);
     }
 
-    public function dataToString($data)
-    {
-        return Data::dataToString($data);
-    }
-
     /**
      * @return mixed
      */
-    public function getInducao()
+    public function getEstacao()
     {
-        return $this->inducao;
+        return $this->estacao;
     }
 
     /**
-     * @param mixed $inducao
+     * @param mixed $estacao
      */
-    public function setInducao($inducao)
+    public function setEstacao($estacao)
     {
-        $this->inducao = $inducao;
+        $this->estacao = $estacao;
     }
 
 }

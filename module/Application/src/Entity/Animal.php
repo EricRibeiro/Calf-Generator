@@ -117,7 +117,7 @@ class Animal
         $hoje = new \DateTime();
 
         if (!is_null($dataUltimoParto)) {
-            $diferenca = date_diff($hoje, $this->dataUltimoParto, true)->days;
+            $diferenca = date_diff($hoje, $dataUltimoParto, true)->days;
         }
 
         return $diferenca;

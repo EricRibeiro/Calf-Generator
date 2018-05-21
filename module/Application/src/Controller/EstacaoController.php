@@ -50,7 +50,7 @@ class EstacaoController extends AbstractActionController
             $animais = explode("-", $animais);
 
             $estacao = new Estacao($dataInicio, $dataFim);
-            $this->entityManager->persist($estacao);;
+            $this->entityManager->persist($estacao);
 
             if ($animais != '') {
                 foreach ($animais as $idAnimal) {
@@ -146,7 +146,6 @@ class EstacaoController extends AbstractActionController
         HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao);
 
        $this->entityManager->flush();
-
     }
 
     private function removerAnimalDaEstacao($idAnimal)

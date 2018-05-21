@@ -48,8 +48,8 @@ class Inducao
     public function __construct($animais, $dataInicio, $dataFinal, $estacao)
     {
         $this->animais = $animais;
-        $this->dataInicio = $this->setDataInicio($dataInicio);
-        $this->dataFinal = $this->setDataFinal($dataFinal);
+        $this->setDataInicio($dataInicio);
+        $this->setDataFinal($dataFinal);
         $this->estacao = $estacao;
     }
 

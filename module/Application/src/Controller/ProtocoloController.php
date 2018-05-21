@@ -52,7 +52,7 @@ class ProtocoloController extends AbstractActionController
             ->getRepository('Application\Entity\Estacao')
             ->findUltimaEstacaoNoAno();
 
-        $minimoDeDias = 35  ;
+        $minimoDeDias = 35;
         $animais = $this->entityManager
             ->getRepository('Application\Entity\Animal')
             ->findAllAnimaisAptosOuPosPartoComMinimoDeDiasNaUltimaEstacao($estacao, $minimoDeDias);

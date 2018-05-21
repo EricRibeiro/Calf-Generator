@@ -15,6 +15,8 @@
                             <th>Número</th>
                             <th>Classificação</th>
                             <th>Estado</th>
+                            <th>Data do Último Parto</th>
+                            <th hidden>Data do Último Parto - Sort</th>
                             <th>Dias Desde o Último Parto</th>
                             <th hidden>Dias Desde o Último Parto - Sort</th>
                             <th>Opções</th>
@@ -28,6 +30,15 @@
                                 <td><?= $animal->getNumero(); ?></td>
                                 <td><?= $animal->getClassificacao(); ?></td>
                                 <td><?= $animal->getEstado(); ?></td>
+                                <td><?= \Application\Helper\Data::dataToString($animal->getDataUltimoParto()); ?></td>
+                                <td hidden>
+                                    <?php
+                                    if (\Application\Helper\Data::dataToString($animal->getDataUltimoParto()) == "-")
+                                        echo "01/01/0001";
+                                    else
+                                        echo \Application\Helper\Data::dataToString($animal->getDataUltimoParto());
+                                    ?>
+                                </td>
                                 <td><?= $animal->getDiasDesdeUltimoParto(); ?></td>
                                 <td hidden>
                                     <?php
@@ -66,9 +77,21 @@
     jQuery(function ($) {
         $('#animais').DataTable({
             columnDefs: [
-                { "orderable": false, "targets": 6 },
-                {targets: '_all', className: 'dt-center'},
+                { "orderable": false, "targets": 8 },
                 { "orderData":[ 5 ],   "targets": [ 4 ] },
+                { "orderData":[ 7 ],   "targets": [ 6 ] },
+                {targets: '_all', className: 'dt-center'},
+            ],
+            aoColumns: [
+                null,
+                null,
+                null,
+                null,
+                null,
+                {"sType": "date-uk"},
+                null,
+                null,
+                null
             ],
             order: [[1, 'desc']],
             paging: false

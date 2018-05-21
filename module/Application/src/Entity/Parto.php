@@ -36,7 +36,7 @@ class Parto
     public function __construct($animal, $parto)
     {
         $this->animal = $animal;
-        $this->parto = $this->setParto($parto);
+        $this->setParto($parto);
     }
 
     /**

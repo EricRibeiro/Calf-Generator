@@ -27,9 +27,9 @@ class Animal
     private $numero;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\OneToMany(targetEntity="Parto", mappedBy="animal")
      */
-    private $dataUltimoParto;
+    private $partos;
 
     /**
      * @ORM\OneToMany(targetEntity="IA", mappedBy="animal")
@@ -47,14 +47,24 @@ class Animal
     private $classificacoes;
 
     /**
+     * @ORM\OneToMany(targetEntity="Observacao", mappedBy="animal")
+     */
+    private $observacoes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Inducao", inversedBy="animais")
+     * @ORM\JoinColumn(name="id_inducao", referencedColumnName="id", nullable=true)
+     */
+    private $inducao;
+
+    /**
      * Animal constructor.
      * @param $numero
      * @param $dataUltimoParto
      */
-    public function __construct($numero, $dataUltimoParto)
+    public function __construct($numero)
     {
         $this->numero = $numero;
-        $this->setDataUltimoParto($dataUltimoParto);
     }
 
     /**
@@ -94,7 +104,7 @@ class Animal
      */
     public function getDataUltimoParto()
     {
-        return $this->dataUltimoParto;
+        return $this->partos->last()->getParto();
     }
 
     /**
@@ -102,22 +112,15 @@ class Animal
      */
     public function getDiasDesdeUltimoParto()
     {
+        $dataUltimoParto = $this->getDataUltimoParto();
         $diferenca = "-";
         $hoje = new \DateTime();
 
-        if (!is_null($this->dataUltimoParto)) {
-            $diferenca = date_diff($hoje, $this->dataUltimoParto, true)->days;
+        if (!is_null($dataUltimoParto)) {
+            $diferenca = date_diff($hoje, $dataUltimoParto, true)->days;
         }
 
         return $diferenca;
-    }
-
-    /**
-     * @param mixed $dataUltimoParto
-     */
-    public function setDataUltimoParto($dataUltimoParto)
-    {
-        $this->dataUltimoParto = Data::getDataFormatada($dataUltimoParto);
     }
 
     /**
@@ -217,9 +220,33 @@ class Animal
     /**
      * @return mixed
      */
-    public function dataToString($data)
+    public function getPartos()
     {
-        return Data::dataToString($data);
+        return $this->partos;
+    }
+
+    /**
+     * @param mixed $partos
+     */
+    public function setPartos($partos)
+    {
+        $this->partos = $partos;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getObservacoes()
+    {
+        return $this->observacoes;
+    }
+
+    /**
+     * @param mixed $observacoes
+     */
+    public function setObservacoes($observacoes)
+    {
+        $this->observacoes = $observacoes;
     }
 
 }

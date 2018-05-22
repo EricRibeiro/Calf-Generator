@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\DBAL\Types\DateTimeType;
 use Application\Helper\Data;
+use Application\Controller\HelperController;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\RepoAnimal")
@@ -129,6 +130,27 @@ class Animal
     public function getIAs()
     {
         return $this->ias;
+    }
+
+    public function getIAProtocolo($protocolo)
+    {   
+        $helper = new HelperController();
+        $teste = $helper->getUltimaIA($this->getId());
+        var_dump($teste);
+        exit();
+        foreach($this->ias as $ia)
+        {
+
+            $ia->getProtocolo() == $protocolo;
+
+        }
+        /*
+        $array = $this->getIAs()->filter(function($ia) {
+            return $ia->getProtocolo() == $protocolo;
+        });
+        
+        return $array;
+        */
     }
 
     /**

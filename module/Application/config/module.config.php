@@ -140,6 +140,10 @@ return [
 
             Controller\IAController::class => function ($sm) {
                 return new IAController($sm);
+            },
+
+            Controller\HelperController::class => function ($sm) {
+                return new HelperController($sm);
             }
         ],
     ],

@@ -38,6 +38,11 @@ class IA
      */
     private $protocolo;
 
+     /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $saiuProtocolo;
+
     /**
      * @ORM\Column(type="date")
      */
@@ -74,7 +79,7 @@ class IA
      * @param $dataDiagnostico1
      * @param $dataDiagnostico2
      */
-    public function __construct($animal, $estacao, $protocolo, $dataInseminacao, $dataRetornoAoCio, $dataDiagnostico1, $dataDiagnostico2, $estado)
+    public function __construct($animal, $estacao, $protocolo, $dataInseminacao, $dataRetornoAoCio, $dataDiagnostico1, $dataDiagnostico2, $estado, $saiuProtocolo)
     {
         $this->animal = $animal;
         $this->estacao = $estacao;
@@ -84,6 +89,7 @@ class IA
         $this->setDataDiagnostico1($dataDiagnostico1);
         $this->setDataDiagnostico2($dataDiagnostico2);
         $this->estado = $estado;
+        $this->saiuProtocolo = $saiuProtocolo;
 
     }
 
@@ -117,6 +123,19 @@ class IA
     public function setAnimal($animal)
     {
         $this->animal = $animal;
+    }
+
+        public function SaiuProtoclo()
+    {
+        return $this->saiuProtocolo;
+    }
+
+    /**
+     * @param mixed $animal
+     */
+    public function setHasProtoclo($boolean)
+    {
+        $this->saiuProtocolo = $boolean;
     }
 
     /**

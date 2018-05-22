@@ -15,6 +15,8 @@ use Zend\View\Model\ViewModel;
 use Application\Entity\IA;
 use Application\Helper\HelperCronologia;
 
+
+
 class ProtocoloController extends AbstractActionController
 {
     private $sm;
@@ -83,13 +85,14 @@ class ProtocoloController extends AbstractActionController
         $estacao = $this->entityManager->find('Application\Entity\Estacao', $idEstacao);
         $estado = $this->entityManager->find('Application\Entity\Estado', 2);
         $protocolo = new Protocolo($numeroDoProtocolo, $estado);
+        $saiuProtocolo = false;
         $this->entityManager->persist($protocolo);
 
         foreach ($animais as $idAnimal) {
             $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
             $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
             
-            $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2, $estado);
+            $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2, $estado, $saiuProtocolo);
             $this->entityManager->persist($ia);
 
             HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
@@ -119,6 +122,9 @@ class ProtocoloController extends AbstractActionController
             $animais = $this->entityManager
                 ->getRepository('Application\Entity\Animal')
                 ->findAllAnimaisNoProtocolo($protocolo);
+
+            var_dump($animais[0]->getIAProtocolo($protocolo));
+            exit();
 
             $view_params = array(
                 'animais' => $animais,

@@ -29,7 +29,7 @@ class IAController extends AbstractActionController
            // ->findAllIAs();
         $ias = $this->entityManager
             ->getRepository('Application\Entity\IA')
-            ->findBy(array('protocolo' => null));
+            ->findBy(array('saiuProtocolo' => true));
         $view_params = array(
             'ias' => $ias,
         );
@@ -125,6 +125,12 @@ class IAController extends AbstractActionController
 
                 $animal = $this->entityManager->getRepository('Application\Entity\Animal')->
                                         findOneBy(array('numero' => $numeroDoAnimal));
+
+
+                $IaAnterior = $this->entityManager->getRepository('Application\Entity\IA')
+                    ->findUltimaIA($animal);
+
+                $protocolo = $IaAnterior->getProtocolo();
             
                 if ( is_null($animal) )
 
@@ -146,7 +152,9 @@ class IAController extends AbstractActionController
 
                 $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
 
-                $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2, $estado);
+                $saiuProtocolo = true;
+
+                $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2, $estado, $saiuProtocolo);
         
                 $this->entityManager->persist($ia);
 

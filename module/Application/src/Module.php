@@ -7,16 +7,26 @@
 
 namespace Application;
 
+use Application\Helper\HelperEntityManager;
+use Zend\Mvc\MvcEvent;
+
 class Module
 {
     const VERSION = '3.0.3-dev';
+
+    public function onBootstrap(MvcEvent $e)
+    {
+        $app = $e->getApplication();
+        $serviceManager = $app->getServiceManager();
+        HelperEntityManager::$entityManager = $serviceManager->get('Doctrine\ORM\EntityManager');
+    }
 
     public function getConfig()
     {
         return include __DIR__ . '/../config/module.config.php';
     }
 
-     public function getAutoloaderConfig()
+    public function getAutoloaderConfig()
     {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
@@ -26,7 +36,6 @@ class Module
             ),
         );
     }
-    
 
-    
+
 }

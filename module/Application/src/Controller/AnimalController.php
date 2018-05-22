@@ -4,6 +4,7 @@ namespace Application\Controller;
 
 use Application\Entity\Animal_Classificacao;
 use Application\Entity\Parto;
+use Application\Helper\HelperEntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Entity\Animal;
@@ -13,13 +14,11 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class AnimalController extends AbstractActionController
 {
-    private $sm;
     private $entityManager;
 
     function __construct($sm)
     {
-        $this->sm = $sm;
-        $this->entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
+        $this->entityManager = HelperEntityManager::$entityManager;
     }
 
     public function indexAction()

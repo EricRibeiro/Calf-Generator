@@ -2,11 +2,13 @@
 
 namespace Application\Entity;
 
+use Application\Helper\HelperCronologia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\DBAL\Types\DateTimeType;
 use Application\Helper\Data;
+use Application\Helper\HelperIA;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\RepoAnimal")
@@ -131,6 +133,20 @@ class Animal
         return $this->ias;
     }
 
+    public function getIAProtocolo($protocolo)
+    {   
+        
+        $return = HelperIA::getUltimaIA($this, $protocolo);
+        return $return;
+        /*
+        $array = $this->getIAs()->filter(function($ia) {
+            return $ia->getProtocolo() == $protocolo;
+        });
+        
+        return $array;
+        */
+    }
+
     /**
      * @return mixed
      */
@@ -187,12 +203,7 @@ class Animal
         $ultimaEntrada = $this->cronologias->last();
 
         if (!is_null($ultimaEntrada->getEstadoFinal())) {
-            foreach ($this->cronologias as $cronologia) {
-                if (is_null($cronologia->getEstadoFinal())) {
-                    $ultimaEntrada = $cronologia;
-                    break;
-                }
-            }
+            $ultimaEntrada = HelperCronologia::getUltimaCronologia();
         }
 
         return $ultimaEntrada;

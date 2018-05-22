@@ -20,4 +20,17 @@ class RepoIA extends EntityRepository
             ->getQuery()
             ->execute();
     }
+
+    public function findUltimaIA($animal)
+    {
+
+    	return $this->createQueryBuilder('ia')
+    		->where("ia.animal = :animal")
+    		->setParameter("animal", $animal)
+            ->orderBy("ia.id", "DESC")
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+    }
 }

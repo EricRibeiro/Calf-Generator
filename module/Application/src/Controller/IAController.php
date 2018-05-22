@@ -29,7 +29,7 @@ class IAController extends AbstractActionController
            // ->findAllIAs();
         $ias = $this->entityManager
             ->getRepository('Application\Entity\IA')
-            ->findBy(array('protocolo' => null));
+            ->findBy(array('saiuProtocolo' => true));
         $view_params = array(
             'ias' => $ias,
         );
@@ -122,31 +122,40 @@ class IAController extends AbstractActionController
             try{
 
                 $numeroDoAnimal = $this->request->getPost('numeroDoAnimal');
+                $idEstacao = $this->request->getPost('idEstacao');
 
-                $animal = $this->entityManager->getRepository('Application\Entity\Animal')->
-                                        findOneBy(array('numero' => $numeroDoAnimal));
-            
+                 if ( empty($idEstacao) )
+
+                    throw new Exception("Estação não cadastrada, não é possível cadastrar uma IA.");
+
+                $animal = $this->entityManager->getRepository('Application\Entity\Animal')
+                    ->findOneBy(array('numero' => $numeroDoAnimal));
+
                 if ( is_null($animal) )
 
                     throw new Exception("Número do animal não encontrado.");
 
-                $idEstacao = $this->request->getPost('idEstacao');
+                $IaAnterior = $this->entityManager->getRepository('Application\Entity\IA')
+                    ->findUltimaIA($animal);
 
-                if ( empty($idEstacao) )
+                $protocolo = (is_null($IaAnterior)) ? null : $IaAnterior->getProtocolo();
 
-                    throw new Exception("Estação não cadastrada, não é possível cadastrar uma IA.");
+                $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
+                
+                $estacao = $this->entityManager->find('Application\Entity\Estacao', $idEstacao);
+                $estado = $this->entityManager->find('Application\Entity\Estado', 2);
+
+                if (is_null($protocolo))
+                    $saiuProtocolo = false;
+                else
+                    $saiuProtocolo = true;
 
                 $dataDeInseminacao = $this->request->getPost('dataDeInseminacao');
                 $dataDeRetornoAoCio = $this->request->getPost('dataDeRetornoAoCio');
                 $dataDeDiagnostico1 = $this->request->getPost('dataDeDiagnostico1');
                 $dataDeDiagnostico2 = $this->request->getPost('dataDeDiagnostico2');
 
-                $estacao = $this->entityManager->find('Application\Entity\Estacao', $idEstacao);
-                $estado = $this->entityManager->find('Application\Entity\Estado', 2);
-
-                $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
-
-                $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2, $estado);
+                $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2, $estado, $saiuProtocolo);
         
                 $this->entityManager->persist($ia);
 

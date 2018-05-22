@@ -85,6 +85,7 @@ class ProtocoloController extends AbstractActionController
         $estacao = $this->entityManager->find('Application\Entity\Estacao', $idEstacao);
         $estado = $this->entityManager->find('Application\Entity\Estado', 2);
         $protocolo = new Protocolo($numeroDoProtocolo, $estado);
+        
         $saiuProtocolo = false;
         $this->entityManager->persist($protocolo);
 
@@ -110,30 +111,29 @@ class ProtocoloController extends AbstractActionController
     }
 
     public function listarAction() {
+
         $numProtocolo = $this->params()->fromRoute('id');
         $protocolo = $this->entityManager
             ->getRepository('Application\Entity\Protocolo')
             ->findOneBy(array('numero' => $numProtocolo));
 
-        if(!is_null($protocolo)) {
+        if (!is_null($protocolo))
+        {
             $proximoEstado = $protocolo->getEstado()->getId() + 1;
             $proximoEstado = $this->entityManager->find('Application\Entity\Estado', $proximoEstado);
 
             $animais = $this->entityManager
                 ->getRepository('Application\Entity\Animal')
                 ->findAllAnimaisNoProtocolo($protocolo);
-
-            var_dump($animais[0]->getIAProtocolo($protocolo));
-            exit();
-
+            
             $view_params = array(
                 'animais' => $animais,
-                'proximoEstado' => $proximoEstado
+                'proximoEstado' => $proximoEstado,
+                'protocolo' => $protocolo
             );
 
             return new ViewModel($view_params);
         }
-
         return $this->redirect()->toRoute('app/protocolo', array(
             'controller' => 'protocolo',
             'action' => 'index'

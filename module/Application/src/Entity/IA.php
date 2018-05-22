@@ -125,7 +125,7 @@ class IA
         $this->animal = $animal;
     }
 
-        public function SaiuProtoclo()
+        public function saiuProtocolo()
     {
         return $this->saiuProtocolo;
     }

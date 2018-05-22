@@ -20,15 +20,36 @@
                             </tr>
                             </thead>
                             <tbody>
+                             <?php foreach ($animais as $animal) { ?>
+                                <?php if ($animal->getIAProtocolo($protocolo)->saiuProtocolo() == true) { ?>
+                                    <tr>
+                                        <td hidden id="idAnimal">SAIU</td>
+                                        <td>SAIU</td>
+                                        <td><?= $animal->getEstado(); ?></td>
+                                        <td>
+                                            <?php if ($animal->getEstado() == 'Gestante') { ?>
 
-                            <?php foreach ($animais as $animal) { ?>
+                                                -
+
+                                            <?php } else { ?>
+                                            <select class="form-control border-input" name="estado">
+                                                <option value="<?= $proximoEstado->getId(); ?>"
+                                                        selected="selected"><?= $proximoEstado->getEstado(); ?></option>
+                                                <option value="1">Apto</option>
+                                            </select>
+                                            <?php }; ?>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
                                 <tr>
                                     <td hidden id="idAnimal"><?= $animal->getId(); ?></td>
                                     <td><?= $animal->getNumero(); ?></td>
                                     <td><?= $animal->getEstado(); ?></td>
                                     <td>
                                         <?php if ($animal->getEstado() == 'Gestante') { ?>
+
                                             -
+
                                         <?php } else { ?>
                                             <select class="form-control border-input" name="estado">
                                                 <option value="<?= $proximoEstado->getId(); ?>"
@@ -39,7 +60,6 @@
                                     </td>
                                 </tr>
                             <?php } ?>
-
                             </tbody>
                         </table>
 

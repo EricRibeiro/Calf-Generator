@@ -132,17 +132,9 @@ class HelperCronologia
         return $entityManager->find('Application\Entity\Estado', $estadoID);
     }
 
-    private static function getIA($animal)
+    public static function getUltimaCronologia($animal)
     {
-        $ia = null;
-
-        if (sizeof($animal->getIAs()) > 0) {
-            $ultimaIA = $animal->getUltimaIA();
-            $dataDiagnostico2 = $ultimaIA->getDataDiagnostico2();
-            $hoje = new \DateTime();
-            $ia = ($hoje > $dataDiagnostico2) ? null : $ia;
-        }
-
-        return $ia;
+        return HelperEntityManager::$entityManager->getRepository('Application\Entity\Cronologia')
+            ->findUltimaCronologia($animal);
     }
 }

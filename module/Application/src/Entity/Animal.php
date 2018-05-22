@@ -2,6 +2,7 @@
 
 namespace Application\Entity;
 
+use Application\Helper\HelperCronologia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
@@ -209,12 +210,7 @@ class Animal
         $ultimaEntrada = $this->cronologias->last();
 
         if (!is_null($ultimaEntrada->getEstadoFinal())) {
-            foreach ($this->cronologias as $cronologia) {
-                if (is_null($cronologia->getEstadoFinal())) {
-                    $ultimaEntrada = $cronologia;
-                    break;
-                }
-            }
+            $ultimaEntrada = HelperCronologia::getUltimaCronologia();
         }
 
         return $ultimaEntrada;

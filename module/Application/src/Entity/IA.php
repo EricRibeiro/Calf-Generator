@@ -131,9 +131,9 @@ class IA
     }
 
     /**
-     * @param mixed $animal
+     * @param mixed
      */
-    public function setHasProtoclo($boolean)
+    public function setHasProtocolo($boolean)
     {
         $this->saiuProtocolo = $boolean;
     }

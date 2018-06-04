@@ -14,18 +14,18 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Entity\IA;
 use Application\Helper\HelperCronologia;
+use Application\Helper\HelperEntityManager;
+
 
 
 
 class ProtocoloController extends AbstractActionController
 {
-    private $sm;
     private $entityManager;
 
-    function __construct($sm)
+    function __construct()
     {
-        $this->sm = $sm;
-        $this->entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
+        $this->entityManager = HelperEntityManager::$entityManager;
     }
 
     public function indexAction()
@@ -125,7 +125,8 @@ class ProtocoloController extends AbstractActionController
             $animais = $this->entityManager
                 ->getRepository('Application\Entity\Animal')
                 ->findAllAnimaisNoProtocolo($protocolo);
-            
+
+           
             $view_params = array(
                 'animais' => $animais,
                 'proximoEstado' => $proximoEstado,
@@ -170,10 +171,15 @@ class ProtocoloController extends AbstractActionController
                 $estacao = $ia->getEstacao();
                 $estado = $this->entityManager->find('Application\Entity\Estado', $idEstado);
 
-                if($idEstado==1)
-                    HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, null, $estado);
-                
-                else
+                if($idEstado==1){
+
+                    $ia->setHasProtocolo(true);
+
+                    $this->entityManager->persist($ia);
+
+                    HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
+
+                }else
                     HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
 
                 $this->entityManager->flush();

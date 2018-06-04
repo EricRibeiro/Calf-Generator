@@ -21,10 +21,17 @@
                             </thead>
                             <tbody>
                              <?php foreach ($animais as $animal) { ?>
-                                <?php if ($animal->getIAProtocolo($protocolo)->saiuProtocolo() == true) { ?>
+                                <?php if ($animal->getIAProtocolo($protocolo)->saiuProtocolo()) { ?>
+                                    <tr class="text-danger">
+                                        <td hidden id="idAnimal"></td>
+                                        <td><?= $animal->getNumero(); ?></td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                <?php } else { ?>
                                     <tr>
-                                        <td hidden id="idAnimal">SAIU</td>
-                                        <td>SAIU</td>
+                                        <td hidden id="idAnimal"><?= $animal->getId(); ?></td>
+                                        <td><?= $animal->getNumero(); ?></td>
                                         <td><?= $animal->getEstado(); ?></td>
                                         <td>
                                             <?php if ($animal->getEstado() == 'Gestante') { ?>
@@ -32,33 +39,15 @@
                                                 -
 
                                             <?php } else { ?>
-                                            <select class="form-control border-input" name="estado">
-                                                <option value="<?= $proximoEstado->getId(); ?>"
-                                                        selected="selected"><?= $proximoEstado->getEstado(); ?></option>
-                                                <option value="1">Apto</option>
-                                            </select>
+                                                <select class="form-control border-input" name="estado">
+                                                    <option value="<?= $proximoEstado->getId(); ?>"
+                                                            selected="selected"><?= $proximoEstado->getEstado(); ?></option>
+                                                    <option value="1">Apto</option>
+                                                </select>
                                             <?php }; ?>
                                         </td>
                                     </tr>
                                 <?php } ?>
-                                <tr>
-                                    <td hidden id="idAnimal"><?= $animal->getId(); ?></td>
-                                    <td><?= $animal->getNumero(); ?></td>
-                                    <td><?= $animal->getEstado(); ?></td>
-                                    <td>
-                                        <?php if ($animal->getEstado() == 'Gestante') { ?>
-
-                                            -
-
-                                        <?php } else { ?>
-                                            <select class="form-control border-input" name="estado">
-                                                <option value="<?= $proximoEstado->getId(); ?>"
-                                                        selected="selected"><?= $proximoEstado->getEstado(); ?></option>
-                                                <option value="1">Apto</option>
-                                            </select>
-                                        <?php }; ?>
-                                    </td>
-                                </tr>
                             <?php } ?>
                             </tbody>
                         </table>

@@ -134,9 +134,7 @@ return [
                 return new EstacaoController($sm);
             },
 
-            Controller\ProtocoloController::class => function ($sm) {
-                return new ProtocoloController($sm);
-            },
+            Controller\ProtocoloController::class => InvokableFactory::class,
 
             Controller\IAController::class => function ($sm) {
                 return new IAController($sm);

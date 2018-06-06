@@ -51,17 +51,35 @@ class RepoAnimal extends EntityRepository
             ->execute();
     }
 
-    public function findAllAnimaisAptosOuPosPartoComMinimoDeDiasNaUltimaEstacao($estacao, $minimoDeDias)
+    public function findAllNovilhasParaInducaoNaEstacao($estacao)
+    {           
+           return $this->createQueryBuilder('animal')
+            ->innerJoin('Application\Entity\Cronologia', 'c', 'WITH', 'c.animal = animal')
+            ->innerJoin('Application\Entity\Animal_Classificacao', 'acl', 'WITH', 'acl.animal = animal')
+            ->where('c.estadoFinal IS NULL')
+            ->andWhere('acl.classificacaoInicial = :classificacao')
+            ->andWhere('c.estacao = :estacao')
+            ->andWhere('c.ia IS NULL')
+            ->setParameter('classificacao', 1)
+            ->setParameter('estacao', $estacao)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllAnimaisParaProtocoloComMinimoDeDiasNaUltimaEstacao($estacao, $minimoDeDias)
     {
         return $this->createQueryBuilder('animal')
             ->innerJoin('Application\Entity\Parto', 'p1', 'WITH', 'animal = p1.animal')
             ->leftJoin('Application\Entity\Parto', 'p2', 'WITH', 'animal = p2.id AND (p1.parto < p2.parto OR p1.parto = p2.parto AND p1.id < p2.id)')
             ->innerJoin('Application\Entity\Cronologia', 'c', 'WITH', 'c.animal = animal')
+            ->leftJoin('Application\Entity\Inducao', 'i', 'WITH', 'animal.inducao = i')
             ->where('p2.id IS NULL')
-            ->where('c.estadoFinal IS NULL')
+            ->andwhere('c.estadoFinal IS NULL')
             ->andWhere('c.estadoInicial = :apto OR (c.estadoInicial = :posParto AND DATE_DIFF(CURRENT_DATE(), p1.parto) >= :minimoDeDias)')
             ->andWhere('c.estacao = :estacao')
+            ->orWhere('DATE_DIFF(CURRENT_DATE(), i.dataFinal) >= :minimoInducao')
             ->setParameter('apto', 1)
+            ->setParameter('minimoInducao', 12)
             ->setParameter('posParto', 5)
             ->setParameter('minimoDeDias', $minimoDeDias)
             ->setParameter('estacao', $estacao)
@@ -69,15 +87,16 @@ class RepoAnimal extends EntityRepository
             ->getResult();
     }
 
-    public function findAllAnimaisAptosOuPosPartoSemEstacao()
+    public function findAllAnimaisForaDaEstacao()
     {
         return $this->createQueryBuilder('animal')
             ->innerJoin('Application\Entity\Cronologia', 'c', 'WITH', 'c.animal = animal')
             ->leftJoin('Application\Entity\Estacao', 'e', 'WITH', 'e = c.estacao')
             ->where('c.estadoFinal IS NULL')
-            ->andWhere('c.estadoInicial = :apto OR c.estadoInicial = :posParto')
+            ->andWhere('c.estadoInicial = :apto OR c.estadoInicial = :posParto OR c.estadoInicial = :aguardandoInducao')
             ->andWhere('c.estacao IS NULL OR DATE_DIFF(e.dataFinal, CURRENT_DATE()) < 0')
             ->setParameter('apto', 1)
+            ->setParameter('aguardandoInducao', 6)
             ->setParameter('posParto', 5)
             ->getQuery()
             ->getResult();

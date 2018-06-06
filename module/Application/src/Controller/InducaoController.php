@@ -9,6 +9,7 @@
 namespace Application\Controller;
 
 use Application\Entity\Protocolo;
+use Application\Entity\Inducao;
 use Application\Helper\HelperQuery;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -17,7 +18,7 @@ use Application\Helper\HelperCronologia;
 
 
 
-class ProtocoloController extends AbstractActionController
+class InducaoController extends AbstractActionController
 {
     private $sm;
     private $entityManager;
@@ -30,15 +31,15 @@ class ProtocoloController extends AbstractActionController
 
     public function indexAction()
     {
-        $ias = $this->entityManager
-            ->getRepository('Application\Entity\IA')
-            ->createQueryBuilder('ia')
-            ->groupBy('ia.protocolo')
+        $inducoes = $this->entityManager
+            ->getRepository('Application\Entity\Inducao')
+            ->createQueryBuilder('inducao')
+            ->groupBy('inducao')
             ->getQuery()
             ->getResult();
 
         $view_params = array(
-            'ias' => $ias,
+            'inducoes' => $inducoes,
         );
 
         return new ViewModel($view_params);
@@ -54,14 +55,13 @@ class ProtocoloController extends AbstractActionController
             ->getRepository('Application\Entity\Estacao')
             ->findUltimaEstacaoNoAno();
 
-        $minimoDeDias = 35;
         $animais = $this->entityManager
             ->getRepository('Application\Entity\Animal')
-            ->findAllAnimaisParaProtocoloComMinimoDeDiasNaUltimaEstacao($estacao, $minimoDeDias);
+            ->findAllNovilhasParaInducaoNaEstacao($estacao);
 
-        $repositorioProtocolo = $this->entityManager->getRepository('Application\Entity\Protocolo');
-        $ultimoProtocolo = HelperQuery::getUltimaInsercao($repositorioProtocolo);
-        $numProxProtocolo = (is_null($ultimoProtocolo)) ? 1 : $ultimoProtocolo->getNumero() + 1;
+        $repositorioInducao = $this->entityManager->getRepository('Application\Entity\Inducao');
+        $ultimaInducao = HelperQuery::getUltimaInsercao($repositorioInducao);
+        $numProxProtocolo = (is_null($ultimaInducao)) ? 1 : $ultimaInducao->getId() + 1;
         $view_params = array(
             'estacao' => $estacao,
             'animais' => $animais,
@@ -73,39 +73,42 @@ class ProtocoloController extends AbstractActionController
 
     private function cadastrar()
     {
-        $numeroDoProtocolo = $this->request->getPost('numeroDoProtocolo');
+        $numeroDaInducao = $this->request->getPost('numeroDaInducao');
         $idEstacao = $this->request->getPost('idEstacao');
-        $dataDeInseminacao = $this->request->getPost('dataDeInseminacao');
-        $dataDeRetornoAoCio = $this->request->getPost('dataDeRetornoAoCio');
-        $dataDeDiagnostico1 = $this->request->getPost('dataDeDiagnostico1');
-        $dataDeDiagnostico2 = $this->request->getPost('dataDeDiagnostico2');
+        $dataDeInicio = $this->request->getPost('dataDeInicio');
+        $dataDeFim = $this->request->getPost('dataDeFim');
         $animais = $this->request->getPost('lsIDsAnimais');
 
         $animais = explode("-", $animais);
         $estacao = $this->entityManager->find('Application\Entity\Estacao', $idEstacao);
-        $estado = $this->entityManager->find('Application\Entity\Estado', 2);
-        $protocolo = new Protocolo($numeroDoProtocolo, $estado);
+        $estado = $this->entityManager->find('Application\Entity\Estado', 7);
         
-        $saiuProtocolo = false;
-        $this->entityManager->persist($protocolo);
+        $inducao = new Inducao($dataDeInicio,$dataDeFim, $estacao);
+
+        $this->entityManager->persist($inducao);
+
+        $ia = null;
 
         foreach ($animais as $idAnimal) {
+            
             $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
             $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
             
-            $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2, $estado, $saiuProtocolo);
-            $this->entityManager->persist($ia);
+            $animal->setInducao($inducao);
 
-            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
+            //$ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2, $estado, $saiuProtocolo);
+            $this->entityManager->persist($inducao);
+
+            HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, (is_null($ia) ? null : $ia ), $estado);
 
             $this->entityManager->flush();
         }
 
         $this->entityManager->flush();
 
-        $this->flashMessenger()->addSuccessMessage("Protocolo cadastrado com sucesso.");
-        return $this->redirect()->toRoute('app/protocolo', array(
-            'controller' => 'protocolo',
+        $this->flashMessenger()->addSuccessMessage("Indução cadastrada com sucesso.");
+        return $this->redirect()->toRoute('app/inducao', array(
+            'controller' => 'inducao',
             'action' => 'index',
         ));
     }
@@ -141,6 +144,7 @@ class ProtocoloController extends AbstractActionController
     }
 
     public function alterarEstadoAction() {
+
         if ($this->request->isPost()) {
             $numProtocolo = $this->params()->fromRoute('id');
             $idEstado = $this->params()->fromRoute('pid');

@@ -260,4 +260,20 @@ class Animal
         $this->observacoes = $observacoes;
     }
 
+    /**
+     * @param mixed $inducao
+     */
+    public function getInducao()
+    {
+        return $this->inducao;
+    }
+
+    /**
+     * @param mixed $inducao
+     */
+    public function setInducao($inducao)
+    {
+        $this->inducao = $inducao;
+    }
+
 }

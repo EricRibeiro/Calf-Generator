@@ -87,6 +87,29 @@
                     </div>
                 </li>
 
+                <li>
+                    <a data-toggle="collapse" href="#inducao" aria-expanded="false" class="collapsed">
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                        <p>Indução
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="inducao">
+                        <ul class="nav" style="margin-top: 2px">
+                            <li class="app-inducao app-inducao-listar text-center">
+                                <a href="<?= $this->url('app/inducao', array('controller' => 'inducao', 'action' => 'index')); ?>">
+                                    <p>Visualizar Induções</p>
+                                </a>
+                            </li>
+                            <li class="app-inducao-cadastrar text-center">
+                                <a href="<?= $this->url('app/inducao', array('controller' => 'inducao', 'action' => 'cadastrar')); ?>">
+                                    <p>Cadastrar Indução</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
                 <hr class="custom"/>
 
                 <li>

@@ -170,7 +170,7 @@ class EstacaoController extends AbstractActionController
     {
         return $animais = $this->entityManager
             ->getRepository('Application\Entity\Animal')
-            ->findAllAnimaisAptosOuPosPartoSemEstacao();
+            ->findAllAnimaisForaDaEstacao();
     }
 
     private function getEstacaoDoAnoAtual()

@@ -1,0 +1,73 @@
+<div class="container-fluid">
+    <?php echo $this->flashHelper(); ?>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Protocolos de Induções</h4>
+                </div>
+                <div class="content">
+                    <table id="animais" class="table table-hover display" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Nº Protocolo</th>
+                            <th>Data de Início</th>
+                            <th>Data de Fim</th>
+                            <th hidden>Data do Próximo Diagnóstico - Sort</th>
+                            <th>Estado</th>
+                            <th>Alterar Estado</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($inducoes as $inducao) { ?>
+                            <?php  if (!is_null($inducao)) { ?>
+                            <tr>
+                                <td><b><?= $inducao->getId();?></b></td>
+                                <td><?= \Application\Helper\Data::dataToString($inducao->getDataInicio()); ?></td>
+                                <td><?= \Application\Helper\Data::dataToString($inducao->getDataFinal()); ?></td>
+                                    
+                                <td>add</td>
+
+                                <td>
+                                    <a type="button"
+                                       href="<?= $this->url('app/inducao', ['action' => 'listar', 'id' => $inducao->getId()]) ?>"
+                                       class="btn btn-info btn-fill">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                            <?php }; ?>
+                                </td>
+                            </tr>
+
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(function ($) {
+        $('#animais').DataTable({
+            columnDefs: [
+                {"orderable": false, "targets": 5},
+                {"orderData": [3], "targets": [2]},
+                {targets: '_all', className: 'dt-center'},
+            ],
+            aoColumns: [
+                null,
+                {"sType": "date-uk"},
+                {"sType": "date-uk"},
+                {"sType": "date-uk"},
+                null,
+                null
+            ],
+            order: [[0, 'desc']],
+            paging: false
+        });
+
+        $('#animais_filter label input').addClass('form-control border-input');
+    });
+</script>
+

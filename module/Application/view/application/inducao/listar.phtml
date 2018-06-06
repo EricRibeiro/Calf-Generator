@@ -1,0 +1,136 @@
+<?php $url = $this->url('app/protocolo', ['controller' => 'protocolo', 'action' => 'alterarEstado', 'id' => basename($_SERVER['REQUEST_URI']), 'pid' => $proximoEstado->getId()]); ?>
+
+<div class="container-fluid">
+    <?php echo $this->flashHelper(); ?>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Animais do Protocolo <?= basename($_SERVER['REQUEST_URI']) ?></h4>
+                </div>
+                <div class="content">
+                    <form method="post" action="<?= $url; ?>">
+                        <table id="animais" class="table table-hover display" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th hidden>#</th>
+                                <th>Número</th>
+                                <th>Estado Atual</th>
+                                <th>Próximo Estado</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                             <?php foreach ($animais as $animal) { ?>
+                                <?php if ($animal->getIAProtocolo($protocolo)->saiuProtocolo() == true) { ?>
+                                    <tr>
+                                        <td hidden id="idAnimal">SAIU</td>
+                                        <td>SAIU</td>
+                                        <td><?= $animal->getEstado(); ?></td>
+                                        <td>
+                                            <?php if ($animal->getEstado() == 'Gestante') { ?>
+
+                                                -
+
+                                            <?php } else { ?>
+                                            <select class="form-control border-input" name="estado">
+                                                <option value="<?= $proximoEstado->getId(); ?>"
+                                                        selected="selected"><?= $proximoEstado->getEstado(); ?></option>
+                                                <option value="1">Apto</option>
+                                            </select>
+                                            <?php }; ?>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                                <tr>
+                                    <td hidden id="idAnimal"><?= $animal->getId(); ?></td>
+                                    <td><?= $animal->getNumero(); ?></td>
+                                    <td><?= $animal->getEstado(); ?></td>
+                                    <td>
+                                        <?php if ($animal->getEstado() == 'Gestante') { ?>
+
+                                            -
+
+                                        <?php } else { ?>
+                                            <select class="form-control border-input" name="estado">
+                                                <option value="<?= $proximoEstado->getId(); ?>"
+                                                        selected="selected"><?= $proximoEstado->getEstado(); ?></option>
+                                                <option value="1">Apto</option>
+                                            </select>
+                                        <?php }; ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+
+                        <!-- Lista de Animais e seus respectivos Estados -->
+                        <input hidden name="lsIDsAnimaisEstados" required/>
+
+                        <div class="row">
+                        <?php if (!is_null($animal)) { ?>
+                            <?php if ($animal->getEstado() == 'Gestante') { ?>
+                                <div class="col-md-12 text-center">
+                                    <button type="button" onclick="window.history.back()"
+                                            class="btn btn-info btn-fill btn-wd">Voltar
+                                    </button>
+                                </div>
+                            <?php } else { ?>
+                                <div class="col-md-6 text-center">
+                                    <button type="button" onclick="window.history.back()"
+                                            class="btn btn-info btn-fill btn-wd">Cancelar
+                                    </button>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <button type="submit" class="btn btn-info btn-fill btn-wd">Salvar</button>
+                                </div>
+                            <?php }; ?>
+                        <?php } ?>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php echo $this->inlineScript()->prependFile($this->basePath() . '/js/protocolo/protocolo-alterar-estado.js'); ?>
+
+<script>
+    jQuery(function ($) {
+        var table = $('#animais').DataTable({
+            columnDefs: [
+                {targets: '_all', className: 'dt-center'},
+                {"orderable": false, "targets": 3},
+            ],
+            order: [[1, 'desc']],
+            paging: false,
+            buttons: [
+                { extend: 'csv', title: $('.title').html(), className: 'btn btn-success btn-fill',
+                    exportOptions: {
+                        columns: [ 1, 2 ]
+                    }
+                },
+                { extend: 'excel', title: $('.title').html(), className: 'btn btn-success btn-fill',
+                    exportOptions: {
+                        columns: [ 1, 2 ]
+                    }
+                },
+                { extend: 'pdf', title: $('.title').html(), className: 'btn btn-success btn-fill',
+                    exportOptions: {
+                        columns: [ 1, 2 ]
+                    }
+                },
+                { extend: 'print', title: $('.title').html(), className: 'btn btn-success btn-fill', text: 'Imprimir',
+                    exportOptions: {
+                        columns: [ 1, 2 ]
+                    }
+                }
+            ]
+        });
+
+        table.buttons().container()
+            .appendTo($('.col-sm-6:eq(0)', table.table().container()));
+
+        $('#animais_filter label input').addClass('form-control border-input');
+    });
+</script>

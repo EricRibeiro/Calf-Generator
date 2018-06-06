@@ -36,7 +36,7 @@ class AnimalController extends AbstractActionController
 
     public function cadastrarAction()
     {
-        if ($this->request->isPost()) {
+        if ($this->request->isPost()){
             $numero = $this->request->getPost('numero');
             $dataUltimoParto = $this->request->getPost('dataUltimoParto');
             $classificacaoID = $this->request->getPost('classificacao');
@@ -44,20 +44,31 @@ class AnimalController extends AbstractActionController
 
             $animal = new Animal($numero);
             $parto = new Parto($animal, $dataUltimoParto);
+            $estado = null;
 
             try {
+
                 $this->entityManager->persist($animal);
                 $this->entityManager->persist($parto);
 
+                if ( $classificacaoID == 1 ){
+
+                    $estado = $this->entityManager->find('Application\Entity\Estado', 6);
+                    HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null, null, $estado);
+
+                }else{
+
+                    HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
+
+                }
+
                 HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, null);
-                HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null);
 
                 $this->entityManager->flush();
                 $this->flashMessenger()->addSuccessMessage("Animal cadastrado com sucesso.");
 
             } catch (UniqueConstraintViolationException $e) {
-                $this->flashMessenger()->addErrorMessage(" Animal já cadastrado, escolha outro número.");
-
+                $this->flashMessenger()->addErrorMessage("Animal já cadastrado, escolha outro número.");
             }
         }
 

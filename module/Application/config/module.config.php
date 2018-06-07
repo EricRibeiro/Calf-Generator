@@ -16,6 +16,7 @@ use Application\Controller\AnimalController;
 use Application\Controller\EstacaoController;
 use Application\Controller\ProtocoloController;
 use Application\Controller\IAController;
+use Application\Controller\InducaoController;
 
 
 return [
@@ -100,6 +101,21 @@ return [
                             ],
                         ],
                     ],
+                     'inducao' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/inducao[/:action[/:id[/:pid]]]',
+                            'constraints' => [
+                                'id' => '[0-9]*',
+                                'pid' => '[0-9]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\InducaoController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                    ],
                     'ia' => [
                         'type' => Segment::class,
                         'options' => [
@@ -135,6 +151,10 @@ return [
             },
 
             Controller\ProtocoloController::class => InvokableFactory::class,
+
+            Controller\InducaoController::class => function ($sm) {
+                return new InducaoController($sm);
+            },
 
             Controller\IAController::class => function ($sm) {
                 return new IAController($sm);

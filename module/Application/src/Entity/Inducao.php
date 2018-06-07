@@ -45,9 +45,9 @@ class Inducao
      * @param $dataFinal
      * @param $estacao
      */
-    public function __construct($animais, $dataInicio, $dataFinal, $estacao)
+    public function __construct( $dataInicio, $dataFinal, $estacao)
     {
-        $this->animais = $animais;
+        //$this->animais = $animais;
         $this->setDataInicio($dataInicio);
         $this->setDataFinal($dataFinal);
         $this->estacao = $estacao;

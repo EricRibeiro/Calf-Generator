@@ -187,6 +187,12 @@ class Animal
         return $this->getUltimaCronologia()->getEstadoInicial()->getEstado();
     }
 
+
+    public function getObjEstado()
+    {
+        return $this->getUltimaCronologia()->getEstadoInicial();
+    }
+
     /**
      * @return IA
      */
@@ -258,6 +264,22 @@ class Animal
     public function setObservacoes($observacoes)
     {
         $this->observacoes = $observacoes;
+    }
+
+    /**
+     * @param mixed $inducao
+     */
+    public function getInducao()
+    {
+        return $this->inducao;
+    }
+
+    /**
+     * @param mixed $inducao
+     */
+    public function setInducao($inducao)
+    {
+        $this->inducao = $inducao;
     }
 
 }

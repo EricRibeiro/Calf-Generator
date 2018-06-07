@@ -141,9 +141,9 @@ class EstacaoController extends AbstractActionController
     {
         $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
         $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
-
+        $estado = $animal->getObjEstado();
         HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao, $estacao);
-        HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao);
+        HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, null, $estado);
 
        $this->entityManager->flush();
     }
@@ -152,9 +152,10 @@ class EstacaoController extends AbstractActionController
     {
         $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
         $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
+        $estado = $animal->getObjEstado();
 
         HelperClassificacao::criarClassificacao($this->entityManager, $animal, $classificacao);
-        HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao);
+        HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, null, null, $estado);
 
         $this->entityManager->flush();
     }
@@ -170,7 +171,7 @@ class EstacaoController extends AbstractActionController
     {
         return $animais = $this->entityManager
             ->getRepository('Application\Entity\Animal')
-            ->findAllAnimaisAptosOuPosPartoSemEstacao();
+            ->findAllAnimaisForaDaEstacao();
     }
 
     private function getEstacaoDoAnoAtual()

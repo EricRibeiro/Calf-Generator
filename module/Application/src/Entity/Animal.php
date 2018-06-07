@@ -187,6 +187,12 @@ class Animal
         return $this->getUltimaCronologia()->getEstadoInicial()->getEstado();
     }
 
+
+    public function getObjEstado()
+    {
+        return $this->getUltimaCronologia()->getEstadoInicial();
+    }
+
     /**
      * @return IA
      */

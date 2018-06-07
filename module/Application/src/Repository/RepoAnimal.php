@@ -51,6 +51,16 @@ class RepoAnimal extends EntityRepository
             ->execute();
     }
 
+    public function findAllAnimaisNaInducao($inducao)
+    {
+        return $this->createQueryBuilder('animal')
+            ->innerJoin('Application\Entity\Inducao', 'i', 'WITH', 'i = animal.inducao')
+            ->where('i.id = :inducao')
+            ->setParameter('inducao', $inducao)
+            ->getQuery()
+            ->execute();
+    }
+
     public function findAllNovilhasParaInducaoNaEstacao($estacao)
     {           
            return $this->createQueryBuilder('animal')

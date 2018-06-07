@@ -1,4 +1,4 @@
-<?php $url = $this->url('app/protocolo', ['controller' => 'protocolo', 'action' => 'alterarEstado', 'id' => basename($_SERVER['REQUEST_URI']), 'pid' => $proximoEstado->getId()]); ?>
+<?php $url = $this->url('app/inducao', ['controller' => 'inducao', 'action' => 'alterarEstado', 'id' => basename($_SERVER['REQUEST_URI']), 'pid' => $proximoEstado->getId()]); ?>
 
 <div class="container-fluid">
     <?php echo $this->flashHelper(); ?>
@@ -6,7 +6,7 @@
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="header">
-                    <h4 class="title">Animais do Protocolo <?= basename($_SERVER['REQUEST_URI']) ?></h4>
+                    <h4 class="title">Animais da Indução <?= basename($_SERVER['REQUEST_URI']) ?></h4>
                 </div>
                 <div class="content">
                     <form method="post" action="<?= $url; ?>">

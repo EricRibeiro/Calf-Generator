@@ -90,7 +90,7 @@ class InducaoController extends AbstractActionController
         $ia = null;
 
         foreach ($animais as $idAnimal) {
-            
+
             $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
             $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
             
@@ -115,30 +115,26 @@ class InducaoController extends AbstractActionController
 
     public function listarAction() {
 
-        $numProtocolo = $this->params()->fromRoute('id');
-        $protocolo = $this->entityManager
-            ->getRepository('Application\Entity\Protocolo')
-            ->findOneBy(array('numero' => $numProtocolo));
+        $numeroDaInducao = $this->params()->fromRoute('id');
+        $inducao = $this->entityManager
+            ->getRepository('Application\Entity\Inducao')
+            ->findOneBy(array('id' => $numeroDaInducao));
 
-        if (!is_null($protocolo))
+        if (!is_null($inducao))
         {
-            $proximoEstado = $protocolo->getEstado()->getId() + 1;
-            $proximoEstado = $this->entityManager->find('Application\Entity\Estado', $proximoEstado);
-
             $animais = $this->entityManager
                 ->getRepository('Application\Entity\Animal')
-                ->findAllAnimaisNoProtocolo($protocolo);
-            
+                ->findAllAnimaisNaInducao($inducao);
+
             $view_params = array(
                 'animais' => $animais,
-                'proximoEstado' => $proximoEstado,
-                'protocolo' => $protocolo
+                'inducao' => $inducao
             );
 
             return new ViewModel($view_params);
         }
-        return $this->redirect()->toRoute('app/protocolo', array(
-            'controller' => 'protocolo',
+        return $this->redirect()->toRoute('app/inducao', array(
+            'controller' => 'inducao',
             'action' => 'index'
         ));
     }

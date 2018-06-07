@@ -14,8 +14,7 @@
                             <th>Data de Início</th>
                             <th>Data de Fim</th>
                             <th hidden>Data do Próximo Diagnóstico - Sort</th>
-                            <th>Estado</th>
-                            <th>Alterar Estado</th>
+                            <th>Alterar Estados</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -25,9 +24,6 @@
                                 <td><b><?= $inducao->getId();?></b></td>
                                 <td><?= \Application\Helper\Data::dataToString($inducao->getDataInicio()); ?></td>
                                 <td><?= \Application\Helper\Data::dataToString($inducao->getDataFinal()); ?></td>
-                                    
-                                <td>add</td>
-
                                 <td>
                                     <a type="button"
                                        href="<?= $this->url('app/inducao', ['action' => 'listar', 'id' => $inducao->getId()]) ?>"

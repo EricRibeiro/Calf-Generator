@@ -8,6 +8,36 @@
                         <h4 class="title">Taxa de Prenhez por Protocolo</h4>
                     </div>
                     <div class="content">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Estação</label>
+
+                                <select class="form-control border-input" id="sel-estacao" name="selEstacao">
+                                    <?php if (sizeof($estacao) != 0) { ?>
+                                        <option hidden selected value="unselected">
+                                            Selecionar Estação
+                                        </option>
+
+                                        <?php foreach ($estacao as $e) { ?>
+                                            <option value="<?= $e->getId(); ?>">
+                                                <?= \Application\Helper\Data::dataToString($e->getDataInicio()); ?>
+                                                até
+                                                <?= \Application\Helper\Data::dataToString($e->getDataFinal()); ?>
+                                            </option>
+
+                                        <?php } ?>
+
+                                    <?php } else { ?>
+                                        <option hidden selected value="empty">
+                                            Sem Estações
+                                        </option>
+
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        
                         <table id="animais" class="table table-hover display" style="width:100%">
                             <thead>
                                 <tr>

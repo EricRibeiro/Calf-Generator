@@ -28,6 +28,18 @@ class RelatorioController extends AbstractActionController
         return new ViewModel();
     }
 
+    public function txPrenhezProtocoloAction()
+    {
+        $estacao = $this->entityManager
+            ->getRepository('Application\Entity\Protocolo')
+
+        $view_params = array(
+            'estacao' => $estacao,
+        );
+
+        return new ViewModel($view_params);
+    }
+
     public function txPrenhezNovilhasAction()
     {
         $estacao = $this->entityManager
@@ -60,6 +72,17 @@ class RelatorioController extends AbstractActionController
             $idProtNaoInduzidas = $this->request->getPost('idProtNaoInduzidas');
 
             $content = HelperTxPrenhezNovilhas::getDadosTxPrenhezNovilhasAction($idEstacao, $idProtInduzidas, $idProtNaoInduzidas);
+            return $response->setContent($content);
+        }
+    }
+
+    function getDadosTxPrenhezProtocoloAction()
+    {
+        if ($this->request->isPost()) {
+            $response = $this->getResponse();
+            $idEstacao = $this->request->getPost('idEstacao');
+
+            $content = HelperTxPrenhezProtocolo::getDadosTxPrenhezNovilhasAction($idEstacao);
             return $response->setContent($content);
         }
     }

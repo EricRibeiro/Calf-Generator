@@ -31,7 +31,7 @@ class RelatorioController extends AbstractActionController
     public function txPrenhezProtocoloAction()
     {
         $estacao = $this->entityManager
-            ->getRepository('Application\Entity\Protocolo')
+            ->getRepository('Application\Entity\Estacao');
 
         $view_params = array(
             'estacao' => $estacao,

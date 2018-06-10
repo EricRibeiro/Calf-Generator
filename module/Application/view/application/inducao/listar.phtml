@@ -1,4 +1,4 @@
-<?php $url = $this->url('app/inducao', ['controller' => 'inducao', 'action' => 'alterarEstado', 'id' => basename($_SERVER['REQUEST_URI']), 'pid' => $proximoEstado->getId()]); ?>
+<?php $url = $this->url('app/inducao', ['controller' => 'inducao', 'action' => 'alterarEstado', 'id' => basename($_SERVER['REQUEST_URI']) ]);?>
 
 <div class="container-fluid">
     <?php echo $this->flashHelper(); ?>
@@ -15,51 +15,19 @@
                             <tr>
                                 <th hidden>#</th>
                                 <th>Número</th>
+                                <th>Classificação</th>
                                 <th>Estado Atual</th>
-                                <th>Próximo Estado</th>
                             </tr>
                             </thead>
                             <tbody>
-                             <?php foreach ($animais as $animal) { ?>
-                                <?php if ($animal->getIAProtocolo($protocolo)->saiuProtocolo() == true) { ?>
+                                <?php foreach ($animais as $animal) { ?>
                                     <tr>
-                                        <td hidden id="idAnimal">SAIU</td>
-                                        <td>SAIU</td>
+                                        <td hidden id="idAnimal"></td>
+                                        <td><?= $animal->getNumero(); ?></td>
+                                        <td><?= $animal->getClassificacao(); ?></td>
                                         <td><?= $animal->getEstado(); ?></td>
-                                        <td>
-                                            <?php if ($animal->getEstado() == 'Gestante') { ?>
-
-                                                -
-
-                                            <?php } else { ?>
-                                            <select class="form-control border-input" name="estado">
-                                                <option value="<?= $proximoEstado->getId(); ?>"
-                                                        selected="selected"><?= $proximoEstado->getEstado(); ?></option>
-                                                <option value="1">Apto</option>
-                                            </select>
-                                            <?php }; ?>
-                                        </td>
                                     </tr>
                                 <?php } ?>
-                                <tr>
-                                    <td hidden id="idAnimal"><?= $animal->getId(); ?></td>
-                                    <td><?= $animal->getNumero(); ?></td>
-                                    <td><?= $animal->getEstado(); ?></td>
-                                    <td>
-                                        <?php if ($animal->getEstado() == 'Gestante') { ?>
-
-                                            -
-
-                                        <?php } else { ?>
-                                            <select class="form-control border-input" name="estado">
-                                                <option value="<?= $proximoEstado->getId(); ?>"
-                                                        selected="selected"><?= $proximoEstado->getEstado(); ?></option>
-                                                <option value="1">Apto</option>
-                                            </select>
-                                        <?php }; ?>
-                                    </td>
-                                </tr>
-                            <?php } ?>
                             </tbody>
                         </table>
 
@@ -92,9 +60,6 @@
         </div>
     </div>
 </div>
-
-<?php echo $this->inlineScript()->prependFile($this->basePath() . '/js/protocolo/protocolo-alterar-estado.js'); ?>
-
 <script>
     jQuery(function ($) {
         var table = $('#animais').DataTable({

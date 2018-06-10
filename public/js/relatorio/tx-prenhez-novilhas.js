@@ -18,7 +18,7 @@ function onSelectChangeGetProtocolos() {
         idEstacao = $(this).val();
 
         $.ajax({
-            url: '/app/relatorio/getProtocolos',
+            url: '/app/relatorio/getJsonProtocolosDaEstacao',
             type: 'POST',
             dataType: 'json',
             async: true,
@@ -118,13 +118,13 @@ function showTable() {
 
 function getTableData() {
     $.ajax({
-        url: '/app/relatorio/getDados',
+        url: '/app/relatorio/getDadosTxPrenhezNovilhas',
         type: 'POST',
         dataType: 'json',
         async: true,
         data: {idEstacao: idEstacao, idProtInduzidas: idProtInduzidas, idProtNaoInduzidas: idProtNaoInduzidas},
         success: function (data) {
-            alert("BATATA");
+            console.log("SUCESSO NO getTableData()");
         },
         error: function (data) {
             console.log(data);

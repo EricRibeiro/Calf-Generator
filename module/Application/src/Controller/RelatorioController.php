@@ -8,10 +8,10 @@
 
 namespace Application\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Application\Helper\HelperRelatorios\HelperRelatorio;
+use Application\Helper\HelperRelatorios\HelperTxPrenhezNovilhas;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Json;
 use Application\Helper\HelperEntityManager;
 
 class RelatorioController extends AbstractActionController
@@ -41,32 +41,17 @@ class RelatorioController extends AbstractActionController
         return new ViewModel($view_params);
     }
 
-    function getProtocolosAction()
+    function getJsonProtocolosDaEstacaoAction()
     {
         if ($this->request->isPost()) {
             $response = $this->getResponse();
-
             $idEstacao = $this->request->getPost('idEstacao');
-
-            $estacao = $this->entityManager
-                ->getRepository('Application\Entity\Estacao')
-                ->find($idEstacao);
-
-            $protocolos = $this->entityManager
-                ->getRepository('Application\Entity\Protocolo')
-                ->findBy(array('estacao' => $estacao));
-
-            $jsonProtocolos = [];
-
-            foreach ($protocolos as $p) {
-                $jsonProtocolos[] = json_encode($p);
-            }
-
-            return $response->setContent(json_encode($jsonProtocolos));
+            $content = HelperRelatorio::getJsonProtocolosDaEstacao($idEstacao);
+            return $response->setContent($content);
         }
     }
 
-    function getDadosAction()
+    function getDadosTxPrenhezNovilhasAction()
     {
         if ($this->request->isPost()) {
             $response = $this->getResponse();
@@ -74,26 +59,10 @@ class RelatorioController extends AbstractActionController
             $idProtInduzidas = $this->request->getPost('idProtInduzidas');
             $idProtNaoInduzidas = $this->request->getPost('idProtNaoInduzidas');
 
-            $dadosProtInduzidas = $this->getDadosProtInduzidas($idEstacao, $idProtInduzidas);
-            $dadosProtNaoInduzidas = $this->getDadosProtNaoInduzidas($idEstacao, $idProtNaoInduzidas);
-
-            return $response->setContent("BATATA");
+            $content = HelperTxPrenhezNovilhas::getDadosTxPrenhezNovilhasAction($idEstacao, $idProtInduzidas, $idProtNaoInduzidas);
+            return $response->setContent($content);
         }
     }
 
-    function getDadosProtInduzidas($idEstacao, $idProtInduzidas) {
-        $protocolo = $this->entityManager
-            ->getRepository('Application\Entity\Protocolo')
-            ->find($idProtInduzidas);
 
-        $novilhasNoProt = $this->entityManager
-            ->getRepository('Application\Entity\Protocolo')
-            ->createQueryBuilder('animal');
-
-        // Codigo restante para geração de dados do protocolo
-    }
-
-    function getDadosProtNaoInduzidas() {
-        return "QUENTE";
-    }
 }

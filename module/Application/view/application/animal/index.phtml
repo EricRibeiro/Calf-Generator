@@ -49,16 +49,21 @@
                                     ?>
                                 </td>
                                 <td>
-                                    <a type="button"
-                                       href="<?= $this->url('app/animal', ['action' => 'editar', 'id' => $animal->getId()]) ?>"
-                                       class="btn btn-info btn-fill">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
-
-                                    <a href="<?= $this->url('app/animal', ['action' => 'remover', 'id' => $animal->getId()]) ?>"
-                                       class="btn btn-danger btn-fill">
-                                        <i class="fa fa-trash" aria-hidden="true" type="hidden"></i>
-                                    </a>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a type="button"
+                                               href="<?= $this->url('app/animal', ['action' => 'editar', 'id' => $animal->getId()]) ?>"
+                                               class="btn btn-info btn-fill">
+                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="<?= $this->url('app/animal', ['action' => 'remover', 'id' => $animal->getId()]) ?>"
+                                               class="btn btn-danger btn-fill">
+                                                <i class="fa fa-trash" aria-hidden="true" type="hidden"></i>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
 
@@ -77,9 +82,9 @@
     jQuery(function ($) {
         $('#animais').DataTable({
             columnDefs: [
-                { "orderable": false, "targets": 8 },
-                { "orderData":[ 5 ],   "targets": [ 4 ] },
-                { "orderData":[ 7 ],   "targets": [ 6 ] },
+                {"orderable": false, "targets": 8},
+                {"orderData": [5], "targets": [4]},
+                {"orderData": [7], "targets": [6]},
                 {targets: '_all', className: 'dt-center'},
             ],
             aoColumns: [

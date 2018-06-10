@@ -52,20 +52,6 @@ function strToJsonArrayProtocolo(data) {
     return protocolos;
 }
 
-function showSelectProtocolos(protLetter) {
-    let $select = $('#sel-protocolo-' + protLetter);
-    let option = "<option hidden selected value='unselected'>Selecionar Protocolo</option>";
-
-    protocolos.map(function (item) {
-        option += "<option value='" + item.id_protocolo + "'>";
-        option += "Protocolo " + item.numero;
-        option += "</option>";
-    });
-
-    $select.html(option);
-    $('#row-sel-protocolo-' + protLetter).show("fast");
-}
-
 function onSelectChangeShowTableOrSelect() {
     $selProtInduzidas.unbind().change(function () {
         idProtInduzidas = $(this).val();
@@ -118,13 +104,13 @@ function showTable() {
 
 function getTableData() {
     $.ajax({
-        url: '/app/relatorio/getDadosTxPrenhezNovilhas',
+        url: '/app/relatorio/getDadosTxPrenhezProtocolo',
         type: 'POST',
         dataType: 'json',
         async: true,
-        data: {idEstacao: idEstacao, idProtInduzidas: idProtInduzidas, idProtNaoInduzidas: idProtNaoInduzidas},
+        data: {idEstacao: idEstacao},
         success: function (data) {
-            console.log(data);
+            console.log("SUCESSO NO getTableData()");
         },
         error: function (data) {
             console.log(data);

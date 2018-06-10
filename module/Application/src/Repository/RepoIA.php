@@ -35,28 +35,40 @@ class RepoIA extends EntityRepository
 
     }
 
-//    public function findNumNovilhasRepetiuNoProtocolo($protocolo)
-//    {
-//        $qb = $this->createQueryBuilder('ia');
-//        $qb2 = HelperEntityManager::$entityManager->createQueryBuilder();
-//
-//        return $qb->select('count(ia.animal)')
-//            ->where(
-//                $qb->expr()->in(
-//                    'ia.animal',
-//                    $qb2->select('ia2.animal')
-//                        ->from('Application\Entity\IA', 'ia2')
-//                        ->where('ia2.protocolo = :protocolo')
-//                        ->setParameter('protocolo', $protocolo)
-//                        ->getDQL()
-//                )
-//            )
-//            ->andWhere('ia.protocolo < :protocolo')
-//            ->andWhere('ia.saiuProtocolo = :saiuProtocolo')
-//            ->setParameter('protocolo', $protocolo)
-//            ->setParameter('saiuProtocolo', 1)
-//            ->getQuery()
-//            ->getSingleScalarResult();
-//
-//    }
+    public function findNumNovilhasRepetiuNoProtocolo($protocolo)
+    {
+        return $this->createQueryBuilder('ia1')
+            ->select('count(distinct ia1.animal)')
+            ->innerJoin('Application\Entity\IA', 'ia2', 'WITH', 'ia1.animal = ia2.animal')
+            ->innerJoin('Application\Entity\Cronologia', 'c1', 'WITH', 'ia1 = c1.ia')
+            ->leftJoin('Application\Entity\Cronologia', 'c2', 'WITH', 'ia1 = c2.ia AND c1.id < c2.id')
+            ->where('ia2.protocolo = :protocolo')
+            ->andWhere('ia1.protocolo < :protocolo')
+            ->andWhere('ia1.saiuProtocolo = :saiuProtocolo')
+            ->andWhere('c2.id IS NULL')
+            ->andWhere('c1.classificacao = :novilha')
+            ->setParameter('protocolo', $protocolo)
+            ->setParameter('saiuProtocolo', 1)
+            ->setParameter('novilha', 1)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function findNumNovilhasPrenhasNoProtocolo($protocolo)
+    {
+        return $this->createQueryBuilder('ia')
+            ->select('count(ia.animal)')
+            ->innerJoin('Application\Entity\Cronologia', 'c1', 'WITH', 'ia = c1.ia')
+            ->leftJoin('Application\Entity\Cronologia', 'c2', 'WITH', 'ia = c2.ia AND c1.id < c2.id')
+            ->where('ia.protocolo = :protocolo')
+            ->andWhere('ia.saiuProtocolo = :saiuProtocolo')
+            ->andWhere('c2.id IS NULL')
+            ->andWhere('c1.classificacao = :novilha')
+            ->setParameter('protocolo', $protocolo)
+            ->setParameter('saiuProtocolo', 0)
+            ->setParameter('novilha', 1)
+            ->distinct()
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

@@ -146,11 +146,8 @@ class Animal
     }
 
     public function getIAProtocolo($protocolo)
-    {   
-        
-        $return = HelperIA::getUltimaIA($this, $protocolo);
-        return $return;
-       
+    {
+        return HelperIA::getUltimaIA($this, $protocolo);
     }
 
     /**
@@ -215,7 +212,7 @@ class Animal
         $ultimaEntrada = $this->cronologias->last();
 
         if (!is_null($ultimaEntrada->getEstadoFinal())) {
-            $ultimaEntrada = HelperCronologia::getUltimaCronologia();
+            $ultimaEntrada = HelperCronologia::getUltimaCronologia($this->getId());
         }
 
         return $ultimaEntrada;

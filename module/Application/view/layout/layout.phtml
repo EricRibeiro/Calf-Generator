@@ -40,12 +40,6 @@
         -->
 
         <div class="sidebar-wrapper">
-            <div class="logo">
-                <a href="<?= $this->url('app/dashboard', array('controller' => 'dashboard', 'action' => 'index')); ?>"
-                   class="simple-text">
-                    Calf Generator
-                </a>
-            </div>
 
             <ul class="nav">
                 <li class="app-dashboard">
@@ -59,6 +53,13 @@
                     <a href="<?= $this->url('app/animal', array('controller' => 'animal', 'action' => 'index')); ?>">
                         <i class="fa fa-paw" aria-hidden="true"></i>
                         <p>Gerenciar Animais</p>
+                    </a>
+                </li>
+
+                <li class="app-relatorio">
+                    <a href="<?= $this->url('app/relatorio', array('controller' => 'relatorio', 'action' => 'index')); ?>">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                        <p>Relatórios</p>
                     </a>
                 </li>
 

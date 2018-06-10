@@ -84,7 +84,7 @@ class ProtocoloController extends AbstractActionController
         $animais = explode("-", $animais);
         $estacao = $this->entityManager->find('Application\Entity\Estacao', $idEstacao);
         $estado = $this->entityManager->find('Application\Entity\Estado', 2);
-        $protocolo = new Protocolo($numeroDoProtocolo, $estado);
+        $protocolo = new Protocolo($numeroDoProtocolo, $estacao, $estado);
         
         $saiuProtocolo = false;
         $this->entityManager->persist($protocolo);

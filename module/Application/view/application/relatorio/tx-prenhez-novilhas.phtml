@@ -1,0 +1,97 @@
+<?php $this->headLink()->appendStylesheet($this->basePath() . '/css/relatorio/tx-prenhez-novilhas.css'); ?>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Comparação da Taxa de Prenhez entre Novilhas Induzidas X Não Induzidas</h4>
+                    </div>
+
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Estação</label>
+
+                                <select class="form-control border-input" id="sel-estacao" name="selEstacao">
+                                    <?php if (sizeof($estacao) != 0) { ?>
+                                        <option hidden selected value="unselected">
+                                            Selecionar Estação
+                                        </option>
+
+                                        <?php foreach ($estacao as $e) { ?>
+                                            <option value="<?= $e->getId(); ?>">
+                                                <?= \Application\Helper\Data::dataToString($e->getDataInicio()); ?>
+                                                até
+                                                <?= \Application\Helper\Data::dataToString($e->getDataFinal()); ?>
+                                            </option>
+
+                                        <?php } ?>
+
+                                    <?php } else { ?>
+                                        <option hidden selected value="empty">
+                                            Sem Estações
+                                        </option>
+
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row" id="row-sel-protocolo-induzidas" style="display: none">
+                            <div class="col-md-12">
+                                <label>Protocolo das Novilhas Induzidas</label>
+
+                                <select class="form-control border-input" id="sel-protocolo-induzidas" name="selProtocoloInduzidas">
+                                    <option hidden selected value="unselected">
+                                        Selecionar Protocolo
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row" id="row-sel-protocolo-naoInduzidas" style="display: none">
+                            <div class="col-md-12">
+                                <label>Protocolo das Novilhas Não Induzidas</label>
+
+                                <select class="form-control border-input" id="sel-protocolo-naoInduzidas" name="selProtocoloNaoInduzidas">
+                                    <option hidden selected value="unselected">
+                                        Selecionar Protocolo
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+
+<!--                        <div class="row" id="row-sel-protocolo-induzidas" style="display: none">-->
+<!--                            <div class="col-md-12">-->
+<!--                                <label>As Novilhas Induzidas Estão no Protocolo</label>-->
+<!---->
+<!--                                <select class="form-control border-input" id="sel-protocolo-induzidas" name="selProtocoloInduzidas">-->
+<!--                                    <option hidden selected value="unselected">-->
+<!--                                        Selecionar Protocolo-->
+<!--                                    </option>-->
+<!--                                    <option value="A">-->
+<!--                                        Protocolo A-->
+<!--                                    </option>-->
+<!--                                    <option value="B">-->
+<!--                                        Protocolo B-->
+<!--                                    </option>-->
+<!--                                </select>-->
+<!---->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="row" id="row-tabTxPrenhezNovilhas" style="display: none">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<?php
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/relatorio/tx-prenhez-novilhas.js');
+?>

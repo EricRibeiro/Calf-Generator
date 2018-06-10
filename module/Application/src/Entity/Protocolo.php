@@ -3,11 +3,12 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * @ORM\Entity
  */
-class Protocolo
+class Protocolo implements JsonSerializable
 {
     /**
      * @ORM\Id
@@ -22,6 +23,12 @@ class Protocolo
     private $numero;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Estacao")
+     * @ORM\JoinColumn(name="id_estacao", referencedColumnName="id")
+     */
+    private $estacao;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Estado")
      * @ORM\JoinColumn(name="id_estado", referencedColumnName="id", nullable=false)
      */
@@ -32,15 +39,11 @@ class Protocolo
      */
     private $ias;
 
-    /**
-     * Protocolo constructor.
-     * @param $numero
-     * @param $estadoInicial
-     * @param $estadoFinal
-     */
-    public function __construct($numero, $estado)
+
+    public function __construct($numero, $estacao, $estado)
     {
         $this->numero = $numero;
+        $this->estacao = $estacao;
         $this->estado = $estado;
     }
 
@@ -79,14 +82,27 @@ class Protocolo
     /**
      * @return mixed
      */
+    public function getEstacao()
+    {
+        return $this->estacao;
+    }
+
+    /**
+     * @param mixed $estacao
+     */
+    public function setEstacao($estacao)
+    {
+        $this->estacao = $estacao;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getEstado()
     {
         return $this->estado;
     }
 
-    /**
-     * @param mixed $estadoInicial
-     */
     public function setEstado($estado)
     {
         $this->estado = $estado;
@@ -106,5 +122,16 @@ class Protocolo
     public function setIas($ias)
     {
         $this->ias = $ias;
+    }
+
+
+    public function jsonSerialize()
+    {
+        return array(
+            'id_protocolo' => $this->id,
+            'id_estacao'=> $this->estacao->getId(),
+            'id_estado' => $this->estado->getId(),
+            'numero'=> $this->numero
+        );
     }
 }

@@ -47,7 +47,7 @@ class EstacaoController extends AbstractActionController
             $estacao = new Estacao($dataInicio, $dataFim);
             $this->entityManager->persist($estacao);
 
-            if ($animais != '') {
+            if (!(sizeof($animais) == 1 && $animais[0] == "")) {
                 foreach ($animais as $idAnimal) {
                     $this->cadastrarAnimalNaEstacao($idAnimal, $estacao);
                 }

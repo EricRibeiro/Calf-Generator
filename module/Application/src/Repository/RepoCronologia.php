@@ -19,6 +19,6 @@ class RepoCronologia extends EntityRepository
             ->where('c.estadoFinal IS NULL')
             ->setParameter('animal', $animal)
             ->getQuery()
-            ->execute();
+            ->getOneOrNullResult();
     }
 }

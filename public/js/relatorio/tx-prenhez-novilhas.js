@@ -124,7 +124,7 @@ function getTableData() {
         async: true,
         data: {idEstacao: idEstacao, idProtInduzidas: idProtInduzidas, idProtNaoInduzidas: idProtNaoInduzidas},
         success: function (data) {
-            console.log("SUCESSO NO getTableData()");
+            console.log(data);
         },
         error: function (data) {
             console.log(data);

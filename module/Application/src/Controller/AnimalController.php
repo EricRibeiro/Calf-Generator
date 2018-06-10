@@ -16,7 +16,7 @@ class AnimalController extends AbstractActionController
 {
     private $entityManager;
 
-    function __construct($sm)
+    function __construct()
     {
         $this->entityManager = HelperEntityManager::$entityManager;
     }

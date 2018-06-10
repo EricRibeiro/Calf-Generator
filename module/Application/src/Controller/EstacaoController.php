@@ -3,27 +3,22 @@
 
 namespace Application\Controller;
 
-use Application\Entity\Animal;
-use Application\Helper\Data;
-use Application\Helper\HelperEstacao;
-use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Application\Helper\Data;
 use Application\Entity\Estacao;
+use Application\Helper\HelperEntityManager;
 use Application\Helper\HelperClassificacao;
 use Application\Helper\HelperCronologia;
 
 class EstacaoController extends AbstractActionController
 {
 
-
-    private $sm;
     private $entityManager;
 
-    public function __construct($sm)
+    public function __construct()
     {
-        $this->sm = $sm;
-        $this->entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
+        $this->entityManager = HelperEntityManager::$entityManager;
     }
 
     public function indexAction()

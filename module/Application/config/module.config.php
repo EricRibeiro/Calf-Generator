@@ -130,6 +130,20 @@ return [
                             ],
                         ],
                     ],
+                    'relatorio' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/relatorio[/:action[/:id]]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]*'
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\RelatorioController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],
@@ -138,31 +152,21 @@ return [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
 
-            Controller\DashboardController::class => function ($sm) {
-                return new DashboardController($sm);
-            },
+            Controller\DashboardController::class => InvokableFactory::class,
 
-            Controller\AnimalController::class => function ($sm) {
-                return new AnimalController($sm);
-            },
+            Controller\AnimalController::class => InvokableFactory::class,
 
-            Controller\EstacaoController::class => function ($sm) {
-                return new EstacaoController($sm);
-            },
+            Controller\EstacaoController::class => InvokableFactory::class,
 
             Controller\ProtocoloController::class => InvokableFactory::class,
 
-            Controller\InducaoController::class => function ($sm) {
-                return new InducaoController($sm);
-            },
+            Controller\InducaoController::class => InvokableFactory::class,
 
-            Controller\IAController::class => function ($sm) {
-                return new IAController($sm);
-            },
+            Controller\IAController::class => InvokableFactory::class,
 
-            Controller\HelperController::class => function ($sm) {
-                return new HelperController($sm);
-            }
+            Controller\HelperController::class => InvokableFactory::class,
+
+            Controller\RelatorioController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [

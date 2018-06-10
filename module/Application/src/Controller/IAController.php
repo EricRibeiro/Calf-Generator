@@ -7,26 +7,21 @@ use Zend\View\Model\ViewModel;
 use Application\Controller\Factory;
 use Application\Entity\IA;
 use Application\Helper\HelperCronologia;
-use Application\Helper\HelperQuery;
+use Application\Helper\HelperEntityManager;
 use Exception;
 
 
 class IAController extends AbstractActionController
 {
-    private $sm;
     private $entityManager;
 
-    function __construct($sm)
+    function __construct()
     {
-        $this->sm = $sm;
-        $this->entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
+        $this->entityManager = HelperEntityManager::$entityManager;
     }
 
-   public function indexAction()
+    public function indexAction()
     {
-        //$ias = $this->entityManager
-            //->getRepository('Application\Entity\IA')
-           // ->findAllIAs();
         $ias = $this->entityManager
             ->getRepository('Application\Entity\IA')
             ->findBy(array('saiuProtocolo' => true));
@@ -45,7 +40,7 @@ class IAController extends AbstractActionController
             ->getRepository('Application\Entity\IA')
             ->findOneBy(array('id' => $numIa));
 
-        if(!is_null($ia)) {
+        if (!is_null($ia)) {
             $proximoEstado = $ia->getEstado()->getId() + 1;
             $proximoEstado = $this->entityManager->find('Application\Entity\Estado', $proximoEstado);
 
@@ -57,7 +52,7 @@ class IAController extends AbstractActionController
                 'animal' => $animal,
                 'proximoEstado' => $proximoEstado
             );
-            
+
             return new ViewModel($view_params);
         }
 
@@ -66,12 +61,13 @@ class IAController extends AbstractActionController
             'action' => 'index'
         ));
 
-        
+
     }
 
 
-    public function alterarEstadoAction() {
-        
+    public function alterarEstadoAction()
+    {
+
         if ($this->request->isPost()) {
 
             $idIa = $this->params()->fromRoute('id');
@@ -82,7 +78,7 @@ class IAController extends AbstractActionController
                 ->findOneBy(array('id' => $idIa));
 
             $estado = $this->entityManager->find('Application\Entity\Estado', $numEstado);
-            
+
             $ia->setEstado($estado);
 
             $estacao = $ia->getEstacao();
@@ -115,23 +111,23 @@ class IAController extends AbstractActionController
     }
 
     public function cadastrarAction()
-    {   
+    {
 
-         if ($this->request->isPost()) {
-            
-            try{
+        if ($this->request->isPost()) {
+
+            try {
 
                 $numeroDoAnimal = $this->request->getPost('numeroDoAnimal');
                 $idEstacao = $this->request->getPost('idEstacao');
 
-                 if ( empty($idEstacao) )
+                if (empty($idEstacao))
 
                     throw new Exception("Estação não cadastrada, não é possível cadastrar uma IA.");
 
                 $animal = $this->entityManager->getRepository('Application\Entity\Animal')
                     ->findOneBy(array('numero' => $numeroDoAnimal));
 
-                if ( is_null($animal) )
+                if (is_null($animal))
 
                     throw new Exception("Número do animal não encontrado.");
 
@@ -141,7 +137,7 @@ class IAController extends AbstractActionController
                 $protocolo = (is_null($IaAnterior)) ? null : $IaAnterior->getProtocolo();
 
                 $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
-                
+
                 $estacao = $this->entityManager->find('Application\Entity\Estacao', $idEstacao);
                 $estado = $this->entityManager->find('Application\Entity\Estado', 2);
 
@@ -156,34 +152,34 @@ class IAController extends AbstractActionController
                 $dataDeDiagnostico2 = $this->request->getPost('dataDeDiagnostico2');
 
                 $ia = new IA($animal, $estacao, $protocolo, $dataDeInseminacao, $dataDeRetornoAoCio, $dataDeDiagnostico1, $dataDeDiagnostico2, $estado, $saiuProtocolo);
-        
+
                 $this->entityManager->persist($ia);
 
                 HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
 
                 $this->flashMessenger()->addSuccessMessage("IA cadastrada com sucesso.");
 
-            }catch(Exception $e){
+            } catch (Exception $e) {
 
                 $this->flashMessenger()->addErrorMessage($e->getMessage());
 
             }
 
-                $this->entityManager->flush();
+            $this->entityManager->flush();
 
             return $this->redirect()->toRoute('app/ia', array(
                 'controller' => 'index',
                 'action' => 'cadastrar',
             ));
 
-        }else{
+        } else {
 
             $estacao = $this->entityManager
-            ->getRepository('Application\Entity\Estacao')
-            ->findUltimaEstacaoNoAno();
+                ->getRepository('Application\Entity\Estacao')
+                ->findUltimaEstacaoNoAno();
 
             $view_params = array(
-            'estacao' => $estacao
+                'estacao' => $estacao
             );
 
         }

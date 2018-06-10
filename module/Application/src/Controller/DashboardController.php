@@ -2,20 +2,17 @@
 
 namespace Application\Controller;
 
-use Application\Helper\HelperEstacao;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\View\View;
+use Application\Helper\HelperEntityManager;
 
 class DashboardController extends AbstractActionController
 {
-    private $sm;
     private $entityManager;
 
-    function __construct($sm)
+    function __construct()
     {
-        $this->sm = $sm;
-        $this->entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
+        $this->entityManager = HelperEntityManager::$entityManager;
     }
 
     public function indexAction()

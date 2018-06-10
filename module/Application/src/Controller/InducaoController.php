@@ -8,25 +8,20 @@
 
 namespace Application\Controller;
 
-use Application\Entity\Protocolo;
-use Application\Entity\Inducao;
-use Application\Helper\HelperQuery;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Application\Entity\IA;
 use Application\Helper\HelperCronologia;
-
-
+use Application\Helper\HelperEntityManager;
+use Application\Entity\Inducao;
+use Application\Helper\HelperQuery;
 
 class InducaoController extends AbstractActionController
 {
-    private $sm;
     private $entityManager;
 
-    function __construct($sm)
+    function __construct()
     {
-        $this->sm = $sm;
-        $this->entityManager = $this->sm->get('Doctrine\ORM\EntityManager');
+        $this->entityManager = HelperEntityManager::$entityManager;
     }
 
     public function indexAction()

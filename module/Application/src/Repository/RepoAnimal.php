@@ -70,8 +70,10 @@ class RepoAnimal extends EntityRepository
             ->andWhere('acl.classificacaoInicial = :classificacao')
             ->andWhere('c.estacao = :estacao')
             ->andWhere('c.ia IS NULL')
+            ->andWhere(' c.estadoInicial = :aguardando ') 
             ->setParameter('classificacao', 1)
             ->setParameter('estacao', $estacao)
+            ->setParameter('aguardando', 6)
             ->getQuery()
             ->getResult();
     }

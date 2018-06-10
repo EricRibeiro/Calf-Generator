@@ -1,0 +1,41 @@
+<?php $this->headLink()->appendStylesheet($this->basePath() . '/css/relatorio/tx-prenhez-novilhas.css'); ?>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Taxa de Prenhez por Protocolo</h4>
+                    </div>
+                    <div class="content">
+                        <table id="animais" class="table table-hover display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th hidden>#</th>
+                                    <th>Nº Protocolo</th>
+                                    <th>Total de Vacas</th>
+                                    <th>Nº de Vacas Repetiu</th>
+                                    <th>Nº de Vacas Prenhas</th>
+                                    <th>Taxa de Prenhez</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td hidden>-</td>
+                                    <td><b>-</b></td>
+                                    <td><b>-</b></td>
+                                    <td><b>-</b></td>
+                                    <td><b>-</b></td>
+                                    <td><b>-</b></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<?php
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/relatorio/tx-prenhez-novilhas.js');
+?>

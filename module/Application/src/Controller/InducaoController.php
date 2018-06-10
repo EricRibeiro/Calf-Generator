@@ -14,6 +14,8 @@ use Application\Helper\HelperCronologia;
 use Application\Helper\HelperEntityManager;
 use Application\Entity\Inducao;
 use Application\Helper\HelperQuery;
+use Application\Helper\HelperInducao;
+
 
 class InducaoController extends AbstractActionController
 {
@@ -67,7 +69,7 @@ class InducaoController extends AbstractActionController
     }
 
     private function cadastrar()
-    {
+    {       
         $numeroDaInducao = $this->request->getPost('numeroDaInducao');
         $idEstacao = $this->request->getPost('idEstacao');
         $dataDeInicio = $this->request->getPost('dataDeInicio');
@@ -109,6 +111,7 @@ class InducaoController extends AbstractActionController
     }
 
     public function listarAction() {
+        
 
         $numeroDaInducao = $this->params()->fromRoute('id');
         $inducao = $this->entityManager

@@ -4,7 +4,8 @@ namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Application\Helper\Data;
-
+use Application\Helper\HelperInducao;
+    
 /**
  * @ORM\Entity
  */
@@ -33,7 +34,7 @@ class Inducao
     private $dataFinal;
 
     /**
-     * @ORM\OneToOne(targetEntity="Estacao", inversedBy="inducao")
+     * @ORM\ManyToOne(targetEntity="Estacao", inversedBy="inducao")
      * @ORM\JoinColumn(name="id_estacao", referencedColumnName="id", nullable=false)
      */
     private $estacao;
@@ -92,6 +93,20 @@ class Inducao
     {
         return $this->dataInicio;
     }
+    /**
+     * @return mixed
+     */
+    public function getDiasDaInducao()
+    {
+        $dias = HelperInducao::getDiasDaInducaoPorInducao($this);
+
+        if ( $dias >= 0 )
+            return $dias;
+        else 
+            return "-";
+    }
+
+
 
     /**
      * @param mixed $dataInicio

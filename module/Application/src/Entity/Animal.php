@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\DBAL\Types\DateTimeType;
 use Application\Helper\Data;
 use Application\Helper\HelperIA;
+use Application\Helper\HelperInducao;
+
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\RepoAnimal")
@@ -125,6 +127,16 @@ class Animal
         return $diferenca;
     }
 
+    public function getDiasAposInducao()
+    {
+        $dias = HelperInducao::getDiasDaInducao($this);
+
+        if ( $dias >= 0 )
+            return $dias;
+        else 
+            return "-";
+    }
+
     /**
      * @return mixed
      */
@@ -138,13 +150,7 @@ class Animal
         
         $return = HelperIA::getUltimaIA($this, $protocolo);
         return $return;
-        /*
-        $array = $this->getIAs()->filter(function($ia) {
-            return $ia->getProtocolo() == $protocolo;
-        });
-        
-        return $array;
-        */
+       
     }
 
     /**

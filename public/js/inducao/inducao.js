@@ -40,7 +40,6 @@ function insertDates() {
 
             var dataDeInicio = $dataDeInicio.val();
             var dataDeFim = moment(dataDeInicio, "DD/MM/YYYY").add(12, 'days');
-            alert(dataDeFim)
 
             $dataDeFim.val(dataDeFim.format('DD/MM/YYYY'));
             showDateInfo($dataDeFim, $dataDeInicio, "Data de Início");

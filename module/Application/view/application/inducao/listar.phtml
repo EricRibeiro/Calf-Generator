@@ -17,6 +17,7 @@
                                 <th>Número</th>
                                 <th>Classificação</th>
                                 <th>Estado Atual</th>
+                                <th>Dias Desde a Indução</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -26,6 +27,7 @@
                                         <td><?= $animal->getNumero(); ?></td>
                                         <td><?= $animal->getClassificacao(); ?></td>
                                         <td><?= $animal->getEstado(); ?></td>
+                                        <td><?= $animal->getDiasAposInducao(); ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -65,7 +67,7 @@
         var table = $('#animais').DataTable({
             columnDefs: [
                 {targets: '_all', className: 'dt-center'},
-                {"orderable": false, "targets": 3},
+                {"orderable": false, "targets": 4},
             ],
             order: [[1, 'desc']],
             paging: false,

@@ -12,8 +12,9 @@
                         <tr>
                             <th hidden>#</th>
                             <th>Nº Indução</th>
-                            <th>Data de Início</th>
-                            <th>Data de Fim</th>
+                            <th>Início</th>
+                            <th>Fim</th>
+                            <th>Dias desde a Indução</th>
                             <th>Mais Informações</th>
                         </tr>
                         </thead>
@@ -25,6 +26,7 @@
                                 <td><b><?= $inducao->getId();?></b></td>
                                 <td><?= \Application\Helper\Data::dataToString($inducao->getDataInicio()); ?></td>
                                 <td><?= \Application\Helper\Data::dataToString($inducao->getDataFinal()); ?></td>
+                                <td><?= $inducao->getDiasDaInducao(); ?></td>
                                 <td>
                                     <a type="button"
                                        href="<?= $this->url('app/inducao', ['action' => 'listar', 'id' => $inducao->getId()]) ?>"
@@ -49,7 +51,7 @@
         $('#animais').DataTable({
             columnDefs: [
                 {"orderable": false, "targets": 0},
-                {"orderData": [5], "targets": [2]},
+                {"orderData": [6], "targets": [2]},
                 {targets: '_all', className: 'dt-center'},
             ],
             aoColumns: [
@@ -57,6 +59,7 @@
                 null,
                 {"sType": "date-uk"},
                 {"sType": "date-uk"},
+                null,
                 null,
             ],
             order: [[0, 'desc']],

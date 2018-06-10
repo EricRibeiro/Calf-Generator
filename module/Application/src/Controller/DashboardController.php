@@ -5,6 +5,8 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Helper\HelperEntityManager;
+use Doctrine\DBAL\Exception\ConnectionException;
+
 
 class DashboardController extends AbstractActionController
 {
@@ -16,35 +18,52 @@ class DashboardController extends AbstractActionController
     }
 
     public function indexAction()
-    {
-        $estacao = $this->entityManager
-            ->getRepository('Application\Entity\Estacao')
-            ->findUltimaEstacaoNoAno();
+    {   
+        try{
 
-        $animaisAptos = $this->entityManager
-            ->getRepository('Application\Entity\Animal')
-            ->findAnimaisPorEstadoNaUltimaEstacao(1, $estacao);
+            $estacao = $this->entityManager
+                ->getRepository('Application\Entity\Estacao')
+                ->findUltimaEstacaoNoAno();
 
-        $animaisD1 = $this->entityManager
-            ->getRepository('Application\Entity\Animal')
-            ->findAnimaisPorEstadoNaUltimaEstacao(2, $estacao);
+            $animaisAptos = $this->entityManager
+                ->getRepository('Application\Entity\Animal')
+                ->findAnimaisPorEstadoNaUltimaEstacao(1, $estacao);
 
-        $animaisD2 = $this->entityManager
-            ->getRepository('Application\Entity\Animal')
-            ->findAnimaisPorEstadoNaUltimaEstacao(3, $estacao);
+            $animaisD1 = $this->entityManager
+                ->getRepository('Application\Entity\Animal')
+                ->findAnimaisPorEstadoNaUltimaEstacao(2, $estacao);
 
-        $animaisPosParto = $this->entityManager
-            ->getRepository('Application\Entity\Animal')
-            ->findAnimaisPorEstadoNaUltimaEstacao(5, $estacao);
+            $animaisD2 = $this->entityManager
+                ->getRepository('Application\Entity\Animal')
+                ->findAnimaisPorEstadoNaUltimaEstacao(3, $estacao);
 
-        $view_params = array(
-            'animaisAptos' => $animaisAptos,
-            'animaisD1' => $animaisD1,
-            'animaisD2' => $animaisD2,
-            'animaisPosParto' => $animaisPosParto,
-            'estacao' => $estacao
-        );
+            $animaisPosParto = $this->entityManager
+                ->getRepository('Application\Entity\Animal')
+                ->findAnimaisPorEstadoNaUltimaEstacao(5, $estacao);
+            $sgbd = true;
+            $view_params = array(
+                'animaisAptos' => $animaisAptos,
+                'animaisD1' => $animaisD1,
+                'animaisD2' => $animaisD2,
+                'animaisPosParto' => $animaisPosParto,
+                'sgbd' => $sgbd,    
+                'estacao' => $estacao
+            );
 
-        return new ViewModel($view_params);
+            }catch( ConnectionException $e){
+
+                $this->flashMessenger()->addErrorMessage("Conexão com o banco de dados perdida, reiniciar o servidor.");
+                $sgbd = false;
+                $view_params = array(
+                    'sgbd' => $sgbd
+                    );
+
+                return new ViewModel($view_params);
+
+
+            }
+
+            return new ViewModel($view_params);
+
     }
 }

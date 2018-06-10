@@ -10,10 +10,10 @@
                     <table id="animais" class="table table-hover display" style="width:100%">
                         <thead>
                         <tr>
-                            <th>Nº Protocolo</th>
+                            <th hidden>#</th>
+                            <th>Nº Indução</th>
                             <th>Data de Início</th>
                             <th>Data de Fim</th>
-                            <th hidden>Data do Próximo Diagnóstico - Sort</th>
                             <th>Mais Informações</th>
                         </tr>
                         </thead>
@@ -21,6 +21,7 @@
                         <?php foreach ($inducoes as $inducao) { ?>
                             <?php  if (!is_null($inducao)) { ?>
                             <tr>
+                                <td hidden><?= $inducao->getId(); ?></td>
                                 <td><b><?= $inducao->getId();?></b></td>
                                 <td><?= \Application\Helper\Data::dataToString($inducao->getDataInicio()); ?></td>
                                 <td><?= \Application\Helper\Data::dataToString($inducao->getDataFinal()); ?></td>
@@ -47,17 +48,16 @@
     jQuery(function ($) {
         $('#animais').DataTable({
             columnDefs: [
-                {"orderable": false, "targets": 5},
-                {"orderData": [3], "targets": [2]},
+                {"orderable": false, "targets": 0},
+                {"orderData": [5], "targets": [2]},
                 {targets: '_all', className: 'dt-center'},
             ],
             aoColumns: [
                 null,
-                {"sType": "date-uk"},
+                null,
                 {"sType": "date-uk"},
                 {"sType": "date-uk"},
                 null,
-                null
             ],
             order: [[0, 'desc']],
             paging: false

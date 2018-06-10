@@ -1,4 +1,6 @@
 <div class="container-fluid">
+    <?php echo $this->flashHelper(); ?>
+    <?php if ($sgbd == true) { ?>
     <div class="row">
         <div class="col-lg-3 col-sm-6">
             <div class="card">
@@ -10,126 +12,125 @@
                                      width="42px" height="42px">
                             </div>
                         </div>
-                        <div class="col-xs-7">
-                            <div class="numbers">
-                                <p>Aptos</p>
-                                <?= sizeof($animaisAptos); ?>
+                            <div class="col-xs-7">
+                                <div class="numbers">
+                                    <p>Aptos</p>
+                                    <?= sizeof($animaisAptos); ?>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="footer">
-                        <hr/>
-                        <div class="stats">
-                            <i class="fa fa-info" aria-hidden="true"></i>
-                            <?php if (sizeof($animaisAptos) > 0) { ?>
-                                <a data-toggle="modal" href="#modalAptos">Detalhes dos Animais</a>
-                            <?php } else { ?>
-                                Detalhes dos Animais
-                            <?php } ?>
+                        <div class="footer">
+                            <hr/>
+                            <div class="stats">
+                                <i class="fa fa-info" aria-hidden="true"></i>
+                                <?php if (sizeof($animaisAptos) > 0) { ?>
+                                    <a data-toggle="modal" href="#modalAptos">Detalhes dos Animais</a>
+                                <?php } else { ?>
+                                    Detalhes dos Animais
+                                <?php } ?>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-            <div class="card">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-xs-5">
-                            <div class="icon-big text-center">
-                                <img src="<?= $this->basePath() . '/img/paper-dashboard/cards/stethoscope1.png'; ?>"
+            <div class="col-lg-3 col-sm-6">
+                <div class="card">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <div class="icon-big text-center">
+                                    <img src="<?= $this->basePath() . '/img/paper-dashboard/cards/stethoscope1.png'; ?>"
                                      width="50px" height="50px">
+                                </div>
+                            </div>
+                            <div class="col-xs-7">
+                                <div class="numbers">
+                                    <p>Diagnóstico 1</p>
+                                    <?= sizeof($animaisD1); ?>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-xs-7">
-                            <div class="numbers">
-                                <p>Diagnóstico 1</p>
-                                <?= sizeof($animaisD1); ?>
+                        <div class="footer">
+                            <hr/>
+                            <div class="stats">
+                                <i class="fa fa-info" aria-hidden="true"></i>
+                                <?php if (sizeof($animaisD1) > 0) { ?>
+                                    <a data-toggle="modal" href="#modalDiagnostico1">Detalhes dos Animais</a>
+                                <?php } else { ?>
+                                    Detalhes dos Animais
+                                <?php } ?>
                             </div>
-                        </div>
-                    </div>
-                    <div class="footer">
-                        <hr/>
-                        <div class="stats">
-                            <i class="fa fa-info" aria-hidden="true"></i>
-                            <?php if (sizeof($animaisD1) > 0) { ?>
-                                <a data-toggle="modal" href="#modalDiagnostico1">Detalhes dos Animais</a>
-                            <?php } else { ?>
-                                Detalhes dos Animais
-                            <?php } ?>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-            <div class="card">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-xs-5">
-                            <div class="icon-big text-center">
-                                <img src="<?= $this->basePath() . '/img/paper-dashboard/cards/stethoscope2.png'; ?>"
+            <div class="col-lg-3 col-sm-6">
+                <div class="card">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <div class="icon-big text-center">
+                                    <img src="<?= $this->basePath() . '/img/paper-dashboard/cards/stethoscope2.png'; ?>"
                                      width="50px" height="50px">
+                                </div>
+                            </div>
+                            <div class="col-xs-7">
+                                <div class="numbers">
+                                    <p>Diagnóstico 2</p>
+                                    <?= sizeof($animaisD2); ?>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-xs-7">
-                            <div class="numbers">
-                                <p>Diagnóstico 2</p>
-                                <?= sizeof($animaisD2); ?>
+                        <div class="footer">
+                            <hr/>
+                            <div class="stats">
+                                <i class="fa fa-info" aria-hidden="true"></i>
+                                <?php if (sizeof($animaisD2) > 0) { ?>
+                                    <a data-toggle="modal" href="#modalDiagnostico2">Detalhes dos Animais</a>
+                                <?php } else { ?>
+                                    Detalhes dos Animais
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
-                    <div class="footer">
-                        <hr/>
-                        <div class="stats">
-                            <i class="fa fa-info" aria-hidden="true"></i>
-                            <?php if (sizeof($animaisD2) > 0) { ?>
-                                <a data-toggle="modal" href="#modalDiagnostico2">Detalhes dos Animais</a>
-                            <?php } else { ?>
-                                Detalhes dos Animais
-                            <?php } ?>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <div class="icon-big text-center">
+                                    <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="col-xs-7">
+                                <div class="numbers">
+                                    <p>Pós-Parto</p>
+                                    <?= sizeof($animaisPosParto); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <hr/>
+                            <div class="stats">
+                                <i class="fa fa-info" aria-hidden="true"></i>
+                                <?php if (sizeof($animaisPosParto) > 0) { ?>
+                                    <a data-toggle="modal" href="#modalPosParto">Detalhes dos Animais</a>
+                                <?php } else { ?>
+                                    Detalhes dos Animais
+                                <?php } ?>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-sm-6">
-            <div class="card">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-xs-5">
-                            <div class="icon-big text-center">
-                                <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                        <div class="col-xs-7">
-                            <div class="numbers">
-                                <p>Pós-Parto</p>
-                                <?= sizeof($animaisPosParto); ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="footer">
-                        <hr/>
-                        <div class="stats">
-                            <i class="fa fa-info" aria-hidden="true"></i>
-                            <?php if (sizeof($animaisPosParto) > 0) { ?>
-                                <a data-toggle="modal" href="#modalPosParto">Detalhes dos Animais</a>
-                            <?php } else { ?>
-                                Detalhes dos Animais
-                            <?php } ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-
-        <div class="col-md-12">
-            <div class="card">
-                <div class="header">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
                     <h4 class="title">Users Behavior</h4>
                     <p class="category">24 Hours performance</p>
                 </div>
@@ -197,6 +198,11 @@
             </div>
         </div>
     </div>
+</div>
+
+<?php } else {
+
+} ?>
 </div>
 
 <div id="modals">
@@ -354,6 +360,7 @@
         </div>
     </div>
 </div>
+
 
 <?php
 echo $this->inlineScript()->prependFile($this->basePath() . '/js/dashboard/dashboard.js');

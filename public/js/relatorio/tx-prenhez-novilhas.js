@@ -123,6 +123,35 @@ function showTable(dados) {
     initDataTables();
 }
 
+function showGraphics(dados) {
+    var data = {
+        labels: ['Total de Novilhas no Protocolo', 'Nº de Nov Repetiu', 'Nº de Novilhas Prenhas'],
+        series: [
+            [2],
+            [4]
+        ]
+    };
+
+    var options = {
+        seriesBarDistance: 10
+    };
+
+    var responsiveOptions = [
+        ['screen and (max-width: 640px)', {
+            seriesBarDistance: 5,
+            axisX: {
+                labelInterpolationFnc: function (value) {
+                    return value[0];
+                }
+            }
+        }]
+    ];
+
+    new Chartist.Bar('#row-graphicTxPrenhezNovilhas', data, options, responsiveOptions);
+
+    $('#row-card-graphic').show();
+}
+
 function getTableData() {
     $.ajax({
         url: '/app/relatorio/getDadosTxPrenhezNovilhas',
@@ -133,6 +162,7 @@ function getTableData() {
         success: function (data) {
             let dados = strToJsonArrayTable(data)
             showTable(dados);
+            showGraphics(dados);
         },
         error: function (data) {
             console.log(data);
@@ -158,8 +188,7 @@ function strToJsonArrayTable(data) {
     return dados;
 }
 
-function initDataTables()
-{
+function initDataTables() {
     var table = $('#tabTxPrenhezNovilhas').DataTable({
         columnDefs: [
             {targets: '_all', className: 'dt-center'},
@@ -167,10 +196,10 @@ function initDataTables()
         order: [[1, 'desc']],
         paging: false,
         buttons: [
-            { extend: 'csv', title: $('.title').html(), className: 'btn btn-success btn-fill'   },
-            { extend: 'excel', title: $('.title').html(), className: 'btn btn-success btn-fill' },
-            { extend: 'pdf', title: $('.title').html(), className: 'btn btn-success btn-fill'   },
-            { extend: 'print', title: $('.title').html(), className: 'btn btn-success btn-fill', text: 'Imprimir' }
+            {extend: 'csv', title: $('.title').html(), className: 'btn btn-success btn-fill'},
+            {extend: 'excel', title: $('.title').html(), className: 'btn btn-success btn-fill'},
+            {extend: 'pdf', title: $('.title').html(), className: 'btn btn-success btn-fill'},
+            {extend: 'print', title: $('.title').html(), className: 'btn btn-success btn-fill', text: 'Imprimir'}
         ]
     });
 

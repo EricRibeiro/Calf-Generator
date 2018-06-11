@@ -18,8 +18,7 @@ class RepoAnimal extends EntityRepository
             ->innerJoin('Application\Entity\Cronologia', 'c', 'WITH', 'c.animal = animal')
             ->innerJoin('Application\Entity\IA', 'ia', 'WITH', 'ia = c.ia')
             ->innerJoin('Application\Entity\Protocolo', 'p', 'WITH', 'p = ia.protocolo')
-            ->where('c.estadoFinal IS NULL')
-            ->andWhere('p = :protocolo')
+            ->where('p = :protocolo')
             ->setParameter('protocolo', $protocolo)
             ->getQuery()
             ->execute();

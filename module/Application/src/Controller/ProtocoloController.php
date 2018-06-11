@@ -158,12 +158,15 @@ class ProtocoloController extends AbstractActionController
 
             $lsIDsAnimaisEstados = explode("-", $lsIDsAnimaisEstados);
 
+            $cont = 0;
+
             foreach ($lsIDsAnimaisEstados as $ids) {
                 $tupla = explode("/", $ids);
                 $idAnimal = $tupla[0];
                 $idEstado = $tupla[1];
 
                 $animal = $this->entityManager->find('Application\Entity\Animal', $idAnimal);
+
                 $classificacao = $animal->getUltimaClassificacao()->getClassificacaoInicial();
                 $ia = $this->entityManager
                     ->getRepository('Application\Entity\IA')
@@ -183,6 +186,8 @@ class ProtocoloController extends AbstractActionController
                     HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
 
                 $this->entityManager->flush();
+
+                $cont++;
             }
 
             $this->entityManager->flush();

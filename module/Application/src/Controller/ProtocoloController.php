@@ -158,8 +158,6 @@ class ProtocoloController extends AbstractActionController
 
             $lsIDsAnimaisEstados = explode("-", $lsIDsAnimaisEstados);
 
-            $cont = 0;
-
             foreach ($lsIDsAnimaisEstados as $ids) {
                 $tupla = explode("/", $ids);
                 $idAnimal = $tupla[0];
@@ -182,12 +180,11 @@ class ProtocoloController extends AbstractActionController
 
                     HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
 
-                }else
+                }else if($estado!=null){
                     HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
 
-                $this->entityManager->flush();
-
-                $cont++;
+                    $this->entityManager->flush();
+                }
             }
 
             $this->entityManager->flush();

@@ -146,17 +146,16 @@ class ProtocoloController extends AbstractActionController
             $numProtocolo = $this->params()->fromRoute('id');
             $idEstado = $this->params()->fromRoute('pid');
             $lsIDsAnimaisEstados = $this->request->getPost('lsIDsAnimaisEstados');
+            
+            $lsIDsAnimaisEstados = explode("-", $lsIDsAnimaisEstados);
 
             $estado = $this->entityManager->find('Application\Entity\Estado', $idEstado);
 
             $protocolo = $this->entityManager
                 ->getRepository('Application\Entity\Protocolo')
                 ->findOneBy(array('numero' => $numProtocolo));
-            $protocolo->setEstado($estado);
 
-            $this->entityManager->persist($protocolo);
-
-            $lsIDsAnimaisEstados = explode("-", $lsIDsAnimaisEstados);
+            $animaisOK = false;
 
             foreach ($lsIDsAnimaisEstados as $ids) {
                 $tupla = explode("/", $ids);
@@ -184,8 +183,16 @@ class ProtocoloController extends AbstractActionController
                     HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
 
                     $this->entityManager->flush();
+                    $animaisOK=true;
                 }
             }
+            if($animaisOK == true){
+                $protocolo->setEstado($estado);
+            }else{
+                $estado = $this->entityManager->find('Application\Entity\Estado', 1);
+                $protocolo->setEstado($estado);
+            }
+            $this->entityManager->persist($protocolo);
 
             $this->entityManager->flush();
 

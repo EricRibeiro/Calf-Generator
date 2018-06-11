@@ -52,7 +52,7 @@ class RepoIA extends EntityRepository
     {
         return $this->createQueryBuilder('ia1')
             ->select('count(distinct ia1.animal)')
-            ->innerJoin('Application\Entity\IA', 'ia2', 'WITH', 'ia1.animal = ia2.animal')
+            ->innerJoin('Application\Entity\IA', 'ia2', 'WITH', 'ia1.animal = ia2.animal AND ia1.estacao = ia2.estacao')
             ->innerJoin('Application\Entity\Cronologia', 'c', 'WITH', 'ia1 = c.ia')
             ->where('ia2.protocolo = :protocolo')
             ->andWhere('ia1.protocolo < :protocolo')

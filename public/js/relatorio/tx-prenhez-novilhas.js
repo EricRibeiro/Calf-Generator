@@ -71,7 +71,7 @@ function onSelectChangeShowTableOrSelect() {
         idProtInduzidas = $(this).val();
 
         if ($selProtNaoInduzidas.val() != 'unselected') {
-            showTable();
+            getTableData();
         }
 
     });
@@ -80,40 +80,76 @@ function onSelectChangeShowTableOrSelect() {
         idProtNaoInduzidas = $(this).val();
 
         if ($selProtInduzidas.val() != 'unselected') {
-            showTable();
+            getTableData();
         }
 
     });
 }
 
-function showTable() {
-    dadosTabela = getTableData();
+function showTable(dados) {
 
-// let table = "";
-    // table += "<table id='tabTxPrenhezNovilhas' class='table'>";
-    // table += "<thead>";
-    // table += "<tr>";
-    // table += "<th class='text-center'>Nº do Protocolo</th>";
-    // table += "<th class='text-center'>Total de Nov. no Protocolo</th>";
-    // table += "<th class='text-center'>Nº de Nov. Repetiu</th>";
-    // table += "<th class='text-center'>Nº de Novilhas Prenhas</th>";
-    // table += "<th class='text-center'>Tx. de Prenhez do Protocolo %</th>";
-    // table += "</thead>";
-    // table += "<tbody>";
-    // table += "</tbody>";
-    // table += "</table>";
+    let table = "";
+    table += "<table id='tabTxPrenhezNovilhas' class='table'>";
+    table += "<thead>";
+    table += "<tr>";
+    table += "<th class='text-center'>Nº do Protocolo</th>";
+    table += "<th class='text-center'>Total de Nov. no Protocolo</th>";
+    table += "<th class='text-center'>Nº de Nov. Repetiu</th>";
+    table += "<th class='text-center'>Nº de Novilhas Prenhas</th>";
+    table += "<th class='text-center'>Tx. de Prenhez do Protocolo %</th>";
+    table += "</thead>";
+    table += "<tbody>";
+    table += "</tbody>";
+    table += "</table>";
 
-    // content += "<tr>";
-    // content += "<td class='content-align'>" + aliments[i].descricao + "</td>";
-    // content += "<td class='content-align'>" + evalAlimentsContent(aliments[i].energia.kcal, "kcal") + "</td>";
-    // content += "<td class='content-align'>" + evalAlimentsContent(aliments[i].calcio, "g") + "</td>";
-    // content += "<td class='content-align'>" + evalAlimentsContent(aliments[i].ferro, "g") + "</td>";
-    // content += "<td class='content-align'>" + evalAlimentsContent(aliments[i].fibra_alimentar, "g") + "</td>";
-    // content += "<td class='content-align'>" + evalAlimentsContent(aliments[i].lipideos, "g") + "</td>";
-    // content += "<td class='content-align'>" + evalAlimentsContent(aliments[i].proteina, "g") + "</td>";
-    // content += getDetailsBtnContent(i);
-    // content += getRemoveBtnContent(i);
-    // content += "</tr>";
+    $('#row-tabTxPrenhezNovilhas').html(table);
+
+    let content = "";
+
+    dados.map(function (item) {
+        content += "<tr>";
+        content += "<td class='content-align'>" + item.NumProt + "</td>";
+        content += "<td class='content-align'>" + item.TotalNovilhasNoProt + "</td>";
+        content += "<td class='content-align'>" + item.NumNovilhasRepetiuNoProt + "</td>";
+        content += "<td class='content-align'>" + item.NumNovilhasPrenhasNoProt + "</td>";
+        content += "<td class='content-align'>" + item.TxPrenhez + "</td>";
+        content += "</tr>";
+    });
+
+    $('tbody').html(content);
+    $('#row-card-table').show();
+    $('#row-tabTxPrenhezNovilhas').show('fast');
+
+    initDataTables();
+}
+
+function showGraphics(dados) {
+    var data = {
+        labels: ['Total de Novilhas no Protocolo', 'Nº de Nov Repetiu', 'Nº de Novilhas Prenhas'],
+        series: [
+            [2],
+            [4]
+        ]
+    };
+
+    var options = {
+        seriesBarDistance: 10
+    };
+
+    var responsiveOptions = [
+        ['screen and (max-width: 640px)', {
+            seriesBarDistance: 5,
+            axisX: {
+                labelInterpolationFnc: function (value) {
+                    return value[0];
+                }
+            }
+        }]
+    ];
+
+    new Chartist.Bar('#row-graphicTxPrenhezNovilhas', data, options, responsiveOptions);
+
+    $('#row-card-graphic').show();
 }
 
 function getTableData() {
@@ -124,7 +160,9 @@ function getTableData() {
         async: true,
         data: {idEstacao: idEstacao, idProtInduzidas: idProtInduzidas, idProtNaoInduzidas: idProtNaoInduzidas},
         success: function (data) {
-            console.log(data);
+            let dados = strToJsonArrayTable(data)
+            showTable(dados);
+            showGraphics(dados);
         },
         error: function (data) {
             console.log(data);
@@ -132,3 +170,41 @@ function getTableData() {
     });
 }
 
+function strToJsonArrayTable(data) {
+    let dados = [];
+
+    data.map(function (item) {
+        item = JSON.parse(item);
+
+        dados.push({
+            "NumProt": item.NumProt,
+            "TotalNovilhasNoProt": item.TotalNovilhasNoProt,
+            "NumNovilhasRepetiuNoProt": item.NumNovilhasRepetiuNoProt,
+            "NumNovilhasPrenhasNoProt": item.NumNovilhasPrenhasNoProt,
+            "TxPrenhez": item.TxPrenhez
+        });
+    })
+
+    return dados;
+}
+
+function initDataTables() {
+    var table = $('#tabTxPrenhezNovilhas').DataTable({
+        columnDefs: [
+            {targets: '_all', className: 'dt-center'},
+        ],
+        order: [[1, 'desc']],
+        paging: false,
+        buttons: [
+            {extend: 'csv', title: $('.title').html(), className: 'btn btn-success btn-fill'},
+            {extend: 'excel', title: $('.title').html(), className: 'btn btn-success btn-fill'},
+            {extend: 'pdf', title: $('.title').html(), className: 'btn btn-success btn-fill'},
+            {extend: 'print', title: $('.title').html(), className: 'btn btn-success btn-fill', text: 'Imprimir'}
+        ]
+    });
+
+    table.buttons().container()
+        .appendTo($('.col-sm-6:eq(0)', table.table().container()));
+
+    $('#tabTxPrenhezNovilhas_filter label input').addClass('form-control border-input');
+}

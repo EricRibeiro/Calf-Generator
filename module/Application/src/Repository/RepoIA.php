@@ -8,7 +8,6 @@
 
 namespace Application\Repository;
 
-use Application\Helper\HelperEntityManager;
 use Doctrine\ORM\EntityRepository;
 
 class RepoIA extends EntityRepository
@@ -35,20 +34,30 @@ class RepoIA extends EntityRepository
 
     }
 
+    public function findTotalNovilhasNoProtocolo($protocolo)
+    {
+        return $this->createQueryBuilder('ia')
+            ->select('count(distinct ia.animal)')
+            ->innerJoin('Application\Entity\Protocolo', 'p', 'WITH', 'ia.protocolo = p')
+            ->innerJoin('Application\Entity\Cronologia', 'c', 'WITH', 'ia.animal = c.animal')
+            ->where('p = :protocolo')
+            ->andWhere('c.classificacao = :novilha')
+            ->setParameter('protocolo', $protocolo)
+            ->setParameter('novilha', 1)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function findNumNovilhasRepetiuNoProtocolo($protocolo)
     {
         return $this->createQueryBuilder('ia1')
             ->select('count(distinct ia1.animal)')
             ->innerJoin('Application\Entity\IA', 'ia2', 'WITH', 'ia1.animal = ia2.animal')
-            ->innerJoin('Application\Entity\Cronologia', 'c1', 'WITH', 'ia1 = c1.ia')
-            ->leftJoin('Application\Entity\Cronologia', 'c2', 'WITH', 'ia1 = c2.ia AND c1.id < c2.id')
+            ->innerJoin('Application\Entity\Cronologia', 'c', 'WITH', 'ia1 = c.ia')
             ->where('ia2.protocolo = :protocolo')
             ->andWhere('ia1.protocolo < :protocolo')
-            ->andWhere('ia1.saiuProtocolo = :saiuProtocolo')
-            ->andWhere('c2.id IS NULL')
-            ->andWhere('c1.classificacao = :novilha')
+            ->andWhere('c.classificacao = :novilha')
             ->setParameter('protocolo', $protocolo)
-            ->setParameter('saiuProtocolo', 1)
             ->setParameter('novilha', 1)
             ->getQuery()
             ->getSingleScalarResult();
@@ -61,13 +70,13 @@ class RepoIA extends EntityRepository
             ->innerJoin('Application\Entity\Cronologia', 'c1', 'WITH', 'ia = c1.ia')
             ->leftJoin('Application\Entity\Cronologia', 'c2', 'WITH', 'ia = c2.ia AND c1.id < c2.id')
             ->where('ia.protocolo = :protocolo')
-            ->andWhere('ia.saiuProtocolo = :saiuProtocolo')
             ->andWhere('c2.id IS NULL')
             ->andWhere('c1.classificacao = :novilha')
+            ->andWhere('((c1.estadoInicial = :gestante AND c1.estadoFinal IS NULL) OR (c1.estadoInicial = :ag2 AND c1.estadoFinal = :gestante))')
             ->setParameter('protocolo', $protocolo)
-            ->setParameter('saiuProtocolo', 0)
             ->setParameter('novilha', 1)
-            ->distinct()
+            ->setParameter('ag2', 3)
+            ->setParameter('gestante', 4)
             ->getQuery()
             ->getSingleScalarResult();
     }

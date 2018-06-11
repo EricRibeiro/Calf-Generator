@@ -18,8 +18,7 @@ class RepoAnimal extends EntityRepository
             ->innerJoin('Application\Entity\Cronologia', 'c', 'WITH', 'c.animal = animal')
             ->innerJoin('Application\Entity\IA', 'ia', 'WITH', 'ia = c.ia')
             ->innerJoin('Application\Entity\Protocolo', 'p', 'WITH', 'p = ia.protocolo')
-            ->where('c.estadoFinal IS NULL')
-            ->andWhere('p = :protocolo')
+            ->where('p = :protocolo')
             ->setParameter('protocolo', $protocolo)
             ->getQuery()
             ->execute();
@@ -118,22 +117,4 @@ class RepoAnimal extends EntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    public function findTotalNovilhasNoProtocolo($protocolo)
-    {
-        return $this->createQueryBuilder('animal')
-            ->select('count(animal.id)')
-            ->innerJoin('Application\Entity\IA', 'ia', 'WITH', 'animal = ia.animal')
-            ->innerJoin('Application\Entity\Protocolo', 'p', 'WITH', 'ia.protocolo = p')
-            ->innerJoin('Application\Entity\Cronologia', 'c1', 'WITH', 'animal = c1.animal')
-            ->leftJoin('Application\Entity\Cronologia', 'c2', 'WITH', 'animal = c2.animal AND c1.id < c2.id')
-            ->where('p = :protocolo')
-            ->andWhere('c2.id IS NULL')
-            ->andWhere('c1.classificacao = :novilha')
-            ->setParameter('protocolo', $protocolo)
-            ->setParameter('novilha', 1)
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
-
 }

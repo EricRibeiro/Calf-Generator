@@ -16,8 +16,8 @@ class HelperTxPrenhezNovilhas
     public static function getDadosTxPrenhezNovilhasAction($idEstacao, $idProtInduzidas, $idProtNaoInduzidas)
     {
 
-        $dadosInduzidas = HelperTxPrenhezNovilhas::getDadosInduzidas($idProtInduzidas);
-        $dadosNaoInduzidas = HelperTxPrenhezNovilhas::getDadosNaoInduzidas($idProtNaoInduzidas);
+        $dadosInduzidas = HelperTxPrenhezNovilhas::getDados($idProtInduzidas);
+        $dadosNaoInduzidas = HelperTxPrenhezNovilhas::getDados($idProtNaoInduzidas);
 
         $arr = [];
 
@@ -27,52 +27,28 @@ class HelperTxPrenhezNovilhas
         return json_encode($arr);
     }
 
-    private static function getDadosInduzidas($idProtInduzidas)
+    private static function getDados($idProt)
     {
-        $protInduzidas = HelperEntityManager::$entityManager
+        $protocolo = HelperEntityManager::$entityManager
             ->getRepository('Application\Entity\Protocolo')
-            ->find($idProtInduzidas);
+            ->find($idProt);
 
-        $totalNovilhasNoProtInduzidas = HelperEntityManager::$entityManager
-            ->getRepository('Application\Entity\Animal')
-            ->findTotalNovilhasNoProtocolo($protInduzidas);
-
-        $numNovilhasRepetiuNoProtInduzidas = HelperEntityManager::$entityManager
+        $totalNovilhasNoProtocolo = HelperEntityManager::$entityManager
             ->getRepository('Application\Entity\IA')
-            ->findNumNovilhasRepetiuNoProtocolo($protInduzidas);
+            ->findTotalNovilhasNoProtocolo($protocolo);
 
-        $numNovilhasPrenhasNoProtInduzidas = HelperEntityManager::$entityManager
+        $numNovilhasRepetiuNoProtocolo = HelperEntityManager::$entityManager
             ->getRepository('Application\Entity\IA')
-            ->findNumNovilhasPrenhasNoProtocolo($protInduzidas);
+            ->findNumNovilhasRepetiuNoProtocolo($protocolo);
 
-        $txDePrenhezNovilhasInduzidas = ($numNovilhasPrenhasNoProtInduzidas * 100) / $totalNovilhasNoProtInduzidas;
-
-        return self::dadosToJson($protInduzidas, $totalNovilhasNoProtInduzidas, $numNovilhasRepetiuNoProtInduzidas,
-        $numNovilhasPrenhasNoProtInduzidas, $txDePrenhezNovilhasInduzidas);
-    }
-
-    private static function getDadosNaoInduzidas($idProtNaoInduzidas)
-    {
-        $protNaoInduzidas = HelperEntityManager::$entityManager
-            ->getRepository('Application\Entity\Protocolo')
-            ->find($idProtNaoInduzidas);
-
-        $totalNovilhasNoProtNaoInduzidas = HelperEntityManager::$entityManager
-            ->getRepository('Application\Entity\Animal')
-            ->findTotalNovilhasNoProtocolo($protNaoInduzidas);
-
-        $numNovilhasRepetiuNoProtNaoInduzidas = HelperEntityManager::$entityManager
+        $numNovilhasPrenhasNoProtocolo = HelperEntityManager::$entityManager
             ->getRepository('Application\Entity\IA')
-            ->findNumNovilhasRepetiuNoProtocolo($protNaoInduzidas);
+            ->findNumNovilhasPrenhasNoProtocolo($protocolo);
 
-        $numNovilhasPrenhasNoProtNaoInduzidas = HelperEntityManager::$entityManager
-            ->getRepository('Application\Entity\IA')
-            ->findNumNovilhasPrenhasNoProtocolo($protNaoInduzidas);
+        $txDePrenhezNovilhas = ($numNovilhasPrenhasNoProtocolo * 100) / $totalNovilhasNoProtocolo;
 
-        $txDePrenhezNovilhasNaoInduzidas = ($numNovilhasPrenhasNoProtNaoInduzidas * 100) / $totalNovilhasNoProtNaoInduzidas;
-
-        return self::dadosToJson($protNaoInduzidas, $totalNovilhasNoProtNaoInduzidas, $numNovilhasRepetiuNoProtNaoInduzidas,
-            $numNovilhasPrenhasNoProtNaoInduzidas, $txDePrenhezNovilhasNaoInduzidas);
+        return self::dadosToJson($protocolo, $totalNovilhasNoProtocolo, $numNovilhasRepetiuNoProtocolo,
+        $numNovilhasPrenhasNoProtocolo, $txDePrenhezNovilhas);
     }
 
     private static function dadosToJson($prot, $totalNovilhas, $numNovilhasRepetiu, $numNovilhasPrenhas, $txPrenhez)

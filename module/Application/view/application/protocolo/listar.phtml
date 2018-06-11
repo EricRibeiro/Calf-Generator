@@ -23,10 +23,10 @@
                              <?php foreach ($animais as $animal) { ?>
                                 <?php if ($animal->getIAProtocolo($protocolo)->saiuProtocolo()) { ?>
                                     <tr class="text-danger">
-                                        <td hidden id="idAnimal"></td>
+                                        <td hidden id="idAnimal"><?= $animal->getId(); ?></td>
                                         <td><?= $animal->getNumero(); ?></td>
-                                        <td>-</td>
-                                        <td>-</td>
+                                        <td><?= $animal->getEstado(); ?></td>
+                                        <td>Saiu do Protocolo</td>
                                     </tr>
                                 <?php } else { ?>
                                     <tr>

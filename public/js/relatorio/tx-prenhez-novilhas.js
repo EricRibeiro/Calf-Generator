@@ -124,6 +124,9 @@ function showTable(dados) {
 }
 
 function showGraphics(dados) {
+    let content =  "<canvas id='myChart' width='400' height='200'></canvas>"
+    $("#row-graphicTxPrenhezNovilhas").html(content);
+
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',

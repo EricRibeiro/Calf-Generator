@@ -15,6 +15,7 @@
                             <tr>
                                 <th hidden>#</th>
                                 <th>Número</th>
+                                <th>Classificação</th>
                                 <th>Estado Atual</th>
                                 <th>Próximo Estado</th>
                             </tr>
@@ -25,6 +26,7 @@
                                     <tr class="text-danger">
                                         <td hidden id="idAnimal"><?= $animal->getId(); ?></td>
                                         <td><?= $animal->getNumero(); ?></td>
+                                        <td><?= $animal->getClassificacao(); ?></td>
                                         <td>-</td>
                                         <td>Saiu do Protocolo</td>
                                     </tr>
@@ -32,6 +34,7 @@
                                     <tr>
                                         <td hidden id="idAnimal"><?= $animal->getId(); ?></td>
                                         <td><?= $animal->getNumero(); ?></td>
+                                        <td><?= $animal->getClassificacao(); ?></td>
                                         <td><?= $animal->getEstado(); ?></td>
                                         <td>
                                             <?php if ($animal->getEstado() == 'Gestante') { ?>

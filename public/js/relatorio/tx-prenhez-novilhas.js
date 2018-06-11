@@ -7,7 +7,6 @@ var $selEstacao = $('#sel-estacao');
 var $selProtInduzidas = $('#sel-protocolo-induzidas');
 var $selProtNaoInduzidas = $('#sel-protocolo-naoInduzidas');
 
-var dadosTabela;
 var idEstacao;
 var idProtInduzidas;
 var idProtNaoInduzidas;

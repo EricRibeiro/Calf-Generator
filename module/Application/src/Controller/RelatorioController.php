@@ -10,6 +10,7 @@ namespace Application\Controller;
 
 use Application\Helper\HelperRelatorios\HelperRelatorio;
 use Application\Helper\HelperRelatorios\HelperTxPrenhezNovilhas;
+use Application\Helper\HelperRelatorios\HelperTxPrenhezProtocolo;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Helper\HelperEntityManager;
@@ -31,7 +32,8 @@ class RelatorioController extends AbstractActionController
     public function txPrenhezProtocoloAction()
     {
         $estacao = $this->entityManager
-            ->getRepository('Application\Entity\Estacao');
+            ->getRepository('Application\Entity\Estacao')
+            ->findAll();
 
         $view_params = array(
             'estacao' => $estacao,
@@ -71,7 +73,7 @@ class RelatorioController extends AbstractActionController
             $idProtInduzidas = $this->request->getPost('idProtInduzidas');
             $idProtNaoInduzidas = $this->request->getPost('idProtNaoInduzidas');
 
-            $content = HelperTxPrenhezNovilhas::getDadosTxPrenhezNovilhasAction($idEstacao, $idProtInduzidas, $idProtNaoInduzidas);
+            $content = HelperTxPrenhezNovilhas::getDadosTxPrenhezNovilhas($idEstacao, $idProtInduzidas, $idProtNaoInduzidas);
             return $response->setContent($content);
         }
     }
@@ -81,8 +83,10 @@ class RelatorioController extends AbstractActionController
         if ($this->request->isPost()) {
             $response = $this->getResponse();
             $idEstacao = $this->request->getPost('idEstacao');
+            $idProtA = $this->request->getPost('idProtA');
+            $idProtB = $this->request->getPost('idProtB');
 
-            $content = HelperTxPrenhezProtocolo::getDadosTxPrenhezNovilhasAction($idEstacao);
+            $content = HelperTxPrenhezProtocolo::getDadosTxPrenhezProtocolo($idEstacao, $idProtA, $idProtB);
             return $response->setContent($content);
         }
     }

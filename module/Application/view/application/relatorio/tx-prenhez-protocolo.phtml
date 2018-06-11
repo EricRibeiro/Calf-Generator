@@ -1,12 +1,13 @@
-<?php $this->headLink()->appendStylesheet($this->basePath() . '/css/relatorio/tx-prenhez-novilhas.css'); ?>
+<?php $this->headLink()->appendStylesheet($this->basePath() . '/css/relatorio/tx-prenhez.css'); ?>
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Taxa de Prenhez por Protocolo</h4>
+                        <h4 class="title">Comparação da Taxa de Prenhez Geral por Protocolos</h4>
                     </div>
+
                     <div class="content">
                         <div class="row">
                             <div class="col-md-12">
@@ -14,7 +15,6 @@
 
                                 <select class="form-control border-input" id="sel-estacao" name="selEstacao">
                                     <?php if (sizeof($estacao) != 0) { ?>
-                                    <?php alert('teste'); ?>
                                         <option hidden selected value="unselected">
                                             Selecionar Estação
                                         </option>
@@ -37,29 +37,60 @@
                                 </select>
                             </div>
                         </div>
-                        
-                        <table id="animais" class="table table-hover display" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th hidden>#</th>
-                                    <th>Nº Protocolo</th>
-                                    <th>Total de Vacas</th>
-                                    <th>Nº de Vacas Repetiu</th>
-                                    <th>Nº de Vacas Prenhas</th>
-                                    <th>Taxa de Prenhez</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td hidden>-</td>
-                                    <td><b>-</b></td>
-                                    <td><b>-</b></td>
-                                    <td><b>-</b></td>
-                                    <td><b>-</b></td>
-                                    <td><b>-</b></td>
-                                </tr>
-                            </tbody>
-                        </table>
+
+                        <div class="row" id="row-sel-protocolo-A" style="display: none">
+                            <div class="col-md-12">
+                                <label>Protocolo A</label>
+
+                                <select class="form-control border-input" id="sel-protocolo-A" name="selProtocoloA">
+                                    <option hidden selected value="unselected">
+                                        Selecionar Protocolo
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row" id="row-sel-protocolo-B" style="display: none">
+                            <div class="col-md-12">
+                                <label>Protocolo B</label>
+
+                                <select class="form-control border-input" id="sel-protocolo-B" name="selProtocoloB">
+                                    <option hidden selected value="unselected">
+                                        Selecionar Protocolo
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="row-card-table" style="display: none">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-md-12" id="row-tabTxPrenhezProtocolo" style="display: none">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="row-card-graphic" style="display: none">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-md-12" id="row-graphicTxPrenhezProtocolo">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

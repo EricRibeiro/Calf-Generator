@@ -24,7 +24,8 @@ class IAController extends AbstractActionController
     {
         $ias = $this->entityManager
             ->getRepository('Application\Entity\IA')
-            ->findBy(array('saiuProtocolo' => true));
+            ->findAllIAs();
+
         $view_params = array(
             'ias' => $ias,
         );

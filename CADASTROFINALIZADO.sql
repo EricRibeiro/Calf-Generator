@@ -25,20 +25,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `animal`
+-- Table structure for table `Animal`
 --
 
-CREATE TABLE `animal` (
+CREATE TABLE `Animal` (
   `id` int(11) NOT NULL,
-  `id_inducao` int(11) DEFAULT NULL,
+  `id_Inducao` int(11) DEFAULT NULL,
   `numero` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `animal`
+-- Dumping data for table `Animal`
 --
 
-INSERT INTO `animal` (`id`, `id_inducao`, `numero`) VALUES
+INSERT INTO `Animal` (`id`, `id_Inducao`, `numero`) VALUES
 (1, NULL, 1),
 (2, NULL, 2),
 (3, NULL, 3),
@@ -93,23 +93,23 @@ INSERT INTO `animal` (`id`, `id_inducao`, `numero`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `animal_classificacao`
+-- Table structure for table `Animal_Classificacao`
 --
 
-CREATE TABLE `animal_classificacao` (
+CREATE TABLE `Animal_Classificacao` (
   `id` int(11) NOT NULL,
-  `id_animal` int(11) NOT NULL,
-  `id_estacao` int(11) DEFAULT NULL,
+  `id_Animal` int(11) NOT NULL,
+  `id_Estacao` int(11) DEFAULT NULL,
   `dataDaMudanca` datetime NOT NULL,
-  `id_classificacaoInicial` int(11) NOT NULL,
-  `id_classificacaoFinal` int(11) DEFAULT NULL
+  `id_ClassificacaoInicial` int(11) NOT NULL,
+  `id_ClassificacaoFinal` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `animal_classificacao`
+-- Dumping data for table `Animal_Classificacao`
 --
 
-INSERT INTO `animal_classificacao` (`id`, `id_animal`, `id_estacao`, `dataDaMudanca`, `id_classificacaoInicial`, `id_classificacaoFinal`) VALUES
+INSERT INTO `Animal_Classificacao` (`id`, `id_Animal`, `id_Estacao`, `dataDaMudanca`, `id_ClassificacaoInicial`, `id_ClassificacaoFinal`) VALUES
 (1, 1, NULL, '2018-06-11 19:48:57', 1, 1),
 (2, 2, NULL, '2018-06-11 19:49:00', 1, 1),
 (3, 3, NULL, '2018-06-11 19:49:04', 1, 1),
@@ -204,19 +204,19 @@ INSERT INTO `animal_classificacao` (`id`, `id_animal`, `id_estacao`, `dataDaMuda
 -- --------------------------------------------------------
 
 --
--- Table structure for table `classificacao`
+-- Table structure for table `Classificacao`
 --
 
-CREATE TABLE `classificacao` (
+CREATE TABLE `Classificacao` (
   `id` int(11) NOT NULL,
-  `classificacao` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `Classificacao` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `classificacao`
+-- Dumping data for table `Classificacao`
 --
 
-INSERT INTO `classificacao` (`id`, `classificacao`) VALUES
+INSERT INTO `Classificacao` (`id`, `Classificacao`) VALUES
 (1, 'Novilha'),
 (2, 'Primípara Pós-Parto'),
 (3, 'Primípara Gestante da Estação Anterior'),
@@ -226,25 +226,25 @@ INSERT INTO `classificacao` (`id`, `classificacao`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cronologia`
+-- Table structure for table `Cronologia`
 --
 
-CREATE TABLE `cronologia` (
+CREATE TABLE `Cronologia` (
   `id` int(11) NOT NULL,
-  `id_animal` int(11) NOT NULL,
+  `id_Animal` int(11) NOT NULL,
   `id_ia` int(11) DEFAULT NULL,
-  `id_estacao` int(11) DEFAULT NULL,
-  `id_classificacao` int(11) NOT NULL,
+  `id_Estacao` int(11) DEFAULT NULL,
+  `id_Classificacao` int(11) NOT NULL,
   `dataDaMudanca` datetime NOT NULL,
-  `id_estadoInicial` int(11) NOT NULL,
-  `id_estadoFinal` int(11) DEFAULT NULL
+  `id_EstadoInicial` int(11) NOT NULL,
+  `id_EstadoFinal` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `cronologia`
+-- Dumping data for table `Cronologia`
 --
 
-INSERT INTO `cronologia` (`id`, `id_animal`, `id_ia`, `id_estacao`, `id_classificacao`, `dataDaMudanca`, `id_estadoInicial`, `id_estadoFinal`) VALUES
+INSERT INTO `Cronologia` (`id`, `id_Animal`, `id_ia`, `id_Estacao`, `id_Classificacao`, `dataDaMudanca`, `id_EstadoInicial`, `id_EstadoFinal`) VALUES
 (1, 1, NULL, NULL, 1, '2018-06-11 19:48:57', 6, 6),
 (2, 2, NULL, NULL, 1, '2018-06-11 19:49:00', 6, 6),
 (3, 3, NULL, NULL, 1, '2018-06-11 19:49:04', 6, 6),
@@ -429,38 +429,38 @@ INSERT INTO `cronologia` (`id`, `id_animal`, `id_ia`, `id_estacao`, `id_classifi
 -- --------------------------------------------------------
 
 --
--- Table structure for table `estacao`
+-- Table structure for table `Estacao`
 --
 
-CREATE TABLE `estacao` (
+CREATE TABLE `Estacao` (
   `id` int(11) NOT NULL,
   `dataInicio` date NOT NULL,
   `dataFinal` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `estacao`
+-- Dumping data for table `Estacao`
 --
 
-INSERT INTO `estacao` (`id`, `dataInicio`, `dataFinal`) VALUES
+INSERT INTO `Estacao` (`id`, `dataInicio`, `dataFinal`) VALUES
 (1, '2018-01-01', '2018-07-01');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `estado`
+-- Table structure for table `Estado`
 --
 
-CREATE TABLE `estado` (
+CREATE TABLE `Estado` (
   `id` int(11) NOT NULL,
-  `estado` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `Estado` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `estado`
+-- Dumping data for table `Estado`
 --
 
-INSERT INTO `estado` (`id`, `estado`) VALUES
+INSERT INTO `Estado` (`id`, `Estado`) VALUES
 (1, 'Apto'),
 (2, 'Aguardando Diagnóstico 1'),
 (3, 'Aguardando Diagnóstico 2'),
@@ -472,15 +472,15 @@ INSERT INTO `estado` (`id`, `estado`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ia`
+-- Table structure for table `IA`
 --
 
-CREATE TABLE `ia` (
+CREATE TABLE `IA` (
   `id` int(11) NOT NULL,
-  `id_animal` int(11) NOT NULL,
-  `id_estacao` int(11) DEFAULT NULL,
-  `id_protocolo` int(11) DEFAULT NULL,
-  `id_estado` int(11) NOT NULL,
+  `id_Animal` int(11) NOT NULL,
+  `id_Estacao` int(11) DEFAULT NULL,
+  `id_Protocolo` int(11) DEFAULT NULL,
+  `id_Estado` int(11) NOT NULL,
   `saiuProtocolo` tinyint(1) NOT NULL,
   `dataInseminacao` date NOT NULL,
   `dataRetornoAoCio` date NOT NULL,
@@ -489,10 +489,10 @@ CREATE TABLE `ia` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `ia`
+-- Dumping data for table `IA`
 --
 
-INSERT INTO `ia` (`id`, `id_animal`, `id_estacao`, `id_protocolo`, `id_estado`, `saiuProtocolo`, `dataInseminacao`, `dataRetornoAoCio`, `dataDiagnostico1`, `dataDiagnostico2`) VALUES
+INSERT INTO `IA` (`id`, `id_Animal`, `id_Estacao`, `id_Protocolo`, `id_Estado`, `saiuProtocolo`, `dataInseminacao`, `dataRetornoAoCio`, `dataDiagnostico1`, `dataDiagnostico2`) VALUES
 (1, 21, 1, 1, 2, 1, '2018-01-01', '2018-01-21', '2018-01-28', '2018-03-29'),
 (2, 26, 1, 1, 2, 0, '2018-01-01', '2018-01-21', '2018-01-28', '2018-03-29'),
 (3, 22, 1, 1, 2, 1, '2018-01-01', '2018-01-21', '2018-01-28', '2018-03-29'),
@@ -534,53 +534,53 @@ INSERT INTO `ia` (`id`, `id_animal`, `id_estacao`, `id_protocolo`, `id_estado`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `inducao`
+-- Table structure for table `Inducao`
 --
 
-CREATE TABLE `inducao` (
+CREATE TABLE `Inducao` (
   `id` int(11) NOT NULL,
-  `id_estacao` int(11) NOT NULL,
+  `id_Estacao` int(11) NOT NULL,
   `dataInicio` date NOT NULL,
   `dataFinal` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `inducao`
+-- Dumping data for table `Inducao`
 --
 
-INSERT INTO `inducao` (`id`, `id_estacao`, `dataInicio`, `dataFinal`) VALUES
+INSERT INTO `Inducao` (`id`, `id_Estacao`, `dataInicio`, `dataFinal`) VALUES
 (1, 1, '2018-01-01', '2018-01-13');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `observacao`
+-- Table structure for table `Observacao`
 --
 
-CREATE TABLE `observacao` (
+CREATE TABLE `Observacao` (
   `id` int(11) NOT NULL,
-  `id_animal` int(11) NOT NULL,
+  `id_Animal` int(11) NOT NULL,
   `dataDiagnostico` date NOT NULL,
-  `observacao` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `Observacao` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `parto`
+-- Table structure for table `Parto`
 --
 
-CREATE TABLE `parto` (
+CREATE TABLE `Parto` (
   `id` int(11) NOT NULL,
-  `id_animal` int(11) NOT NULL,
-  `parto` date DEFAULT NULL
+  `id_Animal` int(11) NOT NULL,
+  `Parto` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `parto`
+-- Dumping data for table `Parto`
 --
 
-INSERT INTO `parto` (`id`, `id_animal`, `parto`) VALUES
+INSERT INTO `Parto` (`id`, `id_Animal`, `Parto`) VALUES
 (1, 1, NULL),
 (2, 2, NULL),
 (3, 3, NULL),
@@ -635,21 +635,21 @@ INSERT INTO `parto` (`id`, `id_animal`, `parto`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `protocolo`
+-- Table structure for table `Protocolo`
 --
 
-CREATE TABLE `protocolo` (
+CREATE TABLE `Protocolo` (
   `id` int(11) NOT NULL,
-  `id_estacao` int(11) DEFAULT NULL,
-  `id_estado` int(11) NOT NULL,
+  `id_Estacao` int(11) DEFAULT NULL,
+  `id_Estado` int(11) NOT NULL,
   `numero` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `protocolo`
+-- Dumping data for table `Protocolo`
 --
 
-INSERT INTO `protocolo` (`id`, `id_estacao`, `id_estado`, `numero`) VALUES
+INSERT INTO `Protocolo` (`id`, `id_Estacao`, `id_Estado`, `numero`) VALUES
 (1, 1, 3, 1),
 (2, 1, 3, 2);
 
@@ -658,160 +658,160 @@ INSERT INTO `protocolo` (`id`, `id_estacao`, `id_estado`, `numero`) VALUES
 --
 
 --
--- Indexes for table `animal`
+-- Indexes for table `Animal`
 --
-ALTER TABLE `animal`
+ALTER TABLE `Animal`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `numero_uniq` (`numero`),
-  ADD KEY `IDX_6D072629B408C367` (`id_inducao`);
+  ADD KEY `IDX_6D072629B408C367` (`id_Inducao`);
 
 --
--- Indexes for table `animal_classificacao`
+-- Indexes for table `Animal_Classificacao`
 --
-ALTER TABLE `animal_classificacao`
+ALTER TABLE `Animal_Classificacao`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_E90B21434C9C96F2` (`id_animal`),
-  ADD KEY `IDX_E90B21439F4C0C45` (`id_classificacaoInicial`),
-  ADD KEY `IDX_E90B21436CE62FFC` (`id_classificacaoFinal`),
-  ADD KEY `IDX_E90B2143737BEF1C` (`id_estacao`);
+  ADD KEY `IDX_E90B21434C9C96F2` (`id_Animal`),
+  ADD KEY `IDX_E90B21439F4C0C45` (`id_ClassificacaoInicial`),
+  ADD KEY `IDX_E90B21436CE62FFC` (`id_ClassificacaoFinal`),
+  ADD KEY `IDX_E90B2143737BEF1C` (`id_Estacao`);
 
 --
--- Indexes for table `classificacao`
+-- Indexes for table `Classificacao`
 --
-ALTER TABLE `classificacao`
+ALTER TABLE `Classificacao`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `cronologia`
+-- Indexes for table `Cronologia`
 --
-ALTER TABLE `cronologia`
+ALTER TABLE `Cronologia`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_9F27263A4C9C96F2` (`id_animal`),
+  ADD KEY `IDX_9F27263A4C9C96F2` (`id_Animal`),
   ADD KEY `IDX_9F27263AF2E6AD8` (`id_ia`),
-  ADD KEY `IDX_9F27263A737BEF1C` (`id_estacao`),
-  ADD KEY `IDX_9F27263AD47CDAFD` (`id_classificacao`),
-  ADD KEY `IDX_9F27263AA8F61545` (`id_estadoInicial`),
-  ADD KEY `IDX_9F27263A930B1BA0` (`id_estadoFinal`);
+  ADD KEY `IDX_9F27263A737BEF1C` (`id_Estacao`),
+  ADD KEY `IDX_9F27263AD47CDAFD` (`id_Classificacao`),
+  ADD KEY `IDX_9F27263AA8F61545` (`id_EstadoInicial`),
+  ADD KEY `IDX_9F27263A930B1BA0` (`id_EstadoFinal`);
 
 --
--- Indexes for table `estacao`
+-- Indexes for table `Estacao`
 --
-ALTER TABLE `estacao`
+ALTER TABLE `Estacao`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `estado`
+-- Indexes for table `Estado`
 --
-ALTER TABLE `estado`
+ALTER TABLE `Estado`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ia`
+-- Indexes for table `IA`
 --
-ALTER TABLE `ia`
+ALTER TABLE `IA`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_61B997B54C9C96F2` (`id_animal`),
-  ADD KEY `IDX_61B997B5737BEF1C` (`id_estacao`),
-  ADD KEY `IDX_61B997B5F098E264` (`id_protocolo`),
-  ADD KEY `IDX_61B997B56A540E` (`id_estado`);
+  ADD KEY `IDX_61B997B54C9C96F2` (`id_Animal`),
+  ADD KEY `IDX_61B997B5737BEF1C` (`id_Estacao`),
+  ADD KEY `IDX_61B997B5F098E264` (`id_Protocolo`),
+  ADD KEY `IDX_61B997B56A540E` (`id_Estado`);
 
 --
--- Indexes for table `inducao`
+-- Indexes for table `Inducao`
 --
-ALTER TABLE `inducao`
+ALTER TABLE `Inducao`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_A528538B737BEF1C` (`id_estacao`);
+  ADD KEY `IDX_A528538B737BEF1C` (`id_Estacao`);
 
 --
--- Indexes for table `observacao`
+-- Indexes for table `Observacao`
 --
-ALTER TABLE `observacao`
+ALTER TABLE `Observacao`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_5D6712DD4C9C96F2` (`id_animal`);
+  ADD KEY `IDX_5D6712DD4C9C96F2` (`id_Animal`);
 
 --
--- Indexes for table `parto`
+-- Indexes for table `Parto`
 --
-ALTER TABLE `parto`
+ALTER TABLE `Parto`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_BC80D4B54C9C96F2` (`id_animal`);
+  ADD KEY `IDX_BC80D4B54C9C96F2` (`id_Animal`);
 
 --
--- Indexes for table `protocolo`
+-- Indexes for table `Protocolo`
 --
-ALTER TABLE `protocolo`
+ALTER TABLE `Protocolo`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_F25CDCE0737BEF1C` (`id_estacao`),
-  ADD KEY `IDX_F25CDCE06A540E` (`id_estado`);
+  ADD KEY `IDX_F25CDCE0737BEF1C` (`id_Estacao`),
+  ADD KEY `IDX_F25CDCE06A540E` (`id_Estado`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `animal`
+-- AUTO_INCREMENT for table `Animal`
 --
-ALTER TABLE `animal`
+ALTER TABLE `Animal`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
--- AUTO_INCREMENT for table `animal_classificacao`
+-- AUTO_INCREMENT for table `Animal_Classificacao`
 --
-ALTER TABLE `animal_classificacao`
+ALTER TABLE `Animal_Classificacao`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
--- AUTO_INCREMENT for table `classificacao`
+-- AUTO_INCREMENT for table `Classificacao`
 --
-ALTER TABLE `classificacao`
+ALTER TABLE `Classificacao`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `cronologia`
+-- AUTO_INCREMENT for table `Cronologia`
 --
-ALTER TABLE `cronologia`
+ALTER TABLE `Cronologia`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
 
 --
--- AUTO_INCREMENT for table `estacao`
+-- AUTO_INCREMENT for table `Estacao`
 --
-ALTER TABLE `estacao`
+ALTER TABLE `Estacao`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `estado`
+-- AUTO_INCREMENT for table `Estado`
 --
-ALTER TABLE `estado`
+ALTER TABLE `Estado`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `ia`
+-- AUTO_INCREMENT for table `IA`
 --
-ALTER TABLE `ia`
+ALTER TABLE `IA`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
--- AUTO_INCREMENT for table `inducao`
+-- AUTO_INCREMENT for table `Inducao`
 --
-ALTER TABLE `inducao`
+ALTER TABLE `Inducao`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `observacao`
+-- AUTO_INCREMENT for table `Observacao`
 --
-ALTER TABLE `observacao`
+ALTER TABLE `Observacao`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `parto`
+-- AUTO_INCREMENT for table `Parto`
 --
-ALTER TABLE `parto`
+ALTER TABLE `Parto`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
--- AUTO_INCREMENT for table `protocolo`
+-- AUTO_INCREMENT for table `Protocolo`
 --
-ALTER TABLE `protocolo`
+ALTER TABLE `Protocolo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
@@ -819,64 +819,64 @@ ALTER TABLE `protocolo`
 --
 
 --
--- Constraints for table `animal`
+-- Constraints for table `Animal`
 --
-ALTER TABLE `animal`
-  ADD CONSTRAINT `FK_6D072629B408C367` FOREIGN KEY (`id_inducao`) REFERENCES `inducao` (`id`);
+ALTER TABLE `Animal`
+  ADD CONSTRAINT `FK_6D072629B408C367` FOREIGN KEY (`id_Inducao`) REFERENCES `Inducao` (`id`);
 
 --
--- Constraints for table `animal_classificacao`
+-- Constraints for table `Animal_Classificacao`
 --
-ALTER TABLE `animal_classificacao`
-  ADD CONSTRAINT `FK_E90B21434C9C96F2` FOREIGN KEY (`id_animal`) REFERENCES `animal` (`id`),
-  ADD CONSTRAINT `FK_E90B21436CE62FFC` FOREIGN KEY (`id_classificacaoFinal`) REFERENCES `classificacao` (`id`),
-  ADD CONSTRAINT `FK_E90B2143737BEF1C` FOREIGN KEY (`id_estacao`) REFERENCES `estacao` (`id`),
-  ADD CONSTRAINT `FK_E90B21439F4C0C45` FOREIGN KEY (`id_classificacaoInicial`) REFERENCES `classificacao` (`id`);
+ALTER TABLE `Animal_Classificacao`
+  ADD CONSTRAINT `FK_E90B21434C9C96F2` FOREIGN KEY (`id_Animal`) REFERENCES `Animal` (`id`),
+  ADD CONSTRAINT `FK_E90B21436CE62FFC` FOREIGN KEY (`id_ClassificacaoFinal`) REFERENCES `Classificacao` (`id`),
+  ADD CONSTRAINT `FK_E90B2143737BEF1C` FOREIGN KEY (`id_Estacao`) REFERENCES `Estacao` (`id`),
+  ADD CONSTRAINT `FK_E90B21439F4C0C45` FOREIGN KEY (`id_ClassificacaoInicial`) REFERENCES `Classificacao` (`id`);
 
 --
--- Constraints for table `cronologia`
+-- Constraints for table `Cronologia`
 --
-ALTER TABLE `cronologia`
-  ADD CONSTRAINT `FK_9F27263A4C9C96F2` FOREIGN KEY (`id_animal`) REFERENCES `animal` (`id`),
-  ADD CONSTRAINT `FK_9F27263A737BEF1C` FOREIGN KEY (`id_estacao`) REFERENCES `estacao` (`id`),
-  ADD CONSTRAINT `FK_9F27263A930B1BA0` FOREIGN KEY (`id_estadoFinal`) REFERENCES `estado` (`id`),
-  ADD CONSTRAINT `FK_9F27263AA8F61545` FOREIGN KEY (`id_estadoInicial`) REFERENCES `estado` (`id`),
-  ADD CONSTRAINT `FK_9F27263AD47CDAFD` FOREIGN KEY (`id_classificacao`) REFERENCES `classificacao` (`id`),
-  ADD CONSTRAINT `FK_9F27263AF2E6AD8` FOREIGN KEY (`id_ia`) REFERENCES `ia` (`id`);
+ALTER TABLE `Cronologia`
+  ADD CONSTRAINT `FK_9F27263A4C9C96F2` FOREIGN KEY (`id_Animal`) REFERENCES `Animal` (`id`),
+  ADD CONSTRAINT `FK_9F27263A737BEF1C` FOREIGN KEY (`id_Estacao`) REFERENCES `Estacao` (`id`),
+  ADD CONSTRAINT `FK_9F27263A930B1BA0` FOREIGN KEY (`id_EstadoFinal`) REFERENCES `Estado` (`id`),
+  ADD CONSTRAINT `FK_9F27263AA8F61545` FOREIGN KEY (`id_EstadoInicial`) REFERENCES `Estado` (`id`),
+  ADD CONSTRAINT `FK_9F27263AD47CDAFD` FOREIGN KEY (`id_Classificacao`) REFERENCES `Classificacao` (`id`),
+  ADD CONSTRAINT `FK_9F27263AF2E6AD8` FOREIGN KEY (`id_ia`) REFERENCES `IA` (`id`);
 
 --
--- Constraints for table `ia`
+-- Constraints for table `IA`
 --
-ALTER TABLE `ia`
-  ADD CONSTRAINT `FK_61B997B54C9C96F2` FOREIGN KEY (`id_animal`) REFERENCES `animal` (`id`),
-  ADD CONSTRAINT `FK_61B997B56A540E` FOREIGN KEY (`id_estado`) REFERENCES `estado` (`id`),
-  ADD CONSTRAINT `FK_61B997B5737BEF1C` FOREIGN KEY (`id_estacao`) REFERENCES `estacao` (`id`),
-  ADD CONSTRAINT `FK_61B997B5F098E264` FOREIGN KEY (`id_protocolo`) REFERENCES `protocolo` (`id`);
+ALTER TABLE `IA`
+  ADD CONSTRAINT `FK_61B997B54C9C96F2` FOREIGN KEY (`id_Animal`) REFERENCES `Animal` (`id`),
+  ADD CONSTRAINT `FK_61B997B56A540E` FOREIGN KEY (`id_Estado`) REFERENCES `Estado` (`id`),
+  ADD CONSTRAINT `FK_61B997B5737BEF1C` FOREIGN KEY (`id_Estacao`) REFERENCES `Estacao` (`id`),
+  ADD CONSTRAINT `FK_61B997B5F098E264` FOREIGN KEY (`id_Protocolo`) REFERENCES `Protocolo` (`id`);
 
 --
--- Constraints for table `inducao`
+-- Constraints for table `Inducao`
 --
-ALTER TABLE `inducao`
-  ADD CONSTRAINT `FK_A528538B737BEF1C` FOREIGN KEY (`id_estacao`) REFERENCES `estacao` (`id`);
+ALTER TABLE `Inducao`
+  ADD CONSTRAINT `FK_A528538B737BEF1C` FOREIGN KEY (`id_Estacao`) REFERENCES `Estacao` (`id`);
 
 --
--- Constraints for table `observacao`
+-- Constraints for table `Observacao`
 --
-ALTER TABLE `observacao`
-  ADD CONSTRAINT `FK_5D6712DD4C9C96F2` FOREIGN KEY (`id_animal`) REFERENCES `animal` (`id`);
+ALTER TABLE `Observacao`
+  ADD CONSTRAINT `FK_5D6712DD4C9C96F2` FOREIGN KEY (`id_Animal`) REFERENCES `Animal` (`id`);
 
 --
--- Constraints for table `parto`
+-- Constraints for table `Parto`
 --
-ALTER TABLE `parto`
-  ADD CONSTRAINT `FK_BC80D4B54C9C96F2` FOREIGN KEY (`id_animal`) REFERENCES `animal` (`id`);
+ALTER TABLE `Parto`
+  ADD CONSTRAINT `FK_BC80D4B54C9C96F2` FOREIGN KEY (`id_Animal`) REFERENCES `Animal` (`id`);
 
 --
--- Constraints for table `protocolo`
+-- Constraints for table `Protocolo`
 --
-ALTER TABLE `protocolo`
-  ADD CONSTRAINT `FK_F25CDCE06A540E` FOREIGN KEY (`id_estado`) REFERENCES `estado` (`id`),
-  ADD CONSTRAINT `FK_F25CDCE0737BEF1C` FOREIGN KEY (`id_estacao`) REFERENCES `estacao` (`id`);
+ALTER TABLE `Protocolo`
+  ADD CONSTRAINT `FK_F25CDCE06A540E` FOREIGN KEY (`id_Estado`) REFERENCES `Estado` (`id`),
+  ADD CONSTRAINT `FK_F25CDCE0737BEF1C` FOREIGN KEY (`id_Estacao`) REFERENCES `Estacao` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

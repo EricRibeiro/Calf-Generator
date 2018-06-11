@@ -149,7 +149,7 @@ class ProtocoloController extends AbstractActionController
             
             $lsIDsAnimaisEstados = explode("-", $lsIDsAnimaisEstados);
 
-            $estado = $this->entityManager->find('Application\Entity\Estado', $idEstado);
+            $estadoProtocolo = $this->entityManager->find('Application\Entity\Estado', $idEstado);
 
             $protocolo = $this->entityManager
                 ->getRepository('Application\Entity\Protocolo')
@@ -171,27 +171,26 @@ class ProtocoloController extends AbstractActionController
                 $estacao = $ia->getEstacao();
                 $estado = $this->entityManager->find('Application\Entity\Estado', $idEstado);
 
-                if($idEstado==1){
-
+                if ($idEstado == 1) {
                     $ia->setHasProtocolo(true);
-
                     $this->entityManager->persist($ia);
-
                     HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
 
-                }else if($estado!=null){
+                } else if ($estado != null) {
+                    $animaisOK = true;
                     HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
 
-                    $this->entityManager->flush();
-                    $animaisOK=true;
                 }
+
+                
             }
-            if($animaisOK == true){
-                $protocolo->setEstado($estado);
-            }else{
+
+            if (!$animaisOK) {
                 $estado = $this->entityManager->find('Application\Entity\Estado', 1);
-                $protocolo->setEstado($estado);
             }
+
+            $protocolo->setEstado($estadoProtocolo);
+
             $this->entityManager->persist($protocolo);
 
             $this->entityManager->flush();

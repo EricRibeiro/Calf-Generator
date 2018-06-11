@@ -8,13 +8,13 @@
                         <h4 class="title">Taxa de Prenhez por Protocolo</h4>
                     </div>
                     <div class="content">
-
                         <div class="row">
                             <div class="col-md-12">
                                 <label>Estação</label>
 
                                 <select class="form-control border-input" id="sel-estacao" name="selEstacao">
                                     <?php if (sizeof($estacao) != 0) { ?>
+                                    <?php alert('teste'); ?>
                                         <option hidden selected value="unselected">
                                             Selecionar Estação
                                         </option>
@@ -67,5 +67,5 @@
     </div>
 
 <?php
-echo $this->inlineScript()->prependFile($this->basePath() . '/js/relatorio/tx-prenhez-novilhas.js');
+echo $this->inlineScript()->prependFile($this->basePath() . '/js/relatorio/tx-prenhez-protocolo.js');
 ?>

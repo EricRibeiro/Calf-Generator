@@ -124,33 +124,69 @@ function showTable(dados) {
 }
 
 function showGraphics(dados) {
-    var data = {
-        labels: ['Total de Novilhas no Protocolo', 'Nº de Nov Repetiu', 'Nº de Novilhas Prenhas'],
-        series: [
-            [2],
-            [4]
-        ]
-    };
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Total de Novilhas no Protocolo", "Nº de Novilhas Repetiu", "Nº de Novilhas Prenhas"],
+            datasets: [{
+                label: 'Protocolo ' + dados[0].NumProt,
+                data: [dados[0].TotalNovilhasNoProt, dados[0].NumNovilhasRepetiuNoProt, dados[0].NumNovilhasPrenhasNoProt],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }, {
+                label: 'Protocolo ' + dados[1].NumProt,
+                data: [dados[1].TotalNovilhasNoProt, dados[1].NumNovilhasRepetiuNoProt, dados[1].NumNovilhasPrenhasNoProt],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }],
 
-    var options = {
-        seriesBarDistance: 10
-    };
-
-    var responsiveOptions = [
-        ['screen and (max-width: 640px)', {
-            seriesBarDistance: 5,
-            axisX: {
-                labelInterpolationFnc: function (value) {
-                    return value[0];
-                }
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
             }
-        }]
-    ];
-
-    new Chartist.Bar('#row-graphicTxPrenhezNovilhas', data, options, responsiveOptions);
+        }
+    });
 
     $('#row-card-graphic').show();
 }
+
+
 
 function getTableData() {
     $.ajax({

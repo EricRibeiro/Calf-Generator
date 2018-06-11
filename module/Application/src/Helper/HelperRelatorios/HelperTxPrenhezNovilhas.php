@@ -15,9 +15,8 @@ class HelperTxPrenhezNovilhas
 {
     public static function getDadosTxPrenhezNovilhasAction($idEstacao, $idProtInduzidas, $idProtNaoInduzidas)
     {
-
-        $dadosInduzidas = HelperTxPrenhezNovilhas::getDados($idProtInduzidas);
-        $dadosNaoInduzidas = HelperTxPrenhezNovilhas::getDados($idProtNaoInduzidas);
+        $dadosInduzidas = self::getDados($idProtInduzidas);
+        $dadosNaoInduzidas = self::getDados($idProtNaoInduzidas);
 
         $arr = [];
 
@@ -46,6 +45,7 @@ class HelperTxPrenhezNovilhas
             ->findNumNovilhasPrenhasNoProtocolo($protocolo);
 
         $txDePrenhezNovilhas = ($numNovilhasPrenhasNoProtocolo * 100) / $totalNovilhasNoProtocolo;
+        $txDePrenhezNovilhas = number_format($txDePrenhezNovilhas, 2, ',', '.');
 
         return self::dadosToJson($protocolo, $totalNovilhasNoProtocolo, $numNovilhasRepetiuNoProtocolo,
         $numNovilhasPrenhasNoProtocolo, $txDePrenhezNovilhas);

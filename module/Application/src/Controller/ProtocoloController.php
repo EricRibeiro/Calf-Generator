@@ -170,20 +170,15 @@ class ProtocoloController extends AbstractActionController
                     ->findOneBy(array('protocolo' => $protocolo, 'animal' => $animal));
                 $estacao = $ia->getEstacao();
                 $estado = $this->entityManager->find('Application\Entity\Estado', $idEstado);
-
                 if ($idEstado == 1) {
-                    
                     $ia->setHasProtocolo(true);
                     $this->entityManager->persist($ia);
                     HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
-                    if($animal->getEstado()=="Aguardando Diagnóstico 2"){
-
-                    }
-                } else if ($estado != null) {
-
+                }else{
+                    if ($estado != null) {
                     $animaisOK = true;
                     HelperCronologia::criarCronologia($this->entityManager, $animal, $classificacao, $estacao, $ia, $estado);
-                }         
+                }   }         
             }
 
             if ($animaisOK==false) {

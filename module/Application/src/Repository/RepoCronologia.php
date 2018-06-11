@@ -18,6 +18,8 @@ class RepoCronologia extends EntityRepository
             ->innerJoin('Application\Entity\Animal', 'a', 'WITH', 'c.animal = :animal')
             ->where('c.estadoFinal IS NULL')
             ->setParameter('animal', $animal)
+            ->orderBy("c.id", "DESC")
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
     }
